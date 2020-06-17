@@ -1,5 +1,6 @@
 'use strict'
 var bcrypt = require('bcrypt-nodejs');
+var jwt = require('jsonwebtoken');
 
 module.exports = function (sequelize, DataTypes) {
     var Companies = sequelize.define('companies', {
@@ -15,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
         email: {
             type: DataTypes.STRING,
             allowNull: true,
-            validate: {  isEmail: true}
+            validate: { isEmail: true }
         },
         name: {
             type: DataTypes.STRING,
@@ -37,7 +38,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        founded:{
+        founded: {
             type: DataTypes.INTEGER,
             allowNull: true,
         },
@@ -45,55 +46,57 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        size:{
+        size: {
             type: DataTypes.INTEGER,
-            allowNull : true,
+            allowNull: true,
         },
-        logo:{
+        logo: {
             type: DataTypes.STRING,
-            allowNull:true,
+            allowNull: true,
         },
         cover: {
             type: DataTypes.STRING,
-            allowNull:true,
+            allowNull: true,
         },
         country: {
             type: DataTypes.STRING,
-            allowNull:true,
+            allowNull: true,
         },
         state: {
             type: DataTypes.STRING,
-            allowNull:true,
+            allowNull: true,
         },
         city: {
             type: DataTypes.STRING,
-            allowNull:true,
+            allowNull: true,
         },
         street: {
             type: DataTypes.STRING,
-            allowNull:true,
+            allowNull: true,
         },
         postal_code: {
             type: DataTypes.INTEGER,
-            allowNull:true,
+            allowNull: true,
         },
         longitude: {
             type: DataTypes.DOUBLE,
-            allowNull:true,
+            allowNull: true,
         },
         latitude: {
             type: DataTypes.DOUBLE,
-            allowNull:true,
+            allowNull: true,
         },
-        verified:{
+        verified: {
             type: DataTypes.BOOLEAN,
-            allowNull:true,
+            allowNull: true,
         }
 
     });
 
-    Companies.prototype.validPassword = function(password) {
+    Companies.prototype.validPassword = function (password) {
         return bcrypt.compareSync(password, this.password);
     };
+
+    
     return Companies;
 };

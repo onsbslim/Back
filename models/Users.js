@@ -80,7 +80,6 @@ module.exports = function (sequelize, DataTypes) {
     Users.prototype.validPassword = function(password) {
         return bcrypt.compareSync(password, this.password);
     };
-    
   
  
     return Users;
