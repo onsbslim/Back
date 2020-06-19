@@ -29,11 +29,12 @@ router.post('/login', function (req, res, next) {
 	};
 
 	dao.auth(companyData, (err, company) => {
-		if (err) {res.status(404).json({
-			"Error": err.message,
-		});
-		// console.log(process.env.KEY);
-	}
+		if (err) {
+			res.status(404).json({
+				"Error": err.message,
+			});
+			// console.log(process.env.KEY);
+		}
 
 		else {
 			jwt.sign(
@@ -68,7 +69,7 @@ router.post('/register', function (req, res, next) {
 	var dao = new companyDAO(models);
 	//check if there is a non needed property
 	var propertiesNames = Object.getOwnPropertyNames(req.body);
-
+	console.log(propertiesNames)
 
 	var neededProperties = ["email", "password", "name"];
 	propertiesNames.forEach(name => {
@@ -88,23 +89,57 @@ router.post('/register', function (req, res, next) {
 		"name": req.body.name,
 	};
 
+	// dao.create(newCompany, (err, company) => {
+	// 	if (err) res.status(404).json({
+	// 		"Error": err.message
+	// 	});
+	// 	else {
+	// 		res.status(200).json(
+	// 			company,
+	// 		);
+	// 	}
+	// });
 
 	dao.create(newCompany, (err, company) => {
-		if (err) res.status(404).json({
-			"Error": err.message
-		});
+		if (err) {
+			res.status(404).json({
+				"Error": err.message,
+			});
+			// console.log(process.env.KEY);
+		}
+
 		else {
-			res.status(200).json(
-				company
+			jwt.sign(
+				{
+					id: company.id,
+					name: company.name,
+					email: company.email,
+				},
+				process.env.KEY,
+				{ expiresIn: 3600 * 2 },
+				(err, token) => {
+					if (err) throw err;
+					res.status(200).json({
+						token,
+						comapny: company,
+					});
+
+				}
 			);
+
+
+
 		}
 	});
+
+
+
 
 });
 
 /** Update Company */
 
-router.put('/:id', (req, res) => {
+router.put('/:id', auth, (req, res) => {
 	var dao = new companyDAO(models);
 	var id = req.params.id;
 
@@ -178,7 +213,7 @@ router.get('/:id', function (req, res) {
 
 /** Get All Companies */
 
-router.get('/', auth,function (req, res) {
+router.get('/', auth, function (req, res) {
 	var dao = new companyDAO(models);
 	dao.list((err, companies) => {
 		if (err) res.status(404).json({

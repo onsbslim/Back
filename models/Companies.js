@@ -38,18 +38,6 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        founded: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
-        linkedin: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        size: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
         logo: {
             type: DataTypes.STRING,
             allowNull: true,
