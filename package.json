@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "startNod": "nodemon ./bin/www"
+    "startNod": "nodemon ./bin/www",
+    "db:makemigrations": "./node_modules/sequelize-auto-migrations/bin/makemigration.js"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
@@ -25,6 +26,7 @@
     "passport-local": "^1.0.0",
     "pug": "2.0.0-beta11",
     "sequelize": "^5.21.10",
+    "sequelize-auto-migrations": "github:scimonster/sequelize-auto-migrations#a063aa6535a3f580623581bf866cef2d609531ba",
     "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {

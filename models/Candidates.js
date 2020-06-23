@@ -1,16 +1,13 @@
 'use strict'
 var bcrypt = require('bcrypt-nodejs');
+var jwt = require('jsonwebtoken');
 
 module.exports = function (sequelize, DataTypes) {
-    var Users = sequelize.define('users', {
+    var Candidates = sequelize.define('candidates', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: true,
         },
         firstname: {
             type: DataTypes.STRING,
@@ -23,9 +20,8 @@ module.exports = function (sequelize, DataTypes) {
         email: {
             type: DataTypes.STRING,
             allowNull: true,
-            validate: {  isEmail: true}
         },
-        headline: {
+        password: {
             type: DataTypes.STRING,
             allowNull: true,
         },
@@ -37,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        location: {
+        degree: {
             type: DataTypes.STRING,
             allowNull: true,
         },
@@ -57,15 +53,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        availability: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        photo: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
-        video: {
+        Photo: {
             type: DataTypes.STRING,
             allowNull: true,
         },
@@ -74,13 +62,21 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         
-       
     });
 
-    Users.prototype.validPassword = function(password) {
+    Candidates.prototype.validPassword = function (password) {
         return bcrypt.compareSync(password, this.password);
     };
-  
- 
-    return Users;
+    Candidates.associate = (models)=>{
+        models.candidates.hasMany(models.interviews);
+        models.candidates.hasMany(models.experiences);
+        models.candidates.hasMany(models.skills);
+        models.candidates.belongsToMany(models.skills, {
+            through: 'CandidateSkill'
+
+        });
+    }
+    
+
+    return Candidates;
 };

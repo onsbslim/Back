@@ -1,0 +1,597 @@
+{
+    "tables": {
+        "candidates": {
+            "tableName": "candidates",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "firstname": {
+                    "allowNull": true,
+                    "field": "firstname",
+                    "seqType": "Sequelize.STRING"
+                },
+                "lastname": {
+                    "allowNull": true,
+                    "field": "lastname",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "allowNull": true,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "allowNull": true,
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "about": {
+                    "allowNull": true,
+                    "field": "about",
+                    "seqType": "Sequelize.STRING"
+                },
+                "country": {
+                    "allowNull": true,
+                    "field": "country",
+                    "seqType": "Sequelize.STRING"
+                },
+                "degree": {
+                    "allowNull": true,
+                    "field": "degree",
+                    "seqType": "Sequelize.STRING"
+                },
+                "industry": {
+                    "allowNull": true,
+                    "field": "industry",
+                    "seqType": "Sequelize.STRING"
+                },
+                "birthday": {
+                    "allowNull": true,
+                    "field": "birthday",
+                    "seqType": "Sequelize.DATE"
+                },
+                "address": {
+                    "allowNull": true,
+                    "field": "address",
+                    "seqType": "Sequelize.STRING"
+                },
+                "phone": {
+                    "allowNull": true,
+                    "field": "phone",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Photo": {
+                    "allowNull": true,
+                    "field": "Photo",
+                    "seqType": "Sequelize.STRING"
+                },
+                "cv": {
+                    "allowNull": true,
+                    "field": "cv",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "companies": {
+            "tableName": "companies",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "password": {
+                    "allowNull": true,
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "allowNull": true,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "name": {
+                    "allowNull": true,
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "about": {
+                    "allowNull": true,
+                    "field": "about",
+                    "seqType": "Sequelize.STRING"
+                },
+                "sector": {
+                    "allowNull": true,
+                    "field": "sector",
+                    "seqType": "Sequelize.STRING"
+                },
+                "phone": {
+                    "allowNull": true,
+                    "field": "phone",
+                    "seqType": "Sequelize.STRING"
+                },
+                "website": {
+                    "allowNull": true,
+                    "field": "website",
+                    "seqType": "Sequelize.STRING"
+                },
+                "logo": {
+                    "allowNull": true,
+                    "field": "logo",
+                    "seqType": "Sequelize.STRING"
+                },
+                "cover": {
+                    "allowNull": true,
+                    "field": "cover",
+                    "seqType": "Sequelize.STRING"
+                },
+                "country": {
+                    "allowNull": true,
+                    "field": "country",
+                    "seqType": "Sequelize.STRING"
+                },
+                "state": {
+                    "allowNull": true,
+                    "field": "state",
+                    "seqType": "Sequelize.STRING"
+                },
+                "city": {
+                    "allowNull": true,
+                    "field": "city",
+                    "seqType": "Sequelize.STRING"
+                },
+                "street": {
+                    "allowNull": true,
+                    "field": "street",
+                    "seqType": "Sequelize.STRING"
+                },
+                "postal_code": {
+                    "allowNull": true,
+                    "field": "postal_code",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "longitude": {
+                    "allowNull": true,
+                    "field": "longitude",
+                    "seqType": "Sequelize.FLOAT"
+                },
+                "latitude": {
+                    "allowNull": true,
+                    "field": "latitude",
+                    "seqType": "Sequelize.FLOAT"
+                },
+                "verified": {
+                    "allowNull": true,
+                    "field": "verified",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "documents": {
+            "tableName": "documents",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "title": {
+                    "allowNull": true,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING"
+                },
+                "document": {
+                    "allowNull": true,
+                    "field": "document",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "companyId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "companyId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "experiences": {
+            "tableName": "experiences",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "sector": {
+                    "allowNull": true,
+                    "field": "sector",
+                    "seqType": "Sequelize.STRING"
+                },
+                "years": {
+                    "allowNull": true,
+                    "field": "years",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "candidateId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "candidates",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "candidateId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "interviews": {
+            "tableName": "interviews",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "start_date": {
+                    "allowNull": true,
+                    "field": "start_date",
+                    "seqType": "Sequelize.DATE"
+                },
+                "video": {
+                    "allowNull": true,
+                    "field": "video",
+                    "seqType": "Sequelize.STRING"
+                },
+                "status": {
+                    "allowNull": true,
+                    "field": "status",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "candidateId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "candidates",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "candidateId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "offerId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "offers",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "offerId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "offers": {
+            "tableName": "offers",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "title": {
+                    "allowNull": true,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING"
+                },
+                "accepted_degree": {
+                    "allowNull": true,
+                    "field": "accepted_degree",
+                    "seqType": "Sequelize.STRING"
+                },
+                "experience_years": {
+                    "allowNull": true,
+                    "field": "experience_years",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "about": {
+                    "allowNull": true,
+                    "field": "about",
+                    "seqType": "Sequelize.STRING"
+                },
+                "sector": {
+                    "allowNull": true,
+                    "field": "sector",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "companyId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "companyId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "photos": {
+            "tableName": "photos",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "photo": {
+                    "allowNull": true,
+                    "field": "photo",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "companyId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "companyId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "questions": {
+            "tableName": "questions",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "text_question": {
+                    "allowNull": true,
+                    "field": "text_question",
+                    "seqType": "Sequelize.STRING"
+                },
+                "audio_question": {
+                    "allowNull": true,
+                    "field": "audio_question",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "offerId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "offers",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "offerId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "skills": {
+            "tableName": "skills",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "skill": {
+                    "allowNull": true,
+                    "field": "skill",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "candidateId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "candidates",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "candidateId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "CandidateSkill": {
+            "tableName": "CandidateSkill",
+            "schema": {
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "candidateId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "candidates",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "candidateId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "skillId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "skills",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "skillId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
+        "OfferSkill": {
+            "tableName": "OfferSkill",
+            "schema": {
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "offerId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "offers",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "offerId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "skillId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "skills",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "skillId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "revision": 7
+}

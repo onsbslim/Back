@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 var session = require('express-session');
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var candidatesRouter = require('./routes/candidates');
 var companiesRouter = require('./routes/companies');
 require("dotenv").config();
 
@@ -32,7 +32,7 @@ app.use(passport.session());
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/candidates', candidatesRouter);
 app.use('/companies', companiesRouter);
 
 // catch 404 and forward to error handler

@@ -67,11 +67,11 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         longitude: {
-            type: DataTypes.DOUBLE,
+            type: DataTypes.FLOAT,
             allowNull: true,
         },
         latitude: {
-            type: DataTypes.DOUBLE,
+            type: DataTypes.FLOAT,
             allowNull: true,
         },
         verified: {
@@ -85,6 +85,11 @@ module.exports = function (sequelize, DataTypes) {
         return bcrypt.compareSync(password, this.password);
     };
 
+    Companies.associate = (models)=>{
+        models.companies.hasMany(models.documents);
+        models.companies.hasMany(models.offers);
+        models.companies.hasMany(models.photos);
+    }
     
     return Companies;
 };

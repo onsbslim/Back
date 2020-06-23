@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-var userDao = require('../dao/userDAO');
+var candidateDAO = require('../dao/candidateDAO');
 
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 
-/** Login User */
+/** Login Candidate */
 router.post('/login', function(req, res, next){
 	passport.authenticate()
 });
-/** Register User */
+/** Register Candidate */
 router.post('/register', function (req, res, next) {
-	var dao = new userDao(models);
+	var dao = new candidateDAO(models);
 	//check if there is a non needed property
 	var propertiesNames = Object.getOwnPropertyNames(req.body);
 
@@ -29,7 +29,7 @@ router.post('/register', function (req, res, next) {
 		res.status(400).json({
 			"Error": "Missing Input Data"
 		});
-	var newUser = {
+	var newCandidate= {
 		"email": req.body.email,
 		"password": req.body.password,
 		"firstname": req.body.firstname,
@@ -37,87 +37,84 @@ router.post('/register', function (req, res, next) {
 	};
 
 
-	dao.create(newUser, (err, user) => {
+	dao.create(newCandidate, (err, candidate) => {
 		if (err) res.status(404).json({
 			"Error": err.message
 		});
 		else {
 			res.status(200).json(
-				user
+				candidate
 			);
 		}
 	});
 
 });
 
-/** Get User */
+/** Get candidate */
 router.get('/:id', function (req, res) {
-	var dao = new userDao(models);
+	var dao = new candidateDAO(models);
 	var id = req.params.id;
-	dao.get(id, (err, user) => {
+	dao.get(id, (err, candidate) => {
 		if (err) return res.status(404).json({
 			'Error': err.message
 		})
-		else return res.status(200).json(user);
+		else return res.status(200).json(candidate);
 	})
 });
 
-/** Get All Users */
+/** Get All candidate */
 router.get('/', function (req, res) {
-	var dao = new userDao(models);
-	dao.list((err, users) => {
+	var dao = new candidateDAO(models);
+	dao.list((err, candidates) => {
 		if (err) return res.status(404).json({
 			'Error': err.message
 		})
-		else return res.status(200).json(users);
+		else return res.status(200).json(candidates);
 	});
 });
 
-/** Delete User */
+/** Delete candidate */
 router.delete('/:id', function (req, res) {
-	var dao = new userDao(models);
+	var dao = new candidateDAO(models);
 	var id = req.params.id;
-	dao.remove(id, (err, user) => {
+	dao.remove(id, (err, candidate) => {
 		if (err) res.status(404).json({
 			"Error": err.message
 		});
 		else res.status(200).json(
-			user
+			candidate
 		)
 	})
 });
 
-/** Update User */
+/** Update candidate */
 router.put('/:id', (req, res) => {
-	var dao = new userDao(models);
+	var dao = new candidateDAO(models);
 	var id = req.params.id;
 
 	if (!req.body)
 		return res.status(404).json({ 'Error': 'There is no updating data' })
-	var userData = {
+	var candidateData = {
 		"email": req.body.email,
 		"firstname": req.body.firstName,
 		"lastname": req.body.lastname,
-		"headline": req.body.headline,
 		"about": req.body.about,
 		"country": req.body.country,
-		"location": req.body.location,
 		"industry": req.body.industry,
 		"birthday": req.body.birthday,
 		"address": req.body.address,
 		"phone": req.body.phone,
-		"availability": req.body.availability,
 		"photo": req.body.photo,
-		"video": req.body.video,
 		"cv": req.body.cv,
+		"degree": req.body.degree
 	}
-	dao.update(id, userData, (err, user) => {
+	dao.update(id, candidateData, (err, candidate) => {
 		try {
 			if (err) return res.status(404).json({
 				"Error": err.message
 			})
 			else return res.status(200).json(
-				user
+				candidate
 			);
 		} catch (error) {
 			return res.status(404).json({

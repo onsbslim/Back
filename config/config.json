@@ -12,7 +12,7 @@
     "username": "root",
     "password": "root",
     "database": "linkup",
-    "host": "localhost",
+    "host": "127.0.0.1",
     "port":"8889",
     "dialect": "mysql",
     "operatorsAliases": false
@@ -20,9 +20,9 @@
   "production": {
     "username": "root",
     "password": "root",
-    "database": "database_production",
-    "host": "localhost",
-    "port" : "8889",
+    "database": "linkup",
+    "host": "127.0.0.1",
+    "port":"8889",
     "dialect": "mysql",
     "operatorsAliases": false
   }
