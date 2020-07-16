@@ -19,8 +19,8 @@ module.exports = function (sequelize, DataTypes) {
             through: 'CandidateSkill'
 
         });
-        models.skills.belongsToMany(models.offers, {
-            through: 'OfferSkill'
+        models.skills.belongsToMany(models.interviews, {
+            through: 'InterviewSkill'
 
         });
 

@@ -68,7 +68,7 @@ module.exports = function (sequelize, DataTypes) {
         return bcrypt.compareSync(password, this.password);
     };
     Candidates.associate = (models)=>{
-        models.candidates.hasMany(models.interviews);
+        models.candidates.hasMany(models.applications);
         models.candidates.hasMany(models.experiences);
         models.candidates.hasMany(models.skills);
         models.candidates.belongsToMany(models.skills, {

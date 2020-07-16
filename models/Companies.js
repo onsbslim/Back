@@ -67,11 +67,11 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         longitude: {
-            type: DataTypes.FLOAT,
+            type: DataTypes.DOUBLE,
             allowNull: true,
         },
         latitude: {
-            type: DataTypes.FLOAT,
+            type: DataTypes.DOUBLE,
             allowNull: true,
         },
         verified: {
@@ -87,7 +87,7 @@ module.exports = function (sequelize, DataTypes) {
 
     Companies.associate = (models)=>{
         models.companies.hasMany(models.documents);
-        models.companies.hasMany(models.offers);
+        models.companies.hasMany(models.interviews);
         models.companies.hasMany(models.photos);
     }
     

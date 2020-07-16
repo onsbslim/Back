@@ -22,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
 
 
     Questions.associate = (models) => {
-        models.questions.belongsTo(models.offers);   
+        models.questions.belongsTo(models.interviews);   
     
     }
 

@@ -6,16 +6,16 @@ function auth(req, res, next) {
   
     // Check for token
     if (!token)
-      return res.status(401).json({ msg: 'No token, authorizaton denied' });
+      return res.status(401).json({ Error: 'No token, authorizaton denied' });
   
     try {
       // Verify token
       const decoded = jwt.verify(token, process.env.KEY);
       // Add user from payload
-      req.user = decoded;
+      req.company = decoded;
       next();
     } catch (e) {
-      res.status(403).json({ msg: 'Token is not valid' });
+      res.status(403).json({ Error: 'Token is not valid' });
     }
   }
   

@@ -3,15 +3,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
-var session = require('express-session');
+var bodyParser = require('body-parser');
+
 var indexRouter = require('./routes/index');
 var candidatesRouter = require('./routes/candidates');
 var companiesRouter = require('./routes/companies');
+var interviewsRouter = require('./routes/interviews');
+var questionsRouter = require('./routes/questions');
+var multer  = require('multer');
+
 require("dotenv").config();
 
 var app = express();
 
-var jwt = require('jsonwebtoken');  
+//var jwt = require('jsonwebtoken');  
 
 
 var passport = require('passport');
@@ -26,14 +31,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 
 app.use('/', indexRouter);
 app.use('/candidates', candidatesRouter);
 app.use('/companies', companiesRouter);
+app.use('/interviews', interviewsRouter);
+app.use('/questions', questionsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,8 +1,7 @@
 var bcrypt = require('bcrypt-nodejs');
-var Op;
+
 var candidateDao = module.exports = function (models) {
 	this.models = models;
-	Op = this.models.Sequelize.Op;
 };
 
 // Function to hash Password

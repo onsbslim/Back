@@ -3,8 +3,10 @@ var router = express.Router();
 var models = require('../models');
 var companyDAO = require('../dao/companyDAO');
 const jwt = require('jsonwebtoken');
-
 const auth = require('../middleware/auth');
+const checkRefresh = require('../middleware/checkRefresh');
+
+
 
 /** Login Company */
 router.post('/login', function (req, res, next) {
@@ -37,24 +39,34 @@ router.post('/login', function (req, res, next) {
 		}
 
 		else {
-			jwt.sign(
-				{
-					id: company.id,
-					name: company.name,
-					email: company.email,
-				},
-				process.env.KEY,
-				{ expiresIn: 3600 * 2 },
-				(err, token) => {
+
+			jwt.sign({
+				id: company.id,
+			}, process.env.SECRET,
+				{ expiresIn: '7d' },
+				(err, refreshToken) => {
 					if (err) throw err;
-					res.status(200).json({
-						token,
-						comapny: company,
-					});
+					jwt.sign(
+						{
+							id: company.id,
+							name: company.name,
+							email: company.email,
+						},
+						process.env.KEY,
+						{ expiresIn: 360 },
+						(err, token) => {
+							if (err) throw err;
 
-				}
-			);
+							process.env.REFRESH = refreshToken;
+							res.status(200).json({
+								refreshToken,
+								token,
+								company,
+							});
 
+						}
+					);
+				});
 
 
 		}
@@ -89,17 +101,6 @@ router.post('/register', function (req, res, next) {
 		"name": req.body.name,
 	};
 
-	// dao.create(newCompany, (err, company) => {
-	// 	if (err) res.status(404).json({
-	// 		"Error": err.message
-	// 	});
-	// 	else {
-	// 		res.status(200).json(
-	// 			company,
-	// 		);
-	// 	}
-	// });
-
 	dao.create(newCompany, (err, company) => {
 		if (err) {
 			res.status(404).json({
@@ -109,23 +110,34 @@ router.post('/register', function (req, res, next) {
 		}
 
 		else {
-			jwt.sign(
-				{
-					id: company.id,
-					name: company.name,
-					email: company.email,
-				},
-				process.env.KEY,
-				{ expiresIn: 3600 * 2 },
-				(err, token) => {
+			jwt.sign({
+				id: company.id,
+			}, process.env.SECRET,
+				{ expiresIn: '7d' },
+				(err, refreshToken) => {
 					if (err) throw err;
-					res.status(200).json({
-						token,
-						comapny: company,
-					});
+					jwt.sign(
+						{
+							id: company.id,
+							name: company.name,
+							email: company.email,
+						},
+						process.env.KEY,
+						{ expiresIn: 360 },
+						(err, token) => {
+							if (err) throw err;
 
-				}
-			);
+							process.env.REFRESH = refreshToken;
+							res.status(200).json({
+								refreshToken,
+								token,
+								company,
+							});
+
+						}
+					);
+				});
+
 
 
 
@@ -139,10 +151,10 @@ router.post('/register', function (req, res, next) {
 
 /** Update Company */
 
-router.put('/:id', auth, (req, res) => {
+router.put('/update', auth, (req, res) => {
 	var dao = new companyDAO(models);
-	var id = req.params.id;
-
+	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decoded.id;
 	if (!req.body)
 		return res.status(404).json({ 'Error': 'There is no updating data' })
 	var companyData = {
@@ -225,6 +237,67 @@ router.get('/', auth, function (req, res) {
 	});
 
 });
+
+router.post('/me', auth, function (req, res) {
+	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decoded.id;
+	var dao = new companyDAO(models);
+	if (!req.body)
+		return res.status(404).json({ 'Error': 'There is no data' });
+	
+	dao.getConnected(id, (err, company) => {
+		if (err) res.status(404).json({
+			"Error": err.message
+		});
+		else res.status(200).json(
+			company
+		)
+	});
+
+});
+
+// Token
+router.post('/token', checkRefresh, function (req, res) {
+	// refresh the damn token
+	const decoded = jwt.verify(req.get('x-refresh-token'), process.env.SECRET);
+	var id = decoded.id;
+	var dao = new companyDAO(models);
+	dao.get(id, (err, company) => {
+		if (err) res.status(404).json({
+			"Error": err.message
+		});
+		else {
+			const c = {
+				id: company.id,
+				name: company.name,
+				email: company.email,
+			}
+			const token = jwt.sign(c, process.env.KEY, { expiresIn: 360 });
+			const response = {
+				"token": token
+			}
+			// update the token in the list
+			res.status(200).json(response);
+		}
+	});
+});
+
+// Check Refresh Token
+
+router.post('/checkRefresh', checkRefresh, function(req, res){
+	var response = req.get('x-refresh-token');
+	res.status(200).json({"refreshToken": response});
+});
+
+
+
+// Check Token
+
+router.post('/checkToken', auth ,function(req, res){
+	var response = req.get('x-auth-token');
+	res.status(200).json({"refresh": response});
+});
+
 
 
 

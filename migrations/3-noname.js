@@ -5,78 +5,44 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * createTable "interviews", deps: [candidates]
+ * addColumn "type" to table "interviews"
  *
  **/
 
 var info = {
     "revision": 3,
     "name": "noname",
-    "created": "2020-06-22T15:40:56.822Z",
+    "created": "2020-07-07T10:41:27.111Z",
     "comment": ""
 };
 
 var migrationCommands = function(transaction) {
     return [{
-        fn: "createTable",
+        fn: "addColumn",
         params: [
             "interviews",
+            "type",
             {
-                "id": {
-                    "type": Sequelize.INTEGER,
-                    "field": "id",
-                    "autoIncrement": true,
-                    "primaryKey": true
-                },
-                "start_date": {
-                    "type": Sequelize.DATE,
-                    "field": "start_date",
-                    "allowNull": true
-                },
-                "video": {
-                    "type": Sequelize.STRING,
-                    "field": "video",
-                    "allowNull": true
-                },
-                "status": {
-                    "type": Sequelize.STRING,
-                    "field": "status",
-                    "allowNull": true
-                },
-                "createdAt": {
-                    "type": Sequelize.DATE,
-                    "field": "createdAt",
-                    "allowNull": false
-                },
-                "updatedAt": {
-                    "type": Sequelize.DATE,
-                    "field": "updatedAt",
-                    "allowNull": false
-                },
-                "candidateId": {
-                    "type": Sequelize.INTEGER,
-                    "field": "candidateId",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "SET NULL",
-                    "references": {
-                        "model": "candidates",
-                        "key": "id"
-                    },
-                    "allowNull": true
-                }
+                "type": Sequelize.STRING,
+                "field": "type",
+                "allowNull": true
             },
             {
-                "transaction": transaction
+                transaction: transaction
             }
         ]
     }];
 };
 var rollbackCommands = function(transaction) {
     return [{
-        fn: "dropTable",
-        params: ["interviews", {
-            transaction: transaction
-        }]
+        fn: "removeColumn",
+        params: [
+            "interviews",
+            "type",
+            {
+                transaction: transaction
+            }
+        ]
     }];
 };
 

@@ -8,7 +8,7 @@ const passport = require('passport');
 
 /** Login Candidate */
 router.post('/login', function(req, res, next){
-	passport.authenticate()
+	//passport.authenticate()
 });
 /** Register Candidate */
 router.post('/register', function (req, res, next) {

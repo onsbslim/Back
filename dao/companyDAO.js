@@ -1,9 +1,6 @@
 var bcrypt = require('bcrypt-nodejs');
-var Op;
-
 var companyDao = module.exports = function (models) {
 	this.models = models;
-	Op = this.models.Sequelize.Op;
 };
 
 // Function to hash Password
@@ -119,16 +116,29 @@ companyDao.prototype.list = function (cb) {
 }
 
 //Company Login
-companyDao.prototype.auth = function(companyData,cb){
+companyDao.prototype.auth = function (companyData, cb) {
 	this.models.companies.findOne({
 		where: {
 			email: companyData.email,
 		}
 	})
-	.then(company=>{
-		if(!company) cb(Error('No company found'));
-		else if (!company.validPassword(companyData.password)) cb(Error('Wrong Password'));
-		else cb(null, company);
-		
-	}).catch(err=> cb(err));
+		.then(company => {
+			if (!company) cb(Error('No company found'));
+			else if (!company.validPassword(companyData.password)) cb(Error('Wrong Password'));
+			else cb(null, company);
+
+		}).catch(err => cb(err));
+}
+
+//connected company
+companyDao.prototype.getConnected = function (id, cb) {
+	this.models.companies.findOne({
+		where: {
+			id: id,
+		}
+	})
+		.then(company => {
+			if (!company) cb(Error('No company found'));
+			else cb(null, company);
+		}).catch(err => cb(err));
 }

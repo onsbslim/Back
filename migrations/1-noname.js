@@ -7,14 +7,22 @@ var Sequelize = require('sequelize');
  *
  * createTable "candidates", deps: []
  * createTable "companies", deps: []
+ * createTable "interviews", deps: [companies]
  * createTable "documents", deps: [companies]
+ * createTable "experiences", deps: [candidates]
+ * createTable "applications", deps: [interviews, candidates]
+ * createTable "photos", deps: [companies]
+ * createTable "questions", deps: [interviews]
+ * createTable "skills", deps: [candidates]
+ * createTable "CandidateSkill", deps: [candidates, skills]
+ * createTable "InterviewSkill", deps: [interviews, skills]
  *
  **/
 
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2020-06-22T14:52:15.288Z",
+    "created": "2020-07-01T08:51:15.734Z",
     "comment": ""
 };
 
@@ -58,6 +66,11 @@ var migrationCommands = function(transaction) {
                     "country": {
                         "type": Sequelize.STRING,
                         "field": "country",
+                        "allowNull": true
+                    },
+                    "degree": {
+                        "type": Sequelize.STRING,
+                        "field": "degree",
                         "allowNull": true
                     },
                     "industry": {
@@ -188,12 +201,12 @@ var migrationCommands = function(transaction) {
                         "allowNull": true
                     },
                     "longitude": {
-                        "type": Sequelize.FLOAT,
+                        "type": Sequelize.DOUBLE,
                         "field": "longitude",
                         "allowNull": true
                     },
                     "latitude": {
-                        "type": Sequelize.FLOAT,
+                        "type": Sequelize.DOUBLE,
                         "field": "latitude",
                         "allowNull": true
                     },
@@ -211,6 +224,69 @@ var migrationCommands = function(transaction) {
                         "type": Sequelize.DATE,
                         "field": "updatedAt",
                         "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "interviews",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "title": {
+                        "type": Sequelize.STRING,
+                        "field": "title",
+                        "allowNull": true
+                    },
+                    "accepted_degree": {
+                        "type": Sequelize.STRING,
+                        "field": "accepted_degree",
+                        "allowNull": true
+                    },
+                    "experience_years": {
+                        "type": Sequelize.INTEGER,
+                        "field": "experience_years",
+                        "allowNull": true
+                    },
+                    "about": {
+                        "type": Sequelize.STRING,
+                        "field": "about",
+                        "allowNull": true
+                    },
+                    "sector": {
+                        "type": Sequelize.STRING,
+                        "field": "sector",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "companyId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "companyId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "companies",
+                            "key": "id"
+                        },
+                        "allowNull": true
                     }
                 },
                 {
@@ -265,11 +341,349 @@ var migrationCommands = function(transaction) {
                     "transaction": transaction
                 }
             ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "experiences",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "sector": {
+                        "type": Sequelize.STRING,
+                        "field": "sector",
+                        "allowNull": true
+                    },
+                    "years": {
+                        "type": Sequelize.INTEGER,
+                        "field": "years",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "candidateId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "candidateId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "candidates",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "applications",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "start_date": {
+                        "type": Sequelize.DATE,
+                        "field": "start_date",
+                        "allowNull": true
+                    },
+                    "video": {
+                        "type": Sequelize.STRING,
+                        "field": "video",
+                        "allowNull": true
+                    },
+                    "status": {
+                        "type": Sequelize.STRING,
+                        "field": "status",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "interviewId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "interviewId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "interviews",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    },
+                    "candidateId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "candidateId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "candidates",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "photos",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "photo": {
+                        "type": Sequelize.STRING,
+                        "field": "photo",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "companyId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "companyId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "companies",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "questions",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "text_question": {
+                        "type": Sequelize.STRING,
+                        "field": "text_question",
+                        "allowNull": true
+                    },
+                    "audio_question": {
+                        "type": Sequelize.STRING,
+                        "field": "audio_question",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "interviewId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "interviewId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "interviews",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "skills",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "skill": {
+                        "type": Sequelize.STRING,
+                        "field": "skill",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "candidateId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "candidateId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "candidates",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "CandidateSkill",
+                {
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "candidateId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "candidateId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "candidates",
+                            "key": "id"
+                        },
+                        "primaryKey": true
+                    },
+                    "skillId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "skillId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "skills",
+                            "key": "id"
+                        },
+                        "primaryKey": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "InterviewSkill",
+                {
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "interviewId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "interviewId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "interviews",
+                            "key": "id"
+                        },
+                        "primaryKey": true
+                    },
+                    "skillId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "skillId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "skills",
+                            "key": "id"
+                        },
+                        "primaryKey": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
         }
     ];
 };
 var rollbackCommands = function(transaction) {
     return [{
+            fn: "dropTable",
+            params: ["applications", {
+                transaction: transaction
+            }]
+        },
+        {
             fn: "dropTable",
             params: ["candidates", {
                 transaction: transaction
@@ -284,6 +698,48 @@ var rollbackCommands = function(transaction) {
         {
             fn: "dropTable",
             params: ["documents", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["experiences", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["interviews", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["photos", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["questions", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["skills", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["CandidateSkill", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["InterviewSkill", {
                 transaction: transaction
             }]
         }

@@ -7,25 +7,51 @@ module.exports = function (sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true,
         },
-        start_date: {
-            type: DataTypes.DATE,
-            allowNull: true,
-        },
-        video: {
+        title: {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        status: {
+        accepted_degree: {
             type: DataTypes.STRING,
             allowNull: true,
+        },
+        experience_years: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        about: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        sector: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        photo: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
+        
+        
         
     });
 
+
     Interviews.associate = (models) => {
-        models.interviews.belongsTo(models.offers);
-        models.interviews.belongsTo(models.candidates);
+        models.interviews.belongsTo(models.companies);    
+        models.interviews.hasMany(models.applications);
+        models.interviews.hasMany(models.questions);
+        models.interviews.belongsToMany(models.skills, {
+            through: 'InterviewSkill'
+
+        });
     }
 
+
+   
     return Interviews;
 };
