@@ -53,7 +53,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        Photo: {
+        photo: {
             type: DataTypes.STRING,
             allowNull: true,
         },
@@ -70,11 +70,6 @@ module.exports = function (sequelize, DataTypes) {
     Candidates.associate = (models)=>{
         models.candidates.hasMany(models.applications);
         models.candidates.hasMany(models.experiences);
-        models.candidates.hasMany(models.skills);
-        models.candidates.belongsToMany(models.skills, {
-            through: 'CandidateSkill'
-
-        });
     }
     
 

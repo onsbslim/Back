@@ -1,5 +1,54 @@
 {
     "tables": {
+        "answers": {
+            "tableName": "answers",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "video": {
+                    "allowNull": true,
+                    "field": "video",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "applicationId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "applications",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "applicationId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "questionId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "questions",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "questionId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
         "applications": {
             "tableName": "applications",
             "schema": {
@@ -8,16 +57,6 @@
                     "autoIncrement": true,
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
-                },
-                "start_date": {
-                    "allowNull": true,
-                    "field": "start_date",
-                    "seqType": "Sequelize.DATE"
-                },
-                "video": {
-                    "allowNull": true,
-                    "field": "video",
-                    "seqType": "Sequelize.STRING"
                 },
                 "status": {
                     "allowNull": true,
@@ -378,6 +417,11 @@
                     "field": "photo",
                     "seqType": "Sequelize.STRING"
                 },
+                "type": {
+                    "allowNull": true,
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -482,121 +526,7 @@
                 }
             },
             "indexes": []
-        },
-        "skills": {
-            "tableName": "skills",
-            "schema": {
-                "id": {
-                    "primaryKey": true,
-                    "autoIncrement": true,
-                    "field": "id",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "skill": {
-                    "allowNull": true,
-                    "field": "skill",
-                    "seqType": "Sequelize.STRING"
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "candidateId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "candidates",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "candidateId",
-                    "seqType": "Sequelize.INTEGER"
-                }
-            },
-            "indexes": []
-        },
-        "CandidateSkill": {
-            "tableName": "CandidateSkill",
-            "schema": {
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "candidateId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "candidates",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "candidateId",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "skillId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "skills",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "skillId",
-                    "seqType": "Sequelize.INTEGER"
-                }
-            },
-            "indexes": []
-        },
-        "InterviewSkill": {
-            "tableName": "InterviewSkill",
-            "schema": {
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "interviewId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "interviews",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "interviewId",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "skillId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "skills",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "skillId",
-                    "seqType": "Sequelize.INTEGER"
-                }
-            },
-            "indexes": []
         }
     },
-    "revision": 2
+    "revision": 6
 }

@@ -63,4 +63,16 @@ questionDAO.prototype.countQuestions = function(interviewId,cb){
     });
 };
 
+questionDAO.prototype.getAll = function(interviewId, cb){
+    this.models.questions.findAndCountAll({
+        where:{
+            interviewId : interviewId
+        }
+    }).then( result =>{
+        return cb(null, result)
+    }).catch(err => {
+        cb(err);
+    });
+};
+
 

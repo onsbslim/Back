@@ -2,14 +2,73 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 var candidateDAO = require('../dao/candidateDAO');
-
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
+const auth = require('../middleware/auth');
+const checkRefresh = require('../middleware/checkRefresh');
+const upload = require('../middleware/upload');
+const uploadCV = require('../middleware/uploadCV');
+
 
 /** Login Candidate */
-router.post('/login', function(req, res, next){
-	//passport.authenticate()
+router.post('/login', function (req, res, next) {
+	var dao = new candidateDAO(models);
+	var propertiesNames = Object.getOwnPropertyNames(req.body);
+	var neededProperties = ["email", "password"];
+
+	propertiesNames.forEach(name => {
+		if (neededProperties.indexOf(name) < 0 || propertiesNames.length > neededProperties.length) {
+			return res.status(400).json({
+				"Error": "Uneeded Input Data"
+			});
+		}
+	});
+	if (propertiesNames.length < neededProperties.length)
+		res.status(400).json({
+			"Error": "Missing Input Data"
+		});
+	var candidateData = {
+		"email": req.body.email,
+		"password": req.body.password,
+	};
+	dao.auth(candidateData, (err, candidate) => {
+		if (err) {
+			res.status(404).json({
+				"Error": err.message,
+			});
+			// console.log(process.env.KEY);
+		}
+		else {
+			jwt.sign({
+				id: candidate.id,
+			}, process.env.SECRET,
+				{ expiresIn: '7d' },
+				(err, refreshToken) => {
+					if (err) throw err;
+					jwt.sign(
+						{
+							id: candidate.id,
+							email: candidate.email,
+						},
+						process.env.KEY,
+						{ expiresIn: 360 },
+						(err, token) => {
+							if (err) throw err;
+
+							process.env.REFRESH = refreshToken;
+							res.status(200).json({
+								refreshToken,
+								token,
+								candidate,
+							});
+
+						}
+					);
+				});
+		}
+	});
 });
+
+
 /** Register Candidate */
 router.post('/register', function (req, res, next) {
 	var dao = new candidateDAO(models);
@@ -29,7 +88,7 @@ router.post('/register', function (req, res, next) {
 		res.status(400).json({
 			"Error": "Missing Input Data"
 		});
-	var newCandidate= {
+	var newCandidate = {
 		"email": req.body.email,
 		"password": req.body.password,
 		"firstname": req.body.firstname,
@@ -42,9 +101,34 @@ router.post('/register', function (req, res, next) {
 			"Error": err.message
 		});
 		else {
-			res.status(200).json(
-				candidate
-			);
+			jwt.sign({
+				id: candidate.id,
+			}, process.env.SECRET,
+				{ expiresIn: '7d' },
+				(err, refreshToken) => {
+					if (err) throw err;
+					jwt.sign(
+						{
+							id: candidate.id,
+							email: candidate.email,
+						},
+						process.env.KEY,
+						{ expiresIn: 360 },
+						(err, token) => {
+							if (err) throw err;
+
+							process.env.REFRESH = refreshToken;
+							res.status(200).json({
+								refreshToken,
+								token,
+								candidate
+							});
+
+						}
+					);
+				});
+
+
 		}
 	});
 
@@ -87,35 +171,60 @@ router.delete('/:id', function (req, res) {
 	})
 });
 
-/** Update candidate */
-router.put('/:id', (req, res) => {
-	var dao = new candidateDAO(models);
-	var id = req.params.id;
+/** Upload Image */
 
+router.post('/upload', auth, upload.single('pic'), function (req, res) {
+	var dao = new candidateDAO(models);
+
+	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decoded.id;
+
+	const file = req.file;
+	var candidateData = {
+		"photo": file.filename,
+	};
+	dao.upload(id, candidateData, (err, candidate) => {
+		if (err) {
+			res.status(404).json({
+				"Error": err.message
+			});
+		}
+		else {
+			res.status(200).json({
+				candidate: candidate
+			});
+		}
+	});
+});
+
+/** Update candidate */
+router.put('/update', auth, (req, res) => {
+	var dao = new candidateDAO(models);
+	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decoded.id;
 	if (!req.body)
 		return res.status(404).json({ 'Error': 'There is no updating data' })
 	var candidateData = {
 		"email": req.body.email,
-		"firstname": req.body.firstName,
+		"firstname": req.body.firstname,
 		"lastname": req.body.lastname,
 		"about": req.body.about,
 		"country": req.body.country,
 		"industry": req.body.industry,
-		"birthday": req.body.birthday,
 		"address": req.body.address,
 		"phone": req.body.phone,
 		"photo": req.body.photo,
 		"cv": req.body.cv,
 		"degree": req.body.degree
-	}
-	dao.update(id, candidateData, (err, candidate) => {
+	};
+	dao.updateCandidate(id, candidateData, (err, candidate) => {
 		try {
 			if (err) return res.status(404).json({
 				"Error": err.message
 			})
-			else return res.status(200).json(
-				candidate
-			);
+			else return res.status(200).json({
+				candidate: candidate
+			})
 		} catch (error) {
 			return res.status(404).json({
 				"Error": err.message
@@ -124,5 +233,72 @@ router.put('/:id', (req, res) => {
 
 	});
 });
+
+/** Upload CV */
+
+router.post('/uploadCV', auth, uploadCV.single('cv'), function(req, res) {
+	var dao = new candidateDAO(models);
+
+	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decoded.id;
+
+	const file = req.file;
+	var candidateData = {
+		"cv": file.filename,
+	};
+	dao.uploadCV(id, candidateData, (err, candidate) => {
+		if (err) {
+			res.status(404).json({
+				"Error": err.message
+			});
+		}
+		else {
+			res.status(200).json({
+				candidate: candidate
+			});
+		}
+	});
+});
+
+// Token
+router.post('/token', checkRefresh, function (req, res) {
+	// refresh the token
+	const decoded = jwt.verify(req.get('x-refresh-token'), process.env.SECRET);
+	var id = decoded.id;
+	var dao = new candidateDAO(models);
+	dao.get(id, (err, candidate) => {
+		if (err) res.status(404).json({
+			"Error": err.message
+		});
+		else {
+			const c = {
+				id: candidate.id,
+				email: candidate.email,
+			}
+			const token = jwt.sign(c, process.env.KEY, { expiresIn: 360 });
+			const response = {
+				"token": token
+			}
+			// update the token in the list
+			res.status(200).json(response);
+		}
+	});
+});
+
+// Check Refresh Token
+router.post('/checkRefresh', checkRefresh, function (req, res) {
+	var response = req.get('x-refresh-token');
+	res.status(200).json({ "refreshToken": response });
+});
+
+
+
+// Check Token
+router.post('/checkToken', auth, function (req, res) {
+	var response = req.get('x-auth-token');
+	res.status(200).json({ "refresh": response });
+});
+
+
 
 module.exports = router;

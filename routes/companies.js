@@ -217,8 +217,9 @@ router.get('/:id', function (req, res) {
 		if (err) res.status(404).json({
 			"Error": err.message
 		});
-		else res.status(200).json(
-			company
+		else res.status(200).json({
+			"company" : company
+		}
 		)
 	})
 });

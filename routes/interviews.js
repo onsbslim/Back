@@ -76,6 +76,17 @@ router.post('/upload/:id', auth, upload.single('pic') ,function (req, res) {
     });
 });
 
+router.get('/all', auth,function(req, res){
+    var dao = new interviewDAO(models);
+    dao.getAll((err, interviews)=>{
+        if (err) res.status(404).json({
+            "Error": err.message
+        });
+        else res.status(200).json({
+            "interviews": interviews
+        });
+    });
+});
 
 router.get('/', auth,function(req, res){
     var dao = new interviewDAO(models);

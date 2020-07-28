@@ -7,14 +7,6 @@ module.exports = function (sequelize, DataTypes) {
             primaryKey: true,
             autoIncrement: true,
         },
-        start_date: {
-            type: DataTypes.DATE,
-            allowNull: true,
-        },
-        video: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
         status: {
             type: DataTypes.STRING,
             allowNull: true,
@@ -25,6 +17,7 @@ module.exports = function (sequelize, DataTypes) {
     Applications.associate = (models) => {
         models.applications.belongsTo(models.interviews);
         models.applications.belongsTo(models.candidates);
+        models.applications.hasMany(models.answers);
     }
 
     return Applications;

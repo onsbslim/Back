@@ -30,7 +30,7 @@ interviewDAO.prototype.create = function (interview, cb) {
 // upload image
 
 interviewDAO.prototype.update = function (id, interviewToUpdate, cb) {
-    console.log('here');
+    
     this.models.interviews.findOne({
         where: {
             id
@@ -61,7 +61,8 @@ interviewDAO.prototype.list = function(idCompany,cb){
     this.models.interviews.findAll({
         where:{
             companyId: idCompany,
-        }
+        }, 
+        order: [ ['updatedAt',  'DESC'] ],
     }).then(interviews => {
 			if (!interviews) cb(Error('There is no interview found'));
 			else cb(null, interviews);
@@ -76,4 +77,15 @@ interviewDAO.prototype.get = function (id, cb) {
 			else cb(null, interview);
 		}).catch(err => cb(err));
 
+}
+
+// GET ALL
+interviewDAO.prototype.getAll = function(cb){
+    this.models.interviews.findAll({
+        order: [ ['updatedAt',  'DESC'] ],
+    })
+    .then(interviews => {
+        if (!interviews) cb(Error('There is no interview found'));
+        else cb(null, interviews);
+    }).catch(err => cb(err));
 }

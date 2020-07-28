@@ -45,10 +45,6 @@ module.exports = function (sequelize, DataTypes) {
         models.interviews.belongsTo(models.companies);    
         models.interviews.hasMany(models.applications);
         models.interviews.hasMany(models.questions);
-        models.interviews.belongsToMany(models.skills, {
-            through: 'InterviewSkill'
-
-        });
     }
 
 

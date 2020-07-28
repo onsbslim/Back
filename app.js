@@ -10,6 +10,8 @@ var candidatesRouter = require('./routes/candidates');
 var companiesRouter = require('./routes/companies');
 var interviewsRouter = require('./routes/interviews');
 var questionsRouter = require('./routes/questions');
+var applicationsRouter = require('./routes/applications');
+var answersRouter = require('./routes/answers');
 var multer  = require('multer');
 
 require("dotenv").config();
@@ -42,6 +44,8 @@ app.use('/candidates', candidatesRouter);
 app.use('/companies', companiesRouter);
 app.use('/interviews', interviewsRouter);
 app.use('/questions', questionsRouter);
+app.use('/applications', applicationsRouter);
+app.use('/answers', answersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
