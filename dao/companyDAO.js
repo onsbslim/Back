@@ -142,3 +142,33 @@ companyDao.prototype.getConnected = function (id, cb) {
 			else cb(null, company);
 		}).catch(err => cb(err));
 }
+
+// upload image
+
+companyDao.prototype.upload = function (id, companyToUpdate, cb) {
+
+	this.models.companies.findOne({
+		where: {
+			id
+		}
+	}).then(company => {
+		if (!company) return cb(Error('company not found'))
+		else company.update({
+			"logo": companyToUpdate.logo,
+			where: {
+				id: company.id
+			}
+		})
+			.then(updatedCompany => {
+				if (!updatedCompany) return cb(Error('company is not updated !'))
+				else return cb(null, updatedCompany);
+
+			})
+			.catch(err => {
+				cb(err)
+			})
+	})
+		.catch(err => {
+			cb(err)
+		});
+};

@@ -7,22 +7,23 @@ var Sequelize = require('sequelize');
  *
  * createTable "candidates", deps: []
  * createTable "companies", deps: []
+ * createTable "skills", deps: []
  * createTable "interviews", deps: [companies]
+ * createTable "questions", deps: [interviews]
  * createTable "documents", deps: [companies]
  * createTable "experiences", deps: [candidates]
  * createTable "applications", deps: [interviews, candidates]
  * createTable "photos", deps: [companies]
- * createTable "questions", deps: [interviews]
- * createTable "skills", deps: [candidates]
- * createTable "CandidateSkill", deps: [candidates, skills]
- * createTable "InterviewSkill", deps: [interviews, skills]
+ * createTable "answers", deps: [applications, questions]
+ * createTable "CandidateSkill", deps: [skills, candidates]
+ * createTable "InterviewSkill", deps: [skills, interviews]
  *
  **/
 
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2020-07-01T08:51:15.734Z",
+    "created": "2020-09-01T16:00:01.996Z",
     "comment": ""
 };
 
@@ -93,9 +94,9 @@ var migrationCommands = function(transaction) {
                         "field": "phone",
                         "allowNull": true
                     },
-                    "Photo": {
+                    "photo": {
                         "type": Sequelize.STRING,
-                        "field": "Photo",
+                        "field": "photo",
                         "allowNull": true
                     },
                     "cv": {
@@ -234,6 +235,38 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
+                "skills",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "skill": {
+                        "type": Sequelize.STRING,
+                        "field": "skill",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
                 "interviews",
                 {
                     "id": {
@@ -267,6 +300,16 @@ var migrationCommands = function(transaction) {
                         "field": "sector",
                         "allowNull": true
                     },
+                    "photo": {
+                        "type": Sequelize.STRING,
+                        "field": "photo",
+                        "allowNull": true
+                    },
+                    "type": {
+                        "type": Sequelize.STRING,
+                        "field": "type",
+                        "allowNull": true
+                    },
                     "createdAt": {
                         "type": Sequelize.DATE,
                         "field": "createdAt",
@@ -284,6 +327,54 @@ var migrationCommands = function(transaction) {
                         "onDelete": "SET NULL",
                         "references": {
                             "model": "companies",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "questions",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "text_question": {
+                        "type": Sequelize.STRING,
+                        "field": "text_question",
+                        "allowNull": true
+                    },
+                    "audio_question": {
+                        "type": Sequelize.STRING,
+                        "field": "audio_question",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "interviewId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "interviewId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "interviews",
                             "key": "id"
                         },
                         "allowNull": true
@@ -358,9 +449,24 @@ var migrationCommands = function(transaction) {
                         "field": "sector",
                         "allowNull": true
                     },
-                    "years": {
-                        "type": Sequelize.INTEGER,
-                        "field": "years",
+                    "company": {
+                        "type": Sequelize.STRING,
+                        "field": "company",
+                        "allowNull": true
+                    },
+                    "startingDate": {
+                        "type": Sequelize.DATE,
+                        "field": "startingDate",
+                        "allowNull": true
+                    },
+                    "endingDate": {
+                        "type": Sequelize.DATE,
+                        "field": "endingDate",
+                        "allowNull": true
+                    },
+                    "description": {
+                        "type": Sequelize.STRING,
+                        "field": "description",
                         "allowNull": true
                     },
                     "createdAt": {
@@ -400,16 +506,6 @@ var migrationCommands = function(transaction) {
                         "field": "id",
                         "autoIncrement": true,
                         "primaryKey": true
-                    },
-                    "start_date": {
-                        "type": Sequelize.DATE,
-                        "field": "start_date",
-                        "allowNull": true
-                    },
-                    "video": {
-                        "type": Sequelize.STRING,
-                        "field": "video",
-                        "allowNull": true
                     },
                     "status": {
                         "type": Sequelize.STRING,
@@ -500,7 +596,7 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
-                "questions",
+                "answers",
                 {
                     "id": {
                         "type": Sequelize.INTEGER,
@@ -508,14 +604,9 @@ var migrationCommands = function(transaction) {
                         "autoIncrement": true,
                         "primaryKey": true
                     },
-                    "text_question": {
+                    "video": {
                         "type": Sequelize.STRING,
-                        "field": "text_question",
-                        "allowNull": true
-                    },
-                    "audio_question": {
-                        "type": Sequelize.STRING,
-                        "field": "audio_question",
+                        "field": "video",
                         "allowNull": true
                     },
                     "createdAt": {
@@ -528,56 +619,24 @@ var migrationCommands = function(transaction) {
                         "field": "updatedAt",
                         "allowNull": false
                     },
-                    "interviewId": {
+                    "applicationId": {
                         "type": Sequelize.INTEGER,
-                        "field": "interviewId",
+                        "field": "applicationId",
                         "onUpdate": "CASCADE",
                         "onDelete": "SET NULL",
                         "references": {
-                            "model": "interviews",
+                            "model": "applications",
                             "key": "id"
                         },
                         "allowNull": true
-                    }
-                },
-                {
-                    "transaction": transaction
-                }
-            ]
-        },
-        {
-            fn: "createTable",
-            params: [
-                "skills",
-                {
-                    "id": {
+                    },
+                    "questionId": {
                         "type": Sequelize.INTEGER,
-                        "field": "id",
-                        "autoIncrement": true,
-                        "primaryKey": true
-                    },
-                    "skill": {
-                        "type": Sequelize.STRING,
-                        "field": "skill",
-                        "allowNull": true
-                    },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
-                    },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
-                    },
-                    "candidateId": {
-                        "type": Sequelize.INTEGER,
-                        "field": "candidateId",
+                        "field": "questionId",
                         "onUpdate": "CASCADE",
                         "onDelete": "SET NULL",
                         "references": {
-                            "model": "candidates",
+                            "model": "questions",
                             "key": "id"
                         },
                         "allowNull": true
@@ -603,17 +662,6 @@ var migrationCommands = function(transaction) {
                         "field": "updatedAt",
                         "allowNull": false
                     },
-                    "candidateId": {
-                        "type": Sequelize.INTEGER,
-                        "field": "candidateId",
-                        "onUpdate": "CASCADE",
-                        "onDelete": "CASCADE",
-                        "references": {
-                            "model": "candidates",
-                            "key": "id"
-                        },
-                        "primaryKey": true
-                    },
                     "skillId": {
                         "type": Sequelize.INTEGER,
                         "field": "skillId",
@@ -621,6 +669,17 @@ var migrationCommands = function(transaction) {
                         "onDelete": "CASCADE",
                         "references": {
                             "model": "skills",
+                            "key": "id"
+                        },
+                        "primaryKey": true
+                    },
+                    "candidateId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "candidateId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "candidates",
                             "key": "id"
                         },
                         "primaryKey": true
@@ -646,17 +705,6 @@ var migrationCommands = function(transaction) {
                         "field": "updatedAt",
                         "allowNull": false
                     },
-                    "interviewId": {
-                        "type": Sequelize.INTEGER,
-                        "field": "interviewId",
-                        "onUpdate": "CASCADE",
-                        "onDelete": "CASCADE",
-                        "references": {
-                            "model": "interviews",
-                            "key": "id"
-                        },
-                        "primaryKey": true
-                    },
                     "skillId": {
                         "type": Sequelize.INTEGER,
                         "field": "skillId",
@@ -664,6 +712,17 @@ var migrationCommands = function(transaction) {
                         "onDelete": "CASCADE",
                         "references": {
                             "model": "skills",
+                            "key": "id"
+                        },
+                        "primaryKey": true
+                    },
+                    "interviewId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "interviewId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "CASCADE",
+                        "references": {
+                            "model": "interviews",
                             "key": "id"
                         },
                         "primaryKey": true
@@ -678,6 +737,12 @@ var migrationCommands = function(transaction) {
 };
 var rollbackCommands = function(transaction) {
     return [{
+            fn: "dropTable",
+            params: ["answers", {
+                transaction: transaction
+            }]
+        },
+        {
             fn: "dropTable",
             params: ["applications", {
                 transaction: transaction

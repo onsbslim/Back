@@ -16,8 +16,7 @@ module.exports = function (sequelize, DataTypes) {
 
     Skills.associate = (models) => {
         models.skills.belongsToMany(models.candidates, {
-            through: 'CandidateSkill'
-
+            through: "CandidateSkill"
         });
         models.skills.belongsToMany(models.interviews, {
             through: 'InterviewSkill'

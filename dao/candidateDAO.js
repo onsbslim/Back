@@ -176,3 +176,16 @@ candidateDao.prototype.uploadCV = function (id, candidateToUpdate, cb) {
 			cb(err)
 		});
 };
+
+candidateDao.prototype.getDetailed = function(id, cb){
+	this.models.candidates.findOne({
+		where:{
+			id: id
+		}, 
+		include: [{model: this.models.experiences, include: [this.models.companies]}, this.models.skills]
+	}).then( result => {
+		 cb(null, result);
+	}).catch (err =>{
+		 cb(err);
+	});
+};

@@ -23,7 +23,8 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         about: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(2000),
+            
             allowNull: true,
         },
         sector: {
@@ -89,6 +90,7 @@ module.exports = function (sequelize, DataTypes) {
         models.companies.hasMany(models.documents);
         models.companies.hasMany(models.interviews);
         models.companies.hasMany(models.photos);
+        models.companies.hasMany(models.experiences,{foreignKey: 'companyId', allowNull: true})
     }
     
     return Companies;

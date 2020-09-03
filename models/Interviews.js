@@ -20,7 +20,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         about: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(2000),
             allowNull: true,
         },
         sector: {

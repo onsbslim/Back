@@ -10,7 +10,7 @@ const uploadCV = require('../middleware/uploadCV');
 
 
 /** Login Candidate */
-router.post('/login', function (req, res, next) {
+router.post('/login',  (req, res, next) => {
 	var dao = new candidateDAO(models);
 	var propertiesNames = Object.getOwnPropertyNames(req.body);
 	var neededProperties = ["email", "password"];
@@ -70,7 +70,7 @@ router.post('/login', function (req, res, next) {
 
 
 /** Register Candidate */
-router.post('/register', function (req, res, next) {
+router.post('/register', (req, res, next) => {
 	var dao = new candidateDAO(models);
 	//check if there is a non needed property
 	var propertiesNames = Object.getOwnPropertyNames(req.body);
@@ -135,7 +135,7 @@ router.post('/register', function (req, res, next) {
 });
 
 /** Get candidate */
-router.get('/:id', function (req, res) {
+router.get('/:id', (req, res) => {
 	var dao = new candidateDAO(models);
 	var id = req.params.id;
 	dao.get(id, (err, candidate) => {
@@ -147,7 +147,7 @@ router.get('/:id', function (req, res) {
 });
 
 /** Get All candidate */
-router.get('/', function (req, res) {
+router.get('/',  (req, res) =>  {
 	var dao = new candidateDAO(models);
 	dao.list((err, candidates) => {
 		if (err) return res.status(404).json({
@@ -158,7 +158,7 @@ router.get('/', function (req, res) {
 });
 
 /** Delete candidate */
-router.delete('/:id', function (req, res) {
+router.delete('/:id',  (req, res) => {
 	var dao = new candidateDAO(models);
 	var id = req.params.id;
 	dao.remove(id, (err, candidate) => {
@@ -173,7 +173,7 @@ router.delete('/:id', function (req, res) {
 
 /** Upload Image */
 
-router.post('/upload', auth, upload.single('pic'), function (req, res) {
+router.post('/upload', auth, upload.single('pic'), (req, res) => {
 	var dao = new candidateDAO(models);
 
 	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
@@ -236,7 +236,7 @@ router.put('/update', auth, (req, res) => {
 
 /** Upload CV */
 
-router.post('/uploadCV', auth, uploadCV.single('cv'), function(req, res) {
+router.post('/uploadCV', auth, uploadCV.single('cv'), (req, res) => {
 	var dao = new candidateDAO(models);
 
 	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
@@ -261,7 +261,7 @@ router.post('/uploadCV', auth, uploadCV.single('cv'), function(req, res) {
 });
 
 // Token
-router.post('/token', checkRefresh, function (req, res) {
+router.post('/token', checkRefresh,  (req, res) => {
 	// refresh the token
 	const decoded = jwt.verify(req.get('x-refresh-token'), process.env.SECRET);
 	var id = decoded.id;
@@ -286,7 +286,7 @@ router.post('/token', checkRefresh, function (req, res) {
 });
 
 // Check Refresh Token
-router.post('/checkRefresh', checkRefresh, function (req, res) {
+router.post('/checkRefresh', checkRefresh,  (req, res) => {
 	var response = req.get('x-refresh-token');
 	res.status(200).json({ "refreshToken": response });
 });
@@ -294,9 +294,30 @@ router.post('/checkRefresh', checkRefresh, function (req, res) {
 
 
 // Check Token
-router.post('/checkToken', auth, function (req, res) {
+router.post('/checkToken', auth,  (req, res) => {
 	var response = req.get('x-auth-token');
 	res.status(200).json({ "refresh": response });
+});
+
+router.post('/me', (req, res) => {
+
+	var dao = new candidateDAO(models);
+
+	// const decode = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	// var id = decode.id;
+
+	dao.getDetailed(1, (err, candidate) => {
+		if (err) 
+			res.status(404).json({
+				"Error" : err.message
+			});
+		else 
+			res.status(200).json({
+				candidate : candidate
+			});
+		
+	});
+
 });
 
 

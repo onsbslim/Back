@@ -10,9 +10,9 @@ var Sequelize = require('sequelize');
  **/
 
 var info = {
-    "revision": 7,
+    "revision": 8,
     "name": "noname",
-    "created": "2020-09-03T07:45:32.212Z",
+    "created": "2020-09-03T07:48:23.379Z",
     "comment": ""
 };
 
@@ -24,14 +24,13 @@ var migrationCommands = function(transaction) {
             "companyId",
             {
                 "type": Sequelize.INTEGER,
+                "field": "companyId",
                 "onUpdate": "CASCADE",
                 "onDelete": "SET NULL",
                 "references": {
                     "model": "companies",
                     "key": "id"
                 },
-                "field": "companyId",
-                "foreignKey": true,
                 "allowNull": true
             },
             {
@@ -48,13 +47,14 @@ var rollbackCommands = function(transaction) {
             "companyId",
             {
                 "type": Sequelize.INTEGER,
-                "field": "companyId",
                 "onUpdate": "CASCADE",
                 "onDelete": "SET NULL",
                 "references": {
                     "model": "companies",
                     "key": "id"
                 },
+                "field": "companyId",
+                "foreignKey": true,
                 "allowNull": true
             },
             {

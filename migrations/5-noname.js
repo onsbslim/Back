@@ -5,15 +5,16 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * removeColumn "skill" from table "skills"
- * addColumn "title" to table "skills"
+ * removeColumn "company" from table "experiences"
+ * addColumn "companyName" to table "experiences"
+ * addColumn "compId" to table "companies"
  *
  **/
 
 var info = {
     "revision": 5,
     "name": "noname",
-    "created": "2020-07-23T14:03:35.426Z",
+    "created": "2020-09-02T14:44:18.748Z",
     "comment": ""
 };
 
@@ -21,8 +22,8 @@ var migrationCommands = function(transaction) {
     return [{
             fn: "removeColumn",
             params: [
-                "skills",
-                "skill",
+                "experiences",
+                "company",
                 {
                     transaction: transaction
                 }
@@ -31,11 +32,32 @@ var migrationCommands = function(transaction) {
         {
             fn: "addColumn",
             params: [
-                "skills",
-                "title",
+                "experiences",
+                "companyName",
                 {
                     "type": Sequelize.STRING,
-                    "field": "title",
+                    "field": "companyName",
+                    "allowNull": true
+                },
+                {
+                    transaction: transaction
+                }
+            ]
+        },
+        {
+            fn: "addColumn",
+            params: [
+                "companies",
+                "compId",
+                {
+                    "type": Sequelize.INTEGER,
+                    "field": "compId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "SET NULL",
+                    "references": {
+                        "model": "experiences",
+                        "key": "id"
+                    },
                     "allowNull": true
                 },
                 {
@@ -49,8 +71,18 @@ var rollbackCommands = function(transaction) {
     return [{
             fn: "removeColumn",
             params: [
-                "skills",
-                "title",
+                "companies",
+                "compId",
+                {
+                    transaction: transaction
+                }
+            ]
+        },
+        {
+            fn: "removeColumn",
+            params: [
+                "experiences",
+                "companyName",
                 {
                     transaction: transaction
                 }
@@ -59,11 +91,11 @@ var rollbackCommands = function(transaction) {
         {
             fn: "addColumn",
             params: [
-                "skills",
-                "skill",
+                "experiences",
+                "company",
                 {
                     "type": Sequelize.STRING,
-                    "field": "skill",
+                    "field": "company",
                     "allowNull": true
                 },
                 {

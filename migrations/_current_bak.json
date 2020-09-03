@@ -98,6 +98,48 @@
             },
             "indexes": []
         },
+        "CandidateSkills": {
+            "tableName": "CandidateSkills",
+            "schema": {
+                "skillId": {
+                    "foreignKey": true,
+                    "references": {
+                        "model": "skills",
+                        "key": "id"
+                    },
+                    "field": "skillId",
+                    "primaryKey": true,
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "unique": "CandidateSkills_skillId_candidateId_unique",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "candidateId": {
+                    "foreignKey": true,
+                    "references": {
+                        "model": "candidates",
+                        "key": "id"
+                    },
+                    "field": "candidateId",
+                    "primaryKey": true,
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "unique": "CandidateSkills_skillId_candidateId_unique",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "candidates": {
             "tableName": "candidates",
             "schema": {
@@ -130,7 +172,7 @@
                 "about": {
                     "allowNull": true,
                     "field": "about",
-                    "seqType": "Sequelize.STRING"
+                    "seqType": "Sequelize.STRING(2000)"
                 },
                 "country": {
                     "allowNull": true,
@@ -162,9 +204,9 @@
                     "field": "phone",
                     "seqType": "Sequelize.STRING"
                 },
-                "Photo": {
+                "photo": {
                     "allowNull": true,
-                    "field": "Photo",
+                    "field": "photo",
                     "seqType": "Sequelize.STRING"
                 },
                 "cv": {
@@ -212,7 +254,7 @@
                 "about": {
                     "allowNull": true,
                     "field": "about",
-                    "seqType": "Sequelize.STRING"
+                    "seqType": "Sequelize.STRING(2000)"
                 },
                 "sector": {
                     "allowNull": true,
@@ -349,9 +391,36 @@
                     "field": "sector",
                     "seqType": "Sequelize.STRING"
                 },
-                "years": {
+                "companyName": {
                     "allowNull": true,
-                    "field": "years",
+                    "field": "companyName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "startingDate": {
+                    "allowNull": true,
+                    "field": "startingDate",
+                    "seqType": "Sequelize.DATE"
+                },
+                "endingDate": {
+                    "allowNull": true,
+                    "field": "endingDate",
+                    "seqType": "Sequelize.DATE"
+                },
+                "description": {
+                    "allowNull": true,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "companyId": {
+                    "allowNull": true,
+                    "foreignKey": true,
+                    "field": "companyId",
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "createdAt": {
@@ -405,7 +474,7 @@
                 "about": {
                     "allowNull": true,
                     "field": "about",
-                    "seqType": "Sequelize.STRING"
+                    "seqType": "Sequelize.STRING(2000)"
                 },
                 "sector": {
                     "allowNull": true,
@@ -526,7 +595,72 @@
                 }
             },
             "indexes": []
+        },
+        "skills": {
+            "tableName": "skills",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "skill": {
+                    "allowNull": true,
+                    "field": "skill",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
+        "InterviewSkill": {
+            "tableName": "InterviewSkill",
+            "schema": {
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "skillId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "skills",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "skillId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "interviewId": {
+                    "primaryKey": true,
+                    "references": {
+                        "model": "interviews",
+                        "key": "id"
+                    },
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "field": "interviewId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
         }
     },
-    "revision": 6
+    "revision": 7
 }

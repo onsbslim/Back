@@ -11,17 +11,28 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        years: {
-            type: DataTypes.INTEGER,
-            allowNull: true,
-        },
-       
+       companyName: {
+           type : DataTypes.STRING,
+           allowNull: true
+       },
+       startingDate: {
+           type: DataTypes.DATE,
+           allowNull: true
+       },
+       endingDate: {
+           type: DataTypes.DATE,
+           allowNull: true
+       },
+       description: {
+           type: DataTypes.STRING,
+           allowNull: true
+       }
         
     });
 
     Experiences.associate = (models) => {
         models.experiences.belongsTo(models.candidates);
-    
+        models.experiences.belongsTo(models.companies);
     }
 
    

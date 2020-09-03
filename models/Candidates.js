@@ -26,7 +26,7 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         about: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(2000),
             allowNull: true,
         },
         country: {
@@ -70,8 +70,10 @@ module.exports = function (sequelize, DataTypes) {
     Candidates.associate = (models)=>{
         models.candidates.hasMany(models.applications);
         models.candidates.hasMany(models.experiences);
-    }
-    
+        models.candidates.belongsToMany(models.skills, {
+            through: "CandidateSkill"
+        });
+    };
 
     return Candidates;
 };

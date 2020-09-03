@@ -5,111 +5,28 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * removeColumn "start_date" from table "applications"
- * removeColumn "video" from table "applications"
- * createTable "answers", deps: [applications, questions]
+ * changeColumn "about" on table "candidates"
+ * changeColumn "about" on table "companies"
+ * changeColumn "about" on table "interviews"
  *
  **/
 
 var info = {
     "revision": 4,
     "name": "noname",
-    "created": "2020-07-20T09:07:55.433Z",
+    "created": "2020-09-02T07:24:45.979Z",
     "comment": ""
 };
 
 var migrationCommands = function(transaction) {
     return [{
-            fn: "removeColumn",
+            fn: "changeColumn",
             params: [
-                "applications",
-                "start_date",
+                "candidates",
+                "about",
                 {
-                    transaction: transaction
-                }
-            ]
-        },
-        {
-            fn: "removeColumn",
-            params: [
-                "applications",
-                "video",
-                {
-                    transaction: transaction
-                }
-            ]
-        },
-        {
-            fn: "createTable",
-            params: [
-                "answers",
-                {
-                    "id": {
-                        "type": Sequelize.INTEGER,
-                        "field": "id",
-                        "autoIncrement": true,
-                        "primaryKey": true
-                    },
-                    "video": {
-                        "type": Sequelize.STRING,
-                        "field": "video",
-                        "allowNull": true
-                    },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
-                    },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
-                    },
-                    "applicationId": {
-                        "type": Sequelize.INTEGER,
-                        "field": "applicationId",
-                        "onUpdate": "CASCADE",
-                        "onDelete": "SET NULL",
-                        "references": {
-                            "model": "applications",
-                            "key": "id"
-                        },
-                        "allowNull": true
-                    },
-                    "questionId": {
-                        "type": Sequelize.INTEGER,
-                        "field": "questionId",
-                        "onUpdate": "CASCADE",
-                        "onDelete": "SET NULL",
-                        "references": {
-                            "model": "questions",
-                            "key": "id"
-                        },
-                        "allowNull": true
-                    }
-                },
-                {
-                    "transaction": transaction
-                }
-            ]
-        }
-    ];
-};
-var rollbackCommands = function(transaction) {
-    return [{
-            fn: "dropTable",
-            params: ["answers", {
-                transaction: transaction
-            }]
-        },
-        {
-            fn: "addColumn",
-            params: [
-                "applications",
-                "start_date",
-                {
-                    "type": Sequelize.DATE,
-                    "field": "start_date",
+                    "type": Sequelize.STRING(2000),
+                    "field": "about",
                     "allowNull": true
                 },
                 {
@@ -118,13 +35,76 @@ var rollbackCommands = function(transaction) {
             ]
         },
         {
-            fn: "addColumn",
+            fn: "changeColumn",
             params: [
-                "applications",
-                "video",
+                "companies",
+                "about",
+                {
+                    "type": Sequelize.STRING(2000),
+                    "field": "about",
+                    "allowNull": true
+                },
+                {
+                    transaction: transaction
+                }
+            ]
+        },
+        {
+            fn: "changeColumn",
+            params: [
+                "interviews",
+                "about",
+                {
+                    "type": Sequelize.STRING(2000),
+                    "field": "about",
+                    "allowNull": true
+                },
+                {
+                    transaction: transaction
+                }
+            ]
+        }
+    ];
+};
+var rollbackCommands = function(transaction) {
+    return [{
+            fn: "changeColumn",
+            params: [
+                "candidates",
+                "about",
                 {
                     "type": Sequelize.STRING,
-                    "field": "video",
+                    "field": "about",
+                    "allowNull": true
+                },
+                {
+                    transaction: transaction
+                }
+            ]
+        },
+        {
+            fn: "changeColumn",
+            params: [
+                "companies",
+                "about",
+                {
+                    "type": Sequelize.STRING,
+                    "field": "about",
+                    "allowNull": true
+                },
+                {
+                    transaction: transaction
+                }
+            ]
+        },
+        {
+            fn: "changeColumn",
+            params: [
+                "interviews",
+                "about",
+                {
+                    "type": Sequelize.STRING,
+                    "field": "about",
                     "allowNull": true
                 },
                 {

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const checkRefresh = require('../middleware/checkRefresh');
 
-
+const upload = require('../middleware/upload');
 
 /** Login Company */
 router.post('/login', function (req, res, next) {
@@ -243,8 +243,6 @@ router.post('/me', auth, function (req, res) {
 	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
 	var id = decoded.id;
 	var dao = new companyDAO(models);
-	if (!req.body)
-		return res.status(404).json({ 'Error': 'There is no data' });
 	
 	dao.getConnected(id, (err, company) => {
 		if (err) res.status(404).json({
@@ -300,6 +298,27 @@ router.post('/checkToken', auth ,function(req, res){
 });
 
 
+// Upload photo
+router.post('/uploadLogo', auth, upload.single('pic'),(req, res) => {
+	var dao = new companyDAO(models);
+	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decoded.id;
+	const file = req.file;
+	var companydata = {
+		"logo": file.filename,
+	};
+	dao.upload(id, companydata, (err,company)=>{
+		if (err) {
+			return res.status(404).json({
+				"Error" : err.message
+			});
+		}else {
+			return res.status(200).json({
+				company: company
+			});
+		}
+	});
 
+});
 
 module.exports = router;
