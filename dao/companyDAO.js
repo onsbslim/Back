@@ -172,3 +172,15 @@ companyDao.prototype.upload = function (id, companyToUpdate, cb) {
 			cb(err)
 		});
 };
+companyDao.prototype.getDetailedCompany = function(id, cb) {
+	this.models.companies.findOne({
+		where:{
+			id: id
+		},
+		include: [this.models.interviews]
+	}).then(company => {
+		cb(null, company);
+	}).catch(err => {
+		cb(err);
+	});
+};

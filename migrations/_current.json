@@ -409,7 +409,7 @@
                 "description": {
                     "allowNull": true,
                     "field": "description",
-                    "seqType": "Sequelize.STRING"
+                    "seqType": "Sequelize.STRING(1000)"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -661,5 +661,5 @@
             "indexes": []
         }
     },
-    "revision": 8
+    "revision": 9
 }

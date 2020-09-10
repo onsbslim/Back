@@ -411,18 +411,6 @@
                     "field": "description",
                     "seqType": "Sequelize.STRING"
                 },
-                "companyId": {
-                    "allowNull": true,
-                    "foreignKey": true,
-                    "field": "companyId",
-                    "references": {
-                        "model": "companies",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -442,6 +430,17 @@
                     "onDelete": "SET NULL",
                     "onUpdate": "CASCADE",
                     "field": "candidateId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "companyId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "companyId",
                     "seqType": "Sequelize.INTEGER"
                 }
             },
@@ -662,5 +661,5 @@
             "indexes": []
         }
     },
-    "revision": 7
+    "revision": 8
 }

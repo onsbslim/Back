@@ -38,6 +38,34 @@ candidateDao.prototype.create = function (candidate, cb) {
 
 };
 
+// Create new Candidate via Google
+candidateDao.prototype.createViaGoogle = function(candidate, cb){
+	var newCandidate = {
+		"email": candidate.email,
+		"firstname": candidate.firstname,
+		"lastname": candidate.lastname
+	};
+
+	this.models.candidates.findOne({
+		where: {
+			email: candidate.email
+		}
+	}).then(candidate => {
+		if (candidate) cb(Error("Candidate already exists"));
+		else {
+			this.models.candidates.create(newCandidate)
+				.then(createCandidate => {
+					if (!createCandidate)
+						return cb(Error("Candidate not created !"));
+					else
+						return cb(null, createCandidate)
+				})
+				.catch(err => cb(err))
+		}
+	})
+		.catch(err => cb(err));
+};
+
 // Get candidate
 candidateDao.prototype.get = function (id, cb) {
 	this.models.candidates.findByPk(id)

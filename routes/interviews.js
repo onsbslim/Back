@@ -116,5 +116,19 @@ router.get('/:id', auth , function(req, res){
 	});
 });
 
+router.get('/getByCompany/:id', auth,  (req, res) => {
+    var dao = new interviewDAO(models);
+    var id = req.params.id;
+    dao.list(id,(err, interviews) => {
+       
+		if (err) res.status(404).json({
+			"Error": err.message
+		});
+		else res.status(200).json({
+            "interviews": interviews
+        });
+	});
+});
+
 
 module.exports = router;

@@ -63,6 +63,7 @@ interviewDAO.prototype.list = function(idCompany,cb){
             companyId: idCompany,
         }, 
         order: [ ['updatedAt',  'DESC'] ],
+        include: [this.models.companies]
     }).then(interviews => {
 			if (!interviews) cb(Error('There is no interview found'));
 			else cb(null, interviews);

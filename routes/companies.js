@@ -321,4 +321,19 @@ router.post('/uploadLogo', auth, upload.single('pic'),(req, res) => {
 
 });
 
+router.get('/getDetailed/:id', auth, (req, res)=> {
+	var dao = new companyDAO(models);
+	var id = req.params.id;
+	dao.getDetailedCompany(id, (err, company) => {
+		if (err) {
+			return res.status(404).json({
+				"Error" : err.message
+			});
+		}else {
+			return res.status(200).json({
+				company: company
+			});
+		}
+	});
+});
 module.exports = router;
