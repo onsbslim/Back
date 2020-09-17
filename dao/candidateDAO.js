@@ -145,6 +145,18 @@ candidateDao.prototype.auth = function (candidateData, cb) {
 		}).catch(err => cb(err));
 };
 
+//Candidate Login Google
+candidateDao.prototype.auth = function(candidateData, cb) {
+	this.models.candidates.findOne({
+		where: {
+			email: candidateData.email,
+		}
+	}) .then(candidate => {
+		if (!candidate) cb(Error('No candidate found'));
+		else cb(null, candidate);
+	}).catch(err => cb(err));
+}
+
 // upload image
 
 candidateDao.prototype.upload = function (id, candidateToUpdate, cb) {
@@ -215,5 +227,18 @@ candidateDao.prototype.getDetailed = function(id, cb){
 		 cb(null, result);
 	}).catch (err =>{
 		 cb(err);
+	});
+};
+
+candidateDao.prototype.checkImage = function(id, cb){
+	this.models.candidates.findOne({
+		where:{
+			id: id
+		},
+		attributes: ['photo']
+	}).then(result => {
+		cb(null, result);
+	}).catch(err => {
+		cb(err);
 	});
 };

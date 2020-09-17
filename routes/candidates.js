@@ -8,9 +8,66 @@ const checkRefresh = require('../middleware/checkRefresh');
 const upload = require('../middleware/upload');
 const uploadCV = require('../middleware/uploadCV');
 
+/** Login Google Candidate */
+router.post('/loginGoogle', (req, res ) => {
+	var dao = new candidateDAO(models);
+	var propertiesNames = Object.getOwnPropertyNames(req.body);
+	var neededProperties = ["email"];
+
+	propertiesNames.forEach(name => {
+		if (neededProperties.indexOf(name) < 0 || propertiesNames.length > neededProperties.length) {
+			return res.status(400).json({
+				"Error": "Uneeded Input Data"
+			});
+		}
+	});
+	if (propertiesNames.length < neededProperties.length)
+		res.status(400).json({
+			"Error": "Missing Input Data"
+		});
+	var candidateData = {
+		"email": req.body.email
+	};
+	dao.auth(candidateData, (err, candidate) => {
+		if (err) {
+			res.status(404).json({
+				"Error": err.message,
+			});
+			// console.log(process.env.KEY);
+		}
+		else {
+			jwt.sign({
+				id: candidate.id,
+			}, process.env.SECRET,
+				{ expiresIn: '7d' },
+				(err, refreshToken) => {
+					if (err) throw err;
+					jwt.sign(
+						{
+							id: candidate.id,
+							email: candidate.email,
+						},
+						process.env.KEY,
+						{ expiresIn: 360 },
+						(err, token) => {
+							if (err) throw err;
+
+							process.env.REFRESH = refreshToken;
+							res.status(200).json({
+								refreshToken,
+								token,
+								candidate,
+							});
+
+						}
+					);
+				});
+		}
+	});
+});
 
 /** Login Candidate */
-router.post('/login',  (req, res, next) => {
+router.post('/login', (req, res, next) => {
 	var dao = new candidateDAO(models);
 	var propertiesNames = Object.getOwnPropertyNames(req.body);
 	var neededProperties = ["email", "password"];
@@ -70,7 +127,7 @@ router.post('/login',  (req, res, next) => {
 
 // Register Candidate via Google
 
-router.post('/registerGoogle', (req, res ) => {
+router.post('/registerGoogle', (req, res) => {
 	dao = new candidateDAO(models);
 
 	var propertiesNames = Object.getOwnPropertyNames(req.body);
@@ -93,7 +150,7 @@ router.post('/registerGoogle', (req, res ) => {
 		"lastname": req.body.lastname
 	};
 
-	dao.createViaGoogle(candidateData, (err,candidate) => {
+	dao.createViaGoogle(candidateData, (err, candidate) => {
 		if (err) res.status(404).json({
 			"Error": err.message
 		});
@@ -124,8 +181,8 @@ router.post('/registerGoogle', (req, res ) => {
 						}
 					);
 				});
-			}
-		});
+		}
+	});
 });
 
 /** Register Candidate */
@@ -206,7 +263,7 @@ router.get('/:id', (req, res) => {
 });
 
 /** Get All candidate */
-router.get('/',  (req, res) =>  {
+router.get('/', (req, res) => {
 	var dao = new candidateDAO(models);
 	dao.list((err, candidates) => {
 		if (err) return res.status(404).json({
@@ -217,7 +274,7 @@ router.get('/',  (req, res) =>  {
 });
 
 /** Delete candidate */
-router.delete('/:id',  (req, res) => {
+router.delete('/:id', (req, res) => {
 	var dao = new candidateDAO(models);
 	var id = req.params.id;
 	dao.remove(id, (err, candidate) => {
@@ -320,7 +377,7 @@ router.post('/uploadCV', auth, uploadCV.single('cv'), (req, res) => {
 });
 
 // Token
-router.post('/token', checkRefresh,  (req, res) => {
+router.post('/token', checkRefresh, (req, res) => {
 	// refresh the token
 	const decoded = jwt.verify(req.get('x-refresh-token'), process.env.SECRET);
 	var id = decoded.id;
@@ -345,7 +402,7 @@ router.post('/token', checkRefresh,  (req, res) => {
 });
 
 // Check Refresh Token
-router.post('/checkRefresh', checkRefresh,  (req, res) => {
+router.post('/checkRefresh', checkRefresh, (req, res) => {
 	var response = req.get('x-refresh-token');
 	res.status(200).json({ "refreshToken": response });
 });
@@ -353,12 +410,12 @@ router.post('/checkRefresh', checkRefresh,  (req, res) => {
 
 
 // Check Token
-router.post('/checkToken', auth,  (req, res) => {
+router.post('/checkToken', auth, (req, res) => {
 	var response = req.get('x-auth-token');
 	res.status(200).json({ "refresh": response });
 });
 
-router.post('/me', auth , (req, res) => {
+router.post('/me', auth, (req, res) => {
 
 	var dao = new candidateDAO(models);
 
@@ -366,36 +423,55 @@ router.post('/me', auth , (req, res) => {
 	var id = decode.id;
 
 	dao.getDetailed(id, (err, candidate) => {
-		if (err) 
+		if (err)
 			res.status(404).json({
-				"Error" : err.message
+				"Error": err.message
 			});
-		else 
+		else
 			res.status(200).json({
-				candidate : candidate
+				candidate: candidate
 			});
-		
+
 	});
 
 });
+
+// Get Detailed Candidate
 
 router.get('/detailedCandidate/:id', auth, (req, res) => {
 	var dao = new candidateDAO(models);
 	var id = req.params.id;
 
 	dao.getDetailed(id, (err, candidate) => {
-		if (err) 
+		if (err)
 			res.status(404).json({
-				"Error" : err.message
+				"Error": err.message
 			});
-		else 
+		else
 			res.status(200).json({
-				candidate : candidate
+				candidate: candidate
 			});
-		
+
 	});
 
 });
 
+// check photo
+
+router.post('/checkPhoto', auth, (req, res) => {
+	var dao = new candidateDAO(models);
+	const decode = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decode.id;
+	dao.checkImage(id, (err, photo) => {
+		if (err)
+			res.status(404).json({
+				"Error": err.message
+			});
+		else
+			res.status(200).json({
+				candidate: photo
+			});
+	})
+});
 
 module.exports = router;

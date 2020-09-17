@@ -5,6 +5,8 @@ var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 
+var socket_io    = require( "socket.io" );
+
 var indexRouter = require('./routes/index');
 var candidatesRouter = require('./routes/candidates');
 var companiesRouter = require('./routes/companies');
@@ -12,16 +14,24 @@ var interviewsRouter = require('./routes/interviews');
 var questionsRouter = require('./routes/questions');
 var applicationsRouter = require('./routes/applications');
 var answersRouter = require('./routes/answers');
-var multer  = require('multer');
+
 
 require("dotenv").config();
 
 var app = express();
 
-//var jwt = require('jsonwebtoken');  
-
-
 var passport = require('passport');
+
+// Socket.io
+var io           = socket_io();
+app.io           = io;
+
+// socket.io events
+io.on( "connection", socket =>
+{
+  console.log('A new user has joined the chat');
+  socket.emit('message', 'You have successfully joined the chat'); 
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
