@@ -5,123 +5,45 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * dropTable "CandidateSkill"
- * createTable "CandidateSkills", deps: [skills, candidates]
+ * addColumn "sender" to table "messages"
  *
  **/
 
 var info = {
     "revision": 2,
     "name": "noname",
-    "created": "2020-09-01T16:01:06.673Z",
+    "created": "2020-09-22T08:17:41.480Z",
     "comment": ""
 };
 
 var migrationCommands = function(transaction) {
     return [{
-            fn: "dropTable",
-            params: ["CandidateSkill", {
+        fn: "addColumn",
+        params: [
+            "messages",
+            "sender",
+            {
+                "type": Sequelize.STRING(100),
+                "field": "sender",
+                "allowNull": true
+            },
+            {
                 transaction: transaction
-            }]
-        },
-        {
-            fn: "createTable",
-            params: [
-                "CandidateSkills",
-                {
-                    "skillId": {
-                        "type": Sequelize.INTEGER,
-                        "onUpdate": "CASCADE",
-                        "onDelete": "CASCADE",
-                        "primaryKey": true,
-                        "field": "skillId",
-                        "references": {
-                            "model": "skills",
-                            "key": "id"
-                        },
-                        "foreignKey": true
-                    },
-                    "candidateId": {
-                        "type": Sequelize.INTEGER,
-                        "onUpdate": "CASCADE",
-                        "onDelete": "CASCADE",
-                        "primaryKey": true,
-                        "field": "candidateId",
-                        "references": {
-                            "model": "candidates",
-                            "key": "id"
-                        },
-                        "foreignKey": true
-                    },
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
-                    },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
-                    }
-                },
-                {
-                    "transaction": transaction
-                }
-            ]
-        }
-    ];
+            }
+        ]
+    }];
 };
 var rollbackCommands = function(transaction) {
     return [{
-            fn: "dropTable",
-            params: ["CandidateSkills", {
+        fn: "removeColumn",
+        params: [
+            "messages",
+            "sender",
+            {
                 transaction: transaction
-            }]
-        },
-        {
-            fn: "createTable",
-            params: [
-                "CandidateSkill",
-                {
-                    "createdAt": {
-                        "type": Sequelize.DATE,
-                        "field": "createdAt",
-                        "allowNull": false
-                    },
-                    "updatedAt": {
-                        "type": Sequelize.DATE,
-                        "field": "updatedAt",
-                        "allowNull": false
-                    },
-                    "skillId": {
-                        "type": Sequelize.INTEGER,
-                        "field": "skillId",
-                        "onUpdate": "CASCADE",
-                        "onDelete": "CASCADE",
-                        "references": {
-                            "model": "skills",
-                            "key": "id"
-                        },
-                        "primaryKey": true
-                    },
-                    "candidateId": {
-                        "type": Sequelize.INTEGER,
-                        "field": "candidateId",
-                        "onUpdate": "CASCADE",
-                        "onDelete": "CASCADE",
-                        "references": {
-                            "model": "candidates",
-                            "key": "id"
-                        },
-                        "primaryKey": true
-                    }
-                },
-                {
-                    "transaction": transaction
-                }
-            ]
-        }
-    ];
+            }
+        ]
+    }];
 };
 
 module.exports = {

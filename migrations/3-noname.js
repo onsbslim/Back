@@ -5,113 +5,45 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * changeColumn "candidateId" on table "CandidateSkills"
- * changeColumn "skillId" on table "CandidateSkills"
+ * addColumn "new" to table "messages"
  *
  **/
 
 var info = {
     "revision": 3,
     "name": "noname",
-    "created": "2020-09-02T07:16:08.104Z",
+    "created": "2020-09-24T07:20:14.476Z",
     "comment": ""
 };
 
 var migrationCommands = function(transaction) {
     return [{
-            fn: "changeColumn",
-            params: [
-                "CandidateSkills",
-                "candidateId",
-                {
-                    "type": Sequelize.INTEGER,
-                    "unique": "CandidateSkills_skillId_candidateId_unique",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "primaryKey": true,
-                    "field": "candidateId",
-                    "references": {
-                        "model": "candidates",
-                        "key": "id"
-                    },
-                    "foreignKey": true
-                },
-                {
-                    transaction: transaction
-                }
-            ]
-        },
-        {
-            fn: "changeColumn",
-            params: [
-                "CandidateSkills",
-                "skillId",
-                {
-                    "type": Sequelize.INTEGER,
-                    "unique": "CandidateSkills_skillId_candidateId_unique",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "primaryKey": true,
-                    "field": "skillId",
-                    "references": {
-                        "model": "skills",
-                        "key": "id"
-                    },
-                    "foreignKey": true
-                },
-                {
-                    transaction: transaction
-                }
-            ]
-        }
-    ];
+        fn: "addColumn",
+        params: [
+            "messages",
+            "new",
+            {
+                "type": Sequelize.BOOLEAN,
+                "field": "new",
+                "allowNull": true
+            },
+            {
+                transaction: transaction
+            }
+        ]
+    }];
 };
 var rollbackCommands = function(transaction) {
     return [{
-            fn: "changeColumn",
-            params: [
-                "CandidateSkills",
-                "candidateId",
-                {
-                    "type": Sequelize.INTEGER,
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "primaryKey": true,
-                    "field": "candidateId",
-                    "references": {
-                        "model": "candidates",
-                        "key": "id"
-                    },
-                    "foreignKey": true
-                },
-                {
-                    transaction: transaction
-                }
-            ]
-        },
-        {
-            fn: "changeColumn",
-            params: [
-                "CandidateSkills",
-                "skillId",
-                {
-                    "type": Sequelize.INTEGER,
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "primaryKey": true,
-                    "field": "skillId",
-                    "references": {
-                        "model": "skills",
-                        "key": "id"
-                    },
-                    "foreignKey": true
-                },
-                {
-                    transaction: transaction
-                }
-            ]
-        }
-    ];
+        fn: "removeColumn",
+        params: [
+            "messages",
+            "new",
+            {
+                transaction: transaction
+            }
+        ]
+    }];
 };
 
 module.exports = {

@@ -10,6 +10,14 @@ module.exports = function (sequelize, DataTypes) {
         message: {
             type: DataTypes.STRING(950),
             allowNull: true,
+        },
+        sender: {
+            type: DataTypes.STRING(100),
+            allowNull: true,
+        },
+        new: {
+            type: DataTypes.BOOLEAN,
+            allowNull: true,
         }
         
     });

@@ -528,6 +528,16 @@
                     "field": "message",
                     "seqType": "Sequelize.STRING(950)"
                 },
+                "sender": {
+                    "allowNull": true,
+                    "field": "sender",
+                    "seqType": "Sequelize.STRING(100)"
+                },
+                "new": {
+                    "allowNull": true,
+                    "field": "new",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -710,5 +720,5 @@
             "indexes": []
         }
     },
-    "revision": 10
+    "revision": 3
 }

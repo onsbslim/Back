@@ -514,6 +514,60 @@
             },
             "indexes": []
         },
+        "messages": {
+            "tableName": "messages",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "message": {
+                    "allowNull": true,
+                    "field": "message",
+                    "seqType": "Sequelize.STRING(950)"
+                },
+                "sender": {
+                    "allowNull": true,
+                    "field": "sender",
+                    "seqType": "Sequelize.STRING(100)"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "candidateId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "candidates",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "candidateId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "companyId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "companyId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
         "photos": {
             "tableName": "photos",
             "schema": {
@@ -661,5 +715,5 @@
             "indexes": []
         }
     },
-    "revision": 9
+    "revision": 2
 }
