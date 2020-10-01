@@ -68,9 +68,36 @@ interviewDAO.prototype.list = function(idCompany,cb){
 			if (!interviews) cb(Error('There is no interview found'));
 			else cb(null, interviews);
 		}).catch(err => cb(err));
+};
+
+interviewDAO.prototype.countInterviews = function (idCompany, cb){
+    this.models.interviews.findAndCountAll({
+        where:{
+            "companyId": idCompany
+        }
+    }).then(result => {
+        if (!result) return cb(Error("Count not found"));
+        else cb(null, result.count);
+    }).catch(err => cb(err));
+};
+
+interviewDAO.prototype.paginationList = function(idCompany, limit, page, cb){
+    var offset = (page - 1) * limit;
+    this.models.interviews.findAll({
+        where:{
+            companyId: idCompany,
+        },
+        order: [['updatedAt', 'DESC']],
+        include: [this.models.companies], 
+        limit: limit,
+        offset: offset
+    }).then(interviews => {
+        if  (!interviews) cb(Error('No result'));
+        else cb(null, interviews);
+    }).catch(err => cb(err));
 }
 
-// Get Company
+// Get Company's
 interviewDAO.prototype.get = function (id, cb) {
 	this.models.interviews.findByPk(id)
 		.then(interview => {

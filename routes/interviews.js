@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 
 
 
-router.post('/addInterview', auth, function (req, res) {
+router.post('/addInterview', auth,  (req, res) => {
 
     var dao = new interviewDAO(models);
     const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
@@ -53,7 +53,7 @@ router.post('/addInterview', auth, function (req, res) {
     });
 });
 
-router.post('/upload/:id', auth, upload.single('pic') ,function (req, res) {
+router.post('/upload/:id', auth, upload.single('pic') , (req, res) => {
     var dao = new interviewDAO(models);
     var id = req.params.id;
 
@@ -76,7 +76,7 @@ router.post('/upload/:id', auth, upload.single('pic') ,function (req, res) {
     });
 });
 
-router.get('/all', auth,function(req, res){
+router.get('/all', auth, (req, res) => {
     var dao = new interviewDAO(models);
     dao.getAll((err, interviews)=>{
         if (err) res.status(404).json({
@@ -88,8 +88,8 @@ router.get('/all', auth,function(req, res){
     });
 });
 
-router.get('/', auth,function(req, res){
-    var dao = new interviewDAO(models);
+router.get('/', auth, (req, res) => {
+     var dao = new interviewDAO(models);
     const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
 	var id = decoded.id;
     dao.list(id,(err, interviews) => {
@@ -101,6 +101,32 @@ router.get('/', auth,function(req, res){
             "interviews": interviews
         })
 	});
+});
+router.get('/listPage=:page', auth, (req, res)=> {
+    var dao = new interviewDAO(models);
+   const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+   var idCompany = decoded.id;
+ 
+    var limit = 3;
+    var pageCount;
+   
+    var page = req.params.page;
+    dao.countInterviews(idCompany, (err, count) => {
+        pageCount = Math.ceil(count/3);
+        dao.paginationList(idCompany, limit, page, (err, interviews) => {
+       
+            if (err) res.status(404).json({
+                "Error" : err.message
+            });
+            else res.status(200).json({
+               "page_count": pageCount,
+               "page":Number(page),
+                "interviews": interviews
+            });
+        });
+    });
+   
+
 });
 
 router.get('/:id', auth , function(req, res){

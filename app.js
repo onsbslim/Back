@@ -36,7 +36,7 @@ app.io = io;
 
 io.on("connection", socket => {
 
-  console.log("socket id: " + socket.id);
+  //console.log("socket id: " + socket.id);
   console.log('A new user has joined');
 
 
@@ -53,14 +53,14 @@ io.on("connection", socket => {
     console.log('user disconnected');
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
-    const url = "http://192.168.0.100:3000/messages/addMessage";
+    const url = "http://192.168.0.106:3000/messages/addMessage";
     const token = socket.handshake.query['Authorization'];
     const headers = {
       "Accept": "*/*",
       "x-auth-token": token,
       "Content-Type": "application/json"
     };
-    socket.emit('reload');
+    io.emit('reload');
     const data = {
       "idCandidate": idCandidate,
       "message": msg,
@@ -68,14 +68,36 @@ io.on("connection", socket => {
     };
 
     axios.post(url, data, { headers: headers }).then(res => {
-      socket.emit('reload');
+      io.emit('reload');
     }).catch(err => console.log(err));
 
   });
 
+  socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
+    const url = "http://192.168.0.106:3000/messages/candidateAddMessage";
+    const token = socket.handshake.query['Authorization'];
+    const headers = {
+      "Accept": "*/*",
+      "x-auth-token": token,
+      "Content-Type": "application/json"
+    };
+    io.emit('reload');
+    const data = {
+      "idCompany": idCompany,
+      "message": msg,
+      "sender": sender
+    };
+
+    axios.post(url, data, { headers: headers }).then(res => {
+      io.emit('reload');
+    }).catch(err => console.log(err));
+
+  });
+  
+
   socket.on('candidateDiscussions', (st) => {
     console.log("hne");
-    const url = "http://192.168.0.100:3000/messages/candidateDiscussions";
+    const url = "http://192.168.0.106:3000/messages/candidateDiscussions";
 
     const headers = {
       "Accept": "*/*",
