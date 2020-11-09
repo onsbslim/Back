@@ -10,6 +10,10 @@ module.exports = function (sequelize, DataTypes) {
         status: {
             type: DataTypes.STRING,
             allowNull: true,
+        },
+        explanation: {
+            type: DataTypes.STRING,
+            allowNull: true, 
         }
         
     });

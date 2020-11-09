@@ -73,6 +73,7 @@ module.exports = function (sequelize, DataTypes) {
         models.candidates.belongsToMany(models.skills, {
             through: "CandidateSkill"
         });
+        
     };
 
     return Candidates;

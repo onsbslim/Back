@@ -88,6 +88,34 @@ router.get('/all', auth, (req, res) => {
     });
 });
 
+router.get('/getAllInPage=:page', auth, (req, res) => {
+    var dao = new interviewDAO(models);
+    
+    var page = req.params.page;
+    var pageCount ;
+    var countInterviews;
+
+    var limit = 5;
+
+    dao.countAll((err, count) => {
+        pageCount = Math.ceil(count/limit);;
+        countInterviews = count;
+        dao.paginationGetAll(limit, page, (err, interviews) => {
+            if (err) res.status(404).json({
+                "Error" : err.message
+            });
+            else res.status(200).json({
+                "interviews" : interviews,
+                "page_count": pageCount,
+                "page": Number(page),
+                "count": countInterviews
+            });
+        });
+    });
+
+   
+});
+
 router.get('/', auth, (req, res) => {
      var dao = new interviewDAO(models);
     const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
@@ -107,12 +135,14 @@ router.get('/listPage=:page', auth, (req, res)=> {
    const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
    var idCompany = decoded.id;
  
-    var limit = 3;
+    var limit = 5;
     var pageCount;
    
     var page = req.params.page;
+    var countInterviews;
     dao.countInterviews(idCompany, (err, count) => {
-        pageCount = Math.ceil(count/3);
+        pageCount = Math.ceil(count/5);
+        countInterviews = count;
         dao.paginationList(idCompany, limit, page, (err, interviews) => {
        
             if (err) res.status(404).json({
@@ -121,7 +151,8 @@ router.get('/listPage=:page', auth, (req, res)=> {
             else res.status(200).json({
                "page_count": pageCount,
                "page":Number(page),
-                "interviews": interviews
+                "interviews": interviews,
+                "count": countInterviews
             });
         });
     });

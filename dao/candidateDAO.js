@@ -68,7 +68,9 @@ candidateDao.prototype.createViaGoogle = function(candidate, cb){
 
 // Get candidate
 candidateDao.prototype.get = function (id, cb) {
-	this.models.candidates.findByPk(id)
+	this.models.candidates.findByPk(id,{
+		include:[this.models.skills]
+	})
 		.then(candidate => {
 			if (!candidate) cb(Error("candidate not found"));
 			else cb(null, candidate);

@@ -81,6 +81,14 @@ interviewDAO.prototype.countInterviews = function (idCompany, cb){
     }).catch(err => cb(err));
 };
 
+interviewDAO.prototype.countAll = function(cb){
+    this.models.interviews.findAndCountAll()
+        .then(result => {
+            if (!result) return cb(Error("Null"));
+            else cb(null, result.count);
+        }).catch(err => cb(err));
+};
+
 interviewDAO.prototype.paginationList = function(idCompany, limit, page, cb){
     var offset = (page - 1) * limit;
     this.models.interviews.findAll({
@@ -93,6 +101,21 @@ interviewDAO.prototype.paginationList = function(idCompany, limit, page, cb){
         offset: offset
     }).then(interviews => {
         if  (!interviews) cb(Error('No result'));
+        else cb(null, interviews);
+    }).catch(err => cb(err));
+}
+
+interviewDAO.prototype.paginationGetAll = function(limit, page, cb)
+{
+    var offset = (page - 1) * limit;
+    
+    this.models.interviews.findAll({
+        order: [['updatedAt', 'DESC']],
+        include: [this.models.companies],
+        limit: limit,
+        offset: offset
+    }).then(interviews =>{
+        if (!interviews) cb(Error('No result'));
         else cb(null, interviews);
     }).catch(err => cb(err));
 }
@@ -116,4 +139,4 @@ interviewDAO.prototype.getAll = function(cb){
         if (!interviews) cb(Error('There is no interview found'));
         else cb(null, interviews);
     }).catch(err => cb(err));
-}
+};

@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var axios = require('axios');
-
+var ip = require('./middleware/IP');
 var socket_io = require("socket.io");
 
 var indexRouter = require('./routes/index');
@@ -16,6 +16,9 @@ var questionsRouter = require('./routes/questions');
 var applicationsRouter = require('./routes/applications');
 var answersRouter = require('./routes/answers');
 var messagesRouter = require('./routes/messages');
+var skillsRouter = require('./routes/skills');
+var candidateSkillRouter = require('./routes/candidateSkill');
+var interviewSkillRouter = require('./routes/InterviewSkill');
 
 const jwt = require('jsonwebtoken');
 const auth = require('./middleware/auth');
@@ -32,7 +35,6 @@ var io = socket_io();
 app.io = io;
 
 // socket.io events
-
 
 io.on("connection", socket => {
 
@@ -53,7 +55,7 @@ io.on("connection", socket => {
     console.log('user disconnected');
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
-    const url = "http://192.168.0.106:3000/messages/addMessage";
+    const url = "http://"+ip+":3000/messages/addMessage";
     const token = socket.handshake.query['Authorization'];
     const headers = {
       "Accept": "*/*",
@@ -74,7 +76,7 @@ io.on("connection", socket => {
   });
 
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
-    const url = "http://192.168.0.106:3000/messages/candidateAddMessage";
+    const url = "http://"+ip+":3000/messages/candidateAddMessage";
     const token = socket.handshake.query['Authorization'];
     const headers = {
       "Accept": "*/*",
@@ -96,8 +98,8 @@ io.on("connection", socket => {
   
 
   socket.on('candidateDiscussions', (st) => {
-    console.log("hne");
-    const url = "http://192.168.0.106:3000/messages/candidateDiscussions";
+    //console.log("hne");
+    const url = "http://"+ip+":3000/messages/candidateDiscussions";
 
     const headers = {
       "Accept": "*/*",
@@ -136,8 +138,10 @@ app.use('/interviews', interviewsRouter);
 app.use('/questions', questionsRouter);
 app.use('/applications', applicationsRouter);
 app.use('/answers', answersRouter);
-app.use('/messages', messagesRouter)
-
+app.use('/messages', messagesRouter);
+app.use('/skills', skillsRouter);
+app.use('/candidatesSkills', candidateSkillRouter);
+app.use('/interviewsSkills', interviewSkillRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

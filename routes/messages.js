@@ -3,7 +3,6 @@ var models = require('../models');
 var messageDao = require('../dao/messageDAO');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
-const messageDAO = require('../dao/messageDAO');
 var router = express.Router();
 
 router.post('/candidateAddMessage', auth, (req, res) => {
@@ -125,7 +124,8 @@ router.post('/getMessagesCandidate', auth, (req, res) => {
     });
 });
 router.post('/getMessagesCompany', auth, (req, res) => {
-    var dao = new messageDAO(models);
+    var dao = new messageDao(models);
+    
     const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
     var id = decoded.id;
 
@@ -162,7 +162,7 @@ router.post('/getMessagesCompany', auth, (req, res) => {
 });
 
 router.post('/candidateDiscussions', auth,(req, res) => {
-    var dao = new messageDAO(models);
+    var dao = new messageDao(models);
     const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
     var id = decoded.id;
 

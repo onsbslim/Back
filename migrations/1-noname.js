@@ -24,7 +24,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2020-09-21T15:56:34.860Z",
+    "created": "2020-10-02T10:44:00.951Z",
     "comment": ""
 };
 
@@ -623,6 +623,16 @@ var migrationCommands = function(transaction) {
                     "message": {
                         "type": Sequelize.STRING(950),
                         "field": "message",
+                        "allowNull": true
+                    },
+                    "sender": {
+                        "type": Sequelize.STRING(100),
+                        "field": "sender",
+                        "allowNull": true
+                    },
+                    "new": {
+                        "type": Sequelize.BOOLEAN,
+                        "field": "new",
                         "allowNull": true
                     },
                     "createdAt": {

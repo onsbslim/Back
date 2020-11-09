@@ -63,6 +63,11 @@
                     "field": "status",
                     "seqType": "Sequelize.STRING"
                 },
+                "explanation": {
+                    "allowNull": true,
+                    "field": "explanation",
+                    "seqType": "Sequelize.STRING"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -446,6 +451,48 @@
             },
             "indexes": []
         },
+        "InterviewSkills": {
+            "tableName": "InterviewSkills",
+            "schema": {
+                "skillId": {
+                    "foreignKey": true,
+                    "references": {
+                        "model": "skills",
+                        "key": "id"
+                    },
+                    "field": "skillId",
+                    "primaryKey": true,
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "unique": "InterviewSkills_skillId_interviewId_unique",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "interviewId": {
+                    "foreignKey": true,
+                    "references": {
+                        "model": "interviews",
+                        "key": "id"
+                    },
+                    "field": "interviewId",
+                    "primaryKey": true,
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "unique": "InterviewSkills_skillId_interviewId_unique",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "interviews": {
             "tableName": "interviews",
             "schema": {
@@ -680,45 +727,7 @@
                 }
             },
             "indexes": []
-        },
-        "InterviewSkill": {
-            "tableName": "InterviewSkill",
-            "schema": {
-                "createdAt": {
-                    "allowNull": false,
-                    "field": "createdAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "field": "updatedAt",
-                    "seqType": "Sequelize.DATE"
-                },
-                "skillId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "skills",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "skillId",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "interviewId": {
-                    "primaryKey": true,
-                    "references": {
-                        "model": "interviews",
-                        "key": "id"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "field": "interviewId",
-                    "seqType": "Sequelize.INTEGER"
-                }
-            },
-            "indexes": []
         }
     },
-    "revision": 3
+    "revision": 4
 }
