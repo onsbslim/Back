@@ -61,6 +61,11 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
+        role: {
+            type: DataTypes.STRING,
+            enum: ['admin', 'member'],
+            required: true
+        }
         
     });
 

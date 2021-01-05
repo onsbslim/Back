@@ -6,11 +6,11 @@ const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
 
 
-router.post('/add', auth,  (req, res) => {
+router.post('/add', auth, (req, res) => {
     var dao = new applicationDAO(models);
 
     const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
-	var candidateId = decoded.id;
+    var candidateId = decoded.id;
 
     var propertiesNames = Object.getOwnPropertyNames(req.body);
     var neededProperties = ["interviewId", "status"];
@@ -27,13 +27,13 @@ router.post('/add', auth,  (req, res) => {
             "Error": "Missing Input Data"
         });
     var newApplication = {
-        "candidateId" : candidateId,
-        "interviewId" : req.body.interviewId,
-        "status" : req.body.status,
+        "candidateId": candidateId,
+        "interviewId": req.body.interviewId,
+        "status": req.body.status,
     };
 
 
-    dao.create(newApplication, (err, application)=>{
+    dao.create(newApplication, (err, application) => {
         if (err) {
             res.status(404).json({
                 "Error": err.message
@@ -41,7 +41,7 @@ router.post('/add', auth,  (req, res) => {
         }
         else {
             res.status(200).json(
-                {"application": application}
+                { "application": application }
             );
         }
     });
@@ -68,16 +68,16 @@ router.post('/count', auth, (req, res) => {
         });
     var interviewId = req.body.interviewId;
 
-    dao.countApplications(interviewId, (err, result)=>{
-        if(err){
+    dao.countApplications(interviewId, (err, result) => {
+        if (err) {
             res.status(404).json({
                 "Error": err.message
             });
         }
-        else{
+        else {
             res.status(200).json({
-                "count" : result
-             });
+                "count": result
+            });
         }
     });
 
@@ -88,7 +88,7 @@ router.post('/verify', auth, (req, res) => {
     var dao = new applicationDAO(models);
 
     const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
-	var candidateId = decoded.id;
+    var candidateId = decoded.id;
 
     var propertiesNames = Object.getOwnPropertyNames(req.body);
     var neededProperties = ["interviewId"];
@@ -106,16 +106,16 @@ router.post('/verify', auth, (req, res) => {
         });
     var interviewId = req.body.interviewId;
 
-    dao.verifyApplication(interviewId, candidateId, (err, result)=>{
-        if(err){
+    dao.verifyApplication(interviewId, candidateId, (err, result) => {
+        if (err) {
             res.status(404).json({
                 "Error": err.message
             });
         }
-        else{
+        else {
             res.status(200).json({
-                "count" : result
-             });
+                "count": result
+            });
         }
     });
 });
@@ -125,12 +125,12 @@ router.get('/:id', auth, (req, res) => {
     var dao = new applicationDAO(models);
     var interviewId = req.params.id;
 
-    dao.getApplications(interviewId, (err, result) =>{
-        if(err){
+    dao.getApplications(interviewId, (err, result) => {
+        if (err) {
             res.status(404).json({
-                "Error" : err.message
+                "Error": err.message
             });
-        } else{
+        } else {
             res.status(200).json(result);
         }
     });
@@ -140,12 +140,12 @@ router.get('/:id', auth, (req, res) => {
 router.get('/getDetailedApplication/:id', auth, (req, res) => {
     var dao = new applicationDAO(models);
     var applicationId = req.params.id;
-    dao.getApplication(applicationId, (err, result) =>{
-        if(err){
+    dao.getApplication(applicationId, (err, result) => {
+        if (err) {
             res.status(404).json({
-                "Error" : err.message
+                "Error": err.message
             });
-        } else{
+        } else {
             res.status(200).json({
                 "application": result
             });
@@ -159,11 +159,11 @@ router.post('/getCandidateApps', auth, (req, res) => {
     const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
     var candidateId = decoded.id;
     dao.getCandidateApplications(candidateId, (err, result) => {
-        if (err){
+        if (err) {
             res.status(404).json({
-                "Error" : err.message
+                "Error": err.message
             });
-        }else {
+        } else {
             res.status(200).json({
                 "applications": result
             })
@@ -174,22 +174,47 @@ router.post('/getCandidateApps', auth, (req, res) => {
 
 router.put('/updateStatus', auth, (req, res) => {
     var dao = new applicationDAO(models);
+
+    if (!req.body)
+    return res.status(404).json({ 'Error': 'There is no updating data' });
+
     var status = req.body.status;
+    var explanation = req.body.explanation;
     var id = req.body.id;
-    dao.updateApplication(id, status, (err, application) => {
-        try {
-			if (err) return res.status(404).json({
-				"Error": err.message
-			})
-			else return res.status(200).json({
-				application: application
-			})
-		} catch (error) {
-			return res.status(404).json({
-				"Error": err.message
-			})
-		}
-    });
+
+    if(status == "Pending"){
+        dao.updateApplication(id, status, null, (err, application) => {
+            try {
+                if (err) return res.status(404).json({
+                    "Error": err.message
+                })
+                else return res.status(200).json({
+                    application: application
+                })
+            } catch (error) {
+                return res.status(404).json({
+                    "Error": err.message
+                })
+            }
+        });
+    }else{
+        dao.updateApplication(id, status, explanation, (err, application) => {
+            try {
+                if (err) return res.status(404).json({
+                    "Error": err.message
+                })
+                else return res.status(200).json({
+                    application: application
+                })
+            } catch (error) {
+                return res.status(404).json({
+                    "Error": err.message
+                })
+            }
+        });
+    }
+
+    
 });
 
 module.exports = router;

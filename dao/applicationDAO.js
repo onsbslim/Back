@@ -90,11 +90,12 @@ applicationDAO.prototype.getCandidateApplications = function(candidateId, cb){
     });
 }
 
-applicationDAO.prototype.updateApplication = function(id, status, cb){
+applicationDAO.prototype.updateApplication = function(id, status, explanation, cb){
     this.models.applications.findByPk(id).then(application =>{
         if (!application) return cb(Error('Application not found'));
         else application.update({
             "status" : status,
+            "explanation": explanation,
             where:{
                 id: id,
             }

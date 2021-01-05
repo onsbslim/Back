@@ -3,10 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
-var bodyParser = require('body-parser');
 var axios = require('axios');
 var ip = require('./middleware/IP');
 var socket_io = require("socket.io");
+
+var AdminBro = require('admin-bro');
+var AdminBroExpressjs = require('admin-bro-expressjs');
+var AdminBroSequelize = require('@admin-bro/sequelize');
+
+var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var candidatesRouter = require('./routes/candidates');
@@ -20,7 +25,8 @@ var skillsRouter = require('./routes/skills');
 var candidateSkillRouter = require('./routes/candidateSkill');
 var interviewSkillRouter = require('./routes/InterviewSkill');
 
-const jwt = require('jsonwebtoken');
+const db = require('./models');
+
 const auth = require('./middleware/auth');
 
 
@@ -98,7 +104,7 @@ io.on("connection", socket => {
   
 
   socket.on('candidateDiscussions', (st) => {
-    //console.log("hne");
+    
     const url = "http://"+ip+":3000/messages/candidateDiscussions";
 
     const headers = {
@@ -115,21 +121,69 @@ io.on("connection", socket => {
 
 });
 
+
+//Admin Panel
+AdminBro.registerAdapter(AdminBroSequelize);
+
+const adminBro = new AdminBro({
+  databases: [db],
+  rootPath: '/admin',
+  branding: {
+    logo: 'http://'+ip+':3000/images/icon.png',
+    companyName: 'Linkup',
+    softwareBrothers: false   // if Software Brothers logos should be shown in the sidebar footer
+  },
+  dashboard: {
+    handler: async () => {
+      return { some: 'output' }
+    },
+    component: AdminBro.bundle('./admin/my-dashboard-component')
+  },
+});
+
+
+const router = AdminBroExpressjs.buildAuthenticatedRouter(adminBro,{
+  authenticate: async (email, password) => {
+    try{
+    const user = await db.candidates.findOne({ where: {
+			email: email
+		} });
+    console.log("user: "+ user);
+
+      if (user) {
+        if (user.validPassword(password) && user.role == "admin") {
+          return user;
+        }
+      }
+    }catch(err){
+      console.log(err);
+    }
+    return false;
+  },
+  cookiePassword: 'session Key',
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(adminBro.options.rootPath, router);
+
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/', indexRouter);
 app.use('/candidates', candidatesRouter);
@@ -147,7 +201,6 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -158,5 +211,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 module.exports = app;

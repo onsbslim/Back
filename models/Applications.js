@@ -9,6 +9,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         status: {
             type: DataTypes.STRING,
+            enum: ['Pending', 'Accepted', 'Rejected'],
             allowNull: true,
         },
         explanation: {

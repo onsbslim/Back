@@ -76,7 +76,7 @@ router.post('/upload/:id', auth, upload.single('pic') , (req, res) => {
     });
 });
 
-router.get('/all', auth, (req, res) => {
+router.get('/all', (req, res) => {
     var dao = new interviewDAO(models);
     dao.getAll((err, interviews)=>{
         if (err) res.status(404).json({

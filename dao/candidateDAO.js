@@ -15,7 +15,8 @@ candidateDao.prototype.create = function (candidate, cb) {
 		"email": candidate.email,
 		"password": hashPassword(candidate.password),
 		"firstname": candidate.firstname,
-		"lastname": candidate.lastname
+		"lastname": candidate.lastname,
+		"role": "member",
 	}
 	this.models.candidates.findOne({
 		where: {

@@ -59,6 +59,11 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "status": {
+                    "enum": [
+                        "Pending",
+                        "Accepted",
+                        "Rejected"
+                    ],
                     "allowNull": true,
                     "field": "status",
                     "seqType": "Sequelize.STRING"
@@ -219,6 +224,15 @@
                     "field": "cv",
                     "seqType": "Sequelize.STRING"
                 },
+                "role": {
+                    "enum": [
+                        "admin",
+                        "member"
+                    ],
+                    "required": true,
+                    "field": "role",
+                    "seqType": "Sequelize.STRING"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -311,20 +325,15 @@
                     "field": "postal_code",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "longitude": {
-                    "allowNull": true,
-                    "field": "longitude",
-                    "seqType": "Sequelize.DOUBLE PRECISION"
-                },
-                "latitude": {
-                    "allowNull": true,
-                    "field": "latitude",
-                    "seqType": "Sequelize.DOUBLE PRECISION"
-                },
                 "verified": {
                     "allowNull": true,
                     "field": "verified",
                     "seqType": "Sequelize.BOOLEAN"
+                },
+                "document": {
+                    "allowNull": true,
+                    "field": "document",
+                    "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -729,5 +738,5 @@
             "indexes": []
         }
     },
-    "revision": 4
+    "revision": 8
 }
