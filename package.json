@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
     "staart": "node ./middleware/SendPushNotification.js",
-    "startNod": "nodemon ./bin/www",
+    "start": "nodemon ./bin/www",
     "db:makemigrations": "./node_modules/sequelize-auto-migrations/bin/makemigration.js"
   },
   "dependencies": {
