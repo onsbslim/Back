@@ -61,7 +61,7 @@ io.on("connection", socket => {
     console.log('user disconnected');
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
-    const url = "http://"+ip+":3000/messages/addMessage";
+    const url = ip+"/messages/addMessage";
     const token = socket.handshake.query['Authorization'];
     const headers = {
       "Accept": "*/*",
@@ -82,7 +82,7 @@ io.on("connection", socket => {
   });
 
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
-    const url = "http://"+ip+":3000/messages/candidateAddMessage";
+    const url = ip+"/messages/candidateAddMessage";
     const token = socket.handshake.query['Authorization'];
     const headers = {
       "Accept": "*/*",
@@ -105,7 +105,7 @@ io.on("connection", socket => {
 
   socket.on('candidateDiscussions', (st) => {
     
-    const url = "http://"+ip+":3000/messages/candidateDiscussions";
+    const url = ip+"/messages/candidateDiscussions";
 
     const headers = {
       "Accept": "*/*",
@@ -129,7 +129,7 @@ const adminBro = new AdminBro({
   databases: [db],
   rootPath: '/admin',
   branding: {
-    logo: 'http://'+ip+':3000/images/icon.png',
+    logo: ip+'/images/icon.png',
     companyName: 'Linkup',
     softwareBrothers: false   // if Software Brothers logos should be shown in the sidebar footer
   },
