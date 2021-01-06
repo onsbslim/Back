@@ -6,7 +6,7 @@
 
 var app = require('./app');
 var debug = require('debug')('linkup:server');
-var http = require('http');
+var http = require('https');
 var sendPushNotification = require('./middleware/SendPushNotification');
 
 /**
