@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('linkup:server');
 var http = require('http');
-var sendPushNotification = require('../middleware/SendPushNotification');
+//var sendPushNotification = require('../middleware/SendPushNotification');
 
 /**
  * Get port from environment and store in Express.
