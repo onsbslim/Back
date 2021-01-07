@@ -2,7 +2,7 @@
   "development": {
     "username": "ogu0dvyy5o64a93c",
     "password": "h9usjk0enbdchge6",
-    "database": "linkup",
+    "database": "yzdco2zbeulv6jtx",
     "host": "pfw0ltdr46khxib3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "dialect": "mysql",
     "port":"3306",
@@ -12,7 +12,7 @@
   "test": {
     "username": "ogu0dvyy5o64a93c",
     "password": "h9usjk0enbdchge6",
-    "database": "linkup",
+    "database": "yzdco2zbeulv6jtx",
     "host": "pfw0ltdr46khxib3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     "port":"3306",
     "dialect": "mysql",
