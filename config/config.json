@@ -1,20 +1,21 @@
+
 {
   "development": {
-    "username": "cj3yhpu9gzxc03y6",
-    "password": "twjx3w8mw6x6ihd9",
-    "database": "rbbni7zt1p8953x1",
-    "host": "pfw0ltdr46khxib3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    "username": "root",
+    "password": "root",
+    "database": "linkup",
+    "host": "localhost",
     "dialect": "mysql",
-    "port":"3306",
+    "port":"8889",
     "operatorsAliases": false
 
   },
   "test": {
-    "username": "cj3yhpu9gzxc03y6",
-    "password": "twjx3w8mw6x6ihd9",
-    "database": "rbbni7zt1p8953x1",
-    "host": "pfw0ltdr46khxib3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    "port":"3306",
+    "username": "root",
+    "password": "root",
+    "database": "linkup",
+    "host": "localhost",
+    "port":"8889",
     "dialect": "mysql",
     "operatorsAliases": false
   },
