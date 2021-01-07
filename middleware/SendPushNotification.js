@@ -15,8 +15,8 @@ Replace/rename as you please
 */
 
 const client = http2.connect(host, {
-  key: fs.readFileSync('/Users/onsbenslimen/Desktop/certifDev.key.pem'),
-  cert: fs.readFileSync('/Users/onsbenslimen/Desktop/certifDev.crt.pem')
+  key: fs.readFileSync('./certifs/certifDev.key.pem'),
+  cert: fs.readFileSync('/certifs/certifDev.crt.pem')
 });
 
 client.on('error', (err) => console.error(err));
