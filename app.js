@@ -30,7 +30,7 @@ const db = require('./models');
 const auth = require('./middleware/auth');
 
 
-require("dotenv").config();
+require("dotenv").config({ silent: process.env.NODE_ENV === 'production' });
 
 var app = express();
 
