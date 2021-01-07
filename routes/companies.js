@@ -226,7 +226,7 @@ router.get('/:id', function (req, res) {
 
 /** Get All Companies */
 
-router.get('/', auth, function (req, res) {
+router.get('/', function (req, res) {
 	var dao = new companyDAO(models);
 	dao.list((err, companies) => {
 		if (err) res.status(404).json({
