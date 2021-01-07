@@ -161,6 +161,8 @@ const router = AdminBroExpressjs.buildAuthenticatedRouter(adminBro,{
     return false;
   },
   cookiePassword: 'session Key',
+  resave: true,
+  saveUninitialized: true
 });
 
 
