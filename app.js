@@ -31,6 +31,7 @@ const auth = require('./middleware/auth');
 
 
 //require("dotenv").config({ silent: process.env.NODE_ENV === 'production' });
+require("dotenv").config();
 
 var app = express();
 

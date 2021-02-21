@@ -63,7 +63,7 @@ interviewDAO.prototype.list = function(idCompany,cb){
             companyId: idCompany,
         }, 
         order: [ ['updatedAt',  'DESC'] ],
-        include: [this.models.companies]
+        include: [this.models.companies, this.models.questions, this.models.applications]
     }).then(interviews => {
 			if (!interviews) cb(Error('There is no interview found'));
 			else cb(null, interviews);
@@ -111,7 +111,7 @@ interviewDAO.prototype.paginationGetAll = function(limit, page, cb)
     
     this.models.interviews.findAll({
         order: [['updatedAt', 'DESC']],
-        include: [this.models.companies],
+        include: [this.models.companies, this.models.applications, this.models.questions],
         limit: limit,
         offset: offset
     }).then(interviews =>{
@@ -134,6 +134,7 @@ interviewDAO.prototype.get = function (id, cb) {
 interviewDAO.prototype.getAll = function(cb){
     this.models.interviews.findAll({
         order: [ ['updatedAt',  'DESC'] ],
+        include: [this.models.questions, this.models.applications]
     })
     .then(interviews => {
         if (!interviews) cb(Error('There is no interview found'));
