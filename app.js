@@ -7,10 +7,6 @@ var axios = require('axios');
 var ip = require('./middleware/IP');
 var socket_io = require("socket.io");
 
-var AdminBro = require('admin-bro');
-var AdminBroExpressjs = require('admin-bro-expressjs');
-var AdminBroSequelize = require('@admin-bro/sequelize');
-
 var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
@@ -120,50 +116,6 @@ io.on("connection", socket => {
     }).catch(err => console.log(err));
   });
 
-});
-
-
-//Admin Panel
-AdminBro.registerAdapter(AdminBroSequelize);
-
-const adminBro = new AdminBro({
-  databases: [db],
-  rootPath: '/admin',
-  branding: {
-    logo: ip+'/images/icon.png',
-    companyName: 'Linkup',
-    softwareBrothers: false   // if Software Brothers logos should be shown in the sidebar footer
-  },
-  dashboard: {
-    handler: async () => {
-      return { some: 'output' }
-    },
-    component: AdminBro.bundle('./admin/my-dashboard-component')
-  },
-});
-
-
-const router = AdminBroExpressjs.buildAuthenticatedRouter(adminBro,{
-  authenticate: async (email, password) => {
-    try{
-    const user = await db.candidates.findOne({ where: {
-			email: email
-		} });
-    console.log("user: "+ user);
-
-      if (user) {
-        if (user.validPassword(password) && user.role == "admin") {
-          return user;
-        }
-      }
-    }catch(err){
-      console.log(err);
-    }
-    return false;
-  },
-  cookiePassword: 'session Key',
-  resave: true,
-  saveUninitialized: true
 });
 
 
