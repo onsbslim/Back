@@ -30,9 +30,9 @@ const db = require('./models');
 const auth = require('./middleware/auth');
 
 
-require("dotenv").config({ silent: process.env.NODE_ENV === 'production' });
+//require("dotenv").config({ silent: process.env.NODE_ENV === 'production' });
 //require("dotenv").config();
-
+if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 var app = express();
 
 var passport = require('passport');
