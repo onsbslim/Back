@@ -1,6 +1,2 @@
 .env
 node_modules
-public/upload
-public/questions
-public/videos
-public/CVs
