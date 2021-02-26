@@ -59,6 +59,11 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "status": {
+                    "enum": [
+                        "Pending",
+                        "Accepted",
+                        "Rejected"
+                    ],
                     "allowNull": true,
                     "field": "status",
                     "seqType": "Sequelize.STRING"
@@ -733,5 +738,5 @@
             "indexes": []
         }
     },
-    "revision": 7
+    "revision": 8
 }
