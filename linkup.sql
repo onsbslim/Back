@@ -1,1 +1,1 @@
-select * from `candidates`;
+select * from `interviews`;
