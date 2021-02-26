@@ -30,8 +30,8 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     Notifications.associate = (models) => {
-        models.Notifications.belongsTo(models.candidates);
-        models.Notifications.belongsTo(models.companies);
+        models.notifications.belongsTo(models.candidates);
+        models.notifications.belongsTo(models.companies);
     }
 
     return Notifications;
