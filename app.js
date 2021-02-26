@@ -133,7 +133,7 @@ app.use(passport.session({
   saveUninitialized: true
 }));
 
-app.use(adminBro.options.rootPath, router);
+//app.use(adminBro.options.rootPath, router);
 
 
 app.use(express.json());
