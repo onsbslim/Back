@@ -34,5 +34,5 @@ module.exports = function (sequelize, DataTypes) {
         models.Notifications.belongsTo(models.companies);
     }
 
-    return Messages;
+    return Notifications;
 };
