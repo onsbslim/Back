@@ -20,7 +20,7 @@
     "operatorsAliases": false
   },
   "production": {
-    "use_env_variable": "mysql://cj3yhpu9gzxc03y6:twjx3w8mw6x6ihd9@pfw0ltdr46khxib3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/rbbni7zt1p8953x1",
+    "use_env_variable": "JAWSDB_URL",
     "dialect": "mysql"
   }
 }
