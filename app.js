@@ -20,6 +20,7 @@ var messagesRouter = require('./routes/messages');
 var skillsRouter = require('./routes/skills');
 var candidateSkillRouter = require('./routes/candidateSkill');
 var interviewSkillRouter = require('./routes/InterviewSkill');
+var notificationsRouter = require('./routes/notifications');
 
 const db = require('./models');
 
@@ -154,6 +155,8 @@ app.use('/messages', messagesRouter);
 app.use('/skills', skillsRouter);
 app.use('/candidatesSkills', candidateSkillRouter);
 app.use('/interviewsSkills', interviewSkillRouter);
+app.use('/notifications', notificationsRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
