@@ -18,3 +18,4 @@ router.get('/getAll', (req, res)=>{
         }
     });
 });
+module.exports = router;
