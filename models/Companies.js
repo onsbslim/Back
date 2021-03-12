@@ -75,7 +75,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true,
         },
-
+        playerId: {
+            type: DataTypes.STRING,
+            allowNull: true
+        }
     });
 
     Companies.prototype.validPassword = function (password) {

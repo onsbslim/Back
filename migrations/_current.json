@@ -233,6 +233,11 @@
                     "field": "role",
                     "seqType": "Sequelize.STRING"
                 },
+                "playerId": {
+                    "allowNull": true,
+                    "field": "playerId",
+                    "seqType": "Sequelize.STRING"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -333,6 +338,11 @@
                 "document": {
                     "allowNull": true,
                     "field": "document",
+                    "seqType": "Sequelize.STRING"
+                },
+                "playerId": {
+                    "allowNull": true,
+                    "field": "playerId",
                     "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
@@ -806,5 +816,5 @@
             "indexes": []
         }
     },
-    "revision": 9
+    "revision": 10
 }
