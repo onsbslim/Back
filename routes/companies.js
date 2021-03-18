@@ -5,7 +5,7 @@ var companyDAO = require('../dao/companyDAO');
 const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const checkRefresh = require('../middleware/checkRefresh');
-
+var axios = require('axios');
 const upload = require('../middleware/upload');
 
 /** Login Company */
@@ -177,6 +177,7 @@ router.put('/update', auth, (req, res) => {
 		"longitude": req.body.longitude,
 		"latitude": req.body.latitude,
 		"verified": req.body.verified,
+		"playerId": req.body.playerId
 	}
 	dao.update(id, companyData, (err, company) => {
 		try {
@@ -336,4 +337,75 @@ router.get('/getDetailed/:id', auth, (req, res)=> {
 		}
 	});
 });
+
+// Add player id and update company
+router.post('/addPlayerId', auth, (req,res)=> {
+	var dao = new companyDAO(models);
+	const decode = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decode.id;
+
+	var propertiesNames = Object.getOwnPropertyNames(req.body);
+	var neededProperties = ["device_os", "device_model", "ad_id"];
+
+	propertiesNames.forEach(name => {
+		if (neededProperties.indexOf(name) < 0 || propertiesNames.length > neededProperties.length) {
+			return res.status(400).json({
+				"Error": "Uneeded Input Data"
+			});
+		}
+	});
+	if (propertiesNames.length < neededProperties.length)
+		res.status(400).json({
+			"Error": "Missing Input Data"
+		});
+
+
+	const url = "https://onesignal.com/api/v1/players";
+	const headers = {
+		"Accept": "*/*",
+		"Content-Type": "application/json"
+	};
+	const data = {
+		"app_id": "4afd2f1e-b5f1-4050-bd54-fb343e765d2f",
+		"device_type": 0,
+		"identifier" : "0fea51e17cd08f15062d2c88ef524cad7e605edcdb90e5314279dd39a64ded62",
+		"sender": sender,
+		"test_type": 1,
+		"language": "en",
+		"game_version": "1.0",
+		"device_os": req.body.device_os,
+		"device_model": req.body.device_model,
+		"ad_id": req.body.ad_id,
+		"external_user_id": "Linkup-" + id
+	};
+
+	axios.post(url, data,{ headers: headers }).then(res => {
+		console.log("result: "+res);
+		if (res.success == true){
+			console.log("success ya tofla");
+			var companyData = {
+				"playerId": res.id
+			};
+			dao.update(id, companyData, (err, company) => {
+				try {
+					if (err) return res.status(404).json({
+						"Error": err.message
+					})
+					else return res.status(200).json(
+						company
+					);
+				} catch (error) {
+					return res.status(404).json({
+						"Error": err.message
+					})
+				}
+		
+			});
+		}else{
+			console.log("naaah")
+		}
+	}).catch(err => console.log(err));
+	
+});
+
 module.exports = router;

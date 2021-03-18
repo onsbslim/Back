@@ -7,6 +7,7 @@ const auth = require('../middleware/auth');
 const checkRefresh = require('../middleware/checkRefresh');
 const upload = require('../middleware/upload');
 const uploadCV = require('../middleware/uploadCV');
+var axios = require('axios');
 
 /** Login Google Candidate */
 router.post('/loginGoogle', (req, res ) => {
@@ -95,6 +96,7 @@ router.post('/login', (req, res, next) => {
 			// console.log(process.env.KEY);
 		}
 		else {
+
 			jwt.sign({
 				id: candidate.id,
 			}, process.env.SECRET,
@@ -472,6 +474,51 @@ router.post('/checkPhoto', auth, (req, res) => {
 				candidate: photo
 			});
 	})
+});
+
+
+// Add player id and update candidate
+router.post('/addPlayerId', auth, (req,res)=> {
+	var dao = new candidateDAO(models);
+	const decode = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decode.id;
+
+	var propertiesNames = Object.getOwnPropertyNames(req.body);
+	var neededProperties = ["device_os", "device_model", "ad_id"];
+
+	propertiesNames.forEach(name => {
+		if (neededProperties.indexOf(name) < 0 || propertiesNames.length > neededProperties.length) {
+			return res.status(400).json({
+				"Error": "Uneeded Input Data"
+			});
+		}
+	});
+	if (propertiesNames.length < neededProperties.length)
+		res.status(400).json({
+			"Error": "Missing Input Data"
+		});
+
+
+	const url = "https://onesignal.com/api/v1/players";
+	const headers = {
+		"Accept": "*/*",
+		"Content-Type": "application/json"
+	};
+	const data = {
+		"app_id": "",
+		"device_type": 0,
+		"identifier" : "",
+		"sender": sender,
+		"test_type": 1,
+		"language": "en",
+		"game_version": "1.0",
+		"device_os": req.body.device_os,
+		"device_model": req.body.device_model,
+		"ad_id": req.body.ad_id,
+		"external_user_id": "Interviewee-" + id
+	};
+
+	
 });
 
 module.exports = router;
