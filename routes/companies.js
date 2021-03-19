@@ -339,10 +339,10 @@ router.get('/getDetailed/:id', auth, (req, res)=> {
 });
 
 // Add player id and update company
-router.post('/addPlayerId', auth, (req,res)=> {
+router.put('/addPlayerId', auth, (req,res)=> {
 	var dao = new companyDAO(models);
-	const decode = jwt.verify(req.get('x-auth-token'), process.env.KEY);
-	var id = decode.id;
+	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+	var id = decoded.id;
 
 	var propertiesNames = Object.getOwnPropertyNames(req.body);
 	var neededProperties = ["device_os", "device_model", "ad_id"];
@@ -369,7 +369,6 @@ router.post('/addPlayerId', auth, (req,res)=> {
 		"app_id": "4afd2f1e-b5f1-4050-bd54-fb343e765d2f",
 		"device_type": 0,
 		"identifier" : "0fea51e17cd08f15062d2c88ef524cad7e605edcdb90e5314279dd39a64ded62",
-		"sender": sender,
 		"test_type": 1,
 		"language": "en",
 		"game_version": "1.0",
@@ -380,11 +379,10 @@ router.post('/addPlayerId', auth, (req,res)=> {
 	};
 
 	axios.post(url, data,{ headers: headers }).then(res => {
-		console.log("result: "+res);
-		if (res.success == true){
+			if ( res["data"]["success"] == true){
 			console.log("success ya tofla");
 			var companyData = {
-				"playerId": res.id
+				"playerId":  res["data"]["id"]
 			};
 			dao.update(id, companyData, (err, company) => {
 				try {
