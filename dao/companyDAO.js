@@ -65,6 +65,7 @@ companyDao.prototype.update = function (id, companyToUpdate, cb) {
 			"longitude": companyToUpdate.longitude,
 			"latitude": companyToUpdate.latitude,
 			"verified": companyToUpdate.verified,
+			"playerId": companyToUpdate.playerId,
 			where: {
 				id: company.id
 			}

@@ -219,7 +219,7 @@ router.get('/:id', function (req, res) {
 			"Error": err.message
 		});
 		else res.status(200).json({
-			"company" : company
+			"company": company
 		}
 		)
 	})
@@ -244,7 +244,7 @@ router.post('/me', auth, function (req, res) {
 	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
 	var id = decoded.id;
 	var dao = new companyDAO(models);
-	
+
 	dao.getConnected(id, (err, company) => {
 		if (err) res.status(404).json({
 			"Error": err.message
@@ -284,23 +284,23 @@ router.post('/token', checkRefresh, function (req, res) {
 
 // Check Refresh Token
 
-router.post('/checkRefresh', checkRefresh, function(req, res){
+router.post('/checkRefresh', checkRefresh, function (req, res) {
 	var response = req.get('x-refresh-token');
-	res.status(200).json({"refreshToken": response});
+	res.status(200).json({ "refreshToken": response });
 });
 
 
 
 // Check Token
 
-router.post('/checkToken', auth ,function(req, res){
+router.post('/checkToken', auth, function (req, res) {
 	var response = req.get('x-auth-token');
-	res.status(200).json({"refresh": response});
+	res.status(200).json({ "refresh": response });
 });
 
 
 // Upload photo
-router.post('/uploadLogo', auth, upload.single('pic'),(req, res) => {
+router.post('/uploadLogo', auth, upload.single('pic'), (req, res) => {
 	var dao = new companyDAO(models);
 	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
 	var id = decoded.id;
@@ -308,12 +308,12 @@ router.post('/uploadLogo', auth, upload.single('pic'),(req, res) => {
 	var companydata = {
 		"logo": file.filename,
 	};
-	dao.upload(id, companydata, (err,company)=>{
+	dao.upload(id, companydata, (err, company) => {
 		if (err) {
 			return res.status(404).json({
-				"Error" : err.message
+				"Error": err.message
 			});
-		}else {
+		} else {
 			return res.status(200).json({
 				company: company
 			});
@@ -322,15 +322,15 @@ router.post('/uploadLogo', auth, upload.single('pic'),(req, res) => {
 
 });
 
-router.get('/getDetailed/:id', auth, (req, res)=> {
+router.get('/getDetailed/:id', auth, (req, res) => {
 	var dao = new companyDAO(models);
 	var id = req.params.id;
 	dao.getDetailedCompany(id, (err, company) => {
 		if (err) {
 			return res.status(404).json({
-				"Error" : err.message
+				"Error": err.message
 			});
-		}else {
+		} else {
 			return res.status(200).json({
 				company: company
 			});
@@ -339,25 +339,13 @@ router.get('/getDetailed/:id', auth, (req, res)=> {
 });
 
 // Add player id and update company
-router.put('/addPlayerId', auth, (req,res)=> {
+router.put('/addPlayerId', (req, res) => {
 	var dao = new companyDAO(models);
 	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
 	var id = decoded.id;
 
-	var propertiesNames = Object.getOwnPropertyNames(req.body);
-	var neededProperties = ["device_os", "device_model", "ad_id"];
-
-	propertiesNames.forEach(name => {
-		if (neededProperties.indexOf(name) < 0 || propertiesNames.length > neededProperties.length) {
-			return res.status(400).json({
-				"Error": "Uneeded Input Data"
-			});
-		}
-	});
-	if (propertiesNames.length < neededProperties.length)
-		res.status(400).json({
-			"Error": "Missing Input Data"
-		});
+	if (!req.body)
+		return res.status(404).json({ 'Error': 'There is no updating data' })
 
 
 	const url = "https://onesignal.com/api/v1/players";
@@ -368,7 +356,7 @@ router.put('/addPlayerId', auth, (req,res)=> {
 	const data = {
 		"app_id": "4afd2f1e-b5f1-4050-bd54-fb343e765d2f",
 		"device_type": 0,
-		"identifier" : "0fea51e17cd08f15062d2c88ef524cad7e605edcdb90e5314279dd39a64ded62",
+		"identifier": "0fea51e17cd08f15062d2c88ef524cad7e605edcdb90e5314279dd39a64ded62",
 		"test_type": 1,
 		"language": "en",
 		"game_version": "1.0",
@@ -378,12 +366,14 @@ router.put('/addPlayerId', auth, (req,res)=> {
 		"external_user_id": "Linkup-" + id
 	};
 
-	axios.post(url, data,{ headers: headers }).then(res => {
-			if ( res["data"]["success"] == true){
-			console.log("success ya tofla");
+	axios.post(url, data, { headers: headers }).then(result => {
+		if (result["data"]["success"] == true) {
+
 			var companyData = {
-				"playerId":  res["data"]["id"]
+				
+				"playerId": result["data"]["id"]
 			};
+			console.log("success ya tofla " + companyData["playerId"]);
 			dao.update(id, companyData, (err, company) => {
 				try {
 					if (err) return res.status(404).json({
@@ -397,13 +387,13 @@ router.put('/addPlayerId', auth, (req,res)=> {
 						"Error": err.message
 					})
 				}
-		
+
 			});
-		}else{
+		} else {
 			console.log("naaah")
 		}
 	}).catch(err => console.log(err));
-	
+
 });
 
 module.exports = router;
