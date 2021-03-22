@@ -184,9 +184,10 @@ router.put('/update', auth, (req, res) => {
 			if (err) return res.status(404).json({
 				"Error": err.message
 			})
-			else return res.status(200).json(
-				company
-			);
+			else return res.status(200).json({
+				"company":company
+
+			});
 		} catch (error) {
 			return res.status(404).json({
 				"Error": err.message
@@ -379,9 +380,9 @@ router.put('/addPlayerId', (req, res) => {
 					if (err) return res.status(404).json({
 						"Error": err.message
 					})
-					else return res.status(200).json(
-						company
-					);
+					else return res.status(200).json({
+						"company":company
+					});
 				} catch (error) {
 					return res.status(404).json({
 						"Error": err.message
