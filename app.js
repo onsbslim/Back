@@ -96,10 +96,10 @@ io.on("connection", socket => {
     };
 
     axios.post(url, data, { headers: headers }).then(res => {
-      io.emit('reload');
       axios.get(url,{headers: headers}).then(res => {
         print("res = "+ res);
       });
+      io.emit('reload');
     }).catch(err => console.log(err));
 
   });
