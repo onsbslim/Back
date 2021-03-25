@@ -96,7 +96,7 @@ io.on("connection", socket => {
     };
 
     axios.post(url, data, { headers: headers }).then(res => {
-      axios.get(url,{headers: headers}).then(res => {
+      axios.get(urlGetCompany,{headers: headers}).then(res => {
         print("res = "+ res);
       });
       io.emit('reload');
