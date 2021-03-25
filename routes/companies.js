@@ -212,7 +212,7 @@ router.delete('/:id', function (req, res) {
 });
 
 /** Get Company */
-router.get('/:id', function (req, res) {
+router.get('/:id', auth, function (req, res) {
 	var dao = new companyDAO(models);
 	var id = req.params.id;
 	dao.get(id, (err, company) => {

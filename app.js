@@ -81,6 +81,7 @@ io.on("connection", socket => {
 
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
     const url = ip+"/messages/candidateAddMessage";
+    var urlGetCompany = ip+"/companies/"+idCompany;
     const token = socket.handshake.query['Authorization'];
     const headers = {
       "Accept": "*/*",
@@ -96,6 +97,9 @@ io.on("connection", socket => {
 
     axios.post(url, data, { headers: headers }).then(res => {
       io.emit('reload');
+      axios.get(url,{headers: headers}).then(res => {
+        print("res = "+ res);
+      });
     }).catch(err => console.log(err));
 
   });
