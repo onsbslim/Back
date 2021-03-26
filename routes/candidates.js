@@ -253,14 +253,16 @@ router.post('/register', (req, res, next) => {
 });
 
 /** Get candidate */
-router.get('/:id', (req, res) => {
+router.get('/:id', auth,(req, res) => {
 	var dao = new candidateDAO(models);
 	var id = req.params.id;
 	dao.get(id, (err, candidate) => {
 		if (err) return res.status(404).json({
 			'Error': err.message
 		})
-		else return res.status(200).json(candidate);
+		else return res.status(200).json({
+			"candidate": candidate
+		});
 	})
 });
 

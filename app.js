@@ -82,6 +82,8 @@ io.on("connection", socket => {
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
     const url = ip+"/messages/candidateAddMessage";
     var urlGetCompany = ip+"/companies/"+idCompany;
+    var urlGetCandidate = ip+"/candidates/"+idCand;
+    var urlOneSignal = "https://onesignal.com/api/v1/notifications";
     const token = socket.handshake.query['Authorization'];
     const headers = {
       "Accept": "*/*",
@@ -94,11 +96,31 @@ io.on("connection", socket => {
       "message": msg,
       "sender": sender
     };
+    var candidateName;
+    axios.get(urlGetCandidate,{headers: headers}).then(candidateResponse => {
+        candidateName = result["data"]["candidate"]["firstname"]+ " "+ result["data"]["candidate"]["lastname"] 
+    });
 
     axios.post(url, data, { headers: headers }).then(res => {
       //console.log("I am here");
       axios.get(urlGetCompany,{headers: headers}).then(result => {
-        console.log("res = "+ result["data"]["company"]["playerId"]);
+        //console.log("res = "+ result["data"]["company"]["playerId"]);
+        var players = [result["data"]["company"]["playerId"]];
+        var app_id = "a876b4ca-17fc-4710-b22f-32e52bb59a6c";
+        var contents = {"en": msg};
+        var headings	= {"en": candidateName};
+        var dataOneSignal = {
+          "include_player_ids": players,
+          "app_id": app_id,
+          "contents": contents,
+          "headings": headings,
+          "content_available": 1,
+        };
+        axios.post(urlOneSignal, dataOneSignal, { headers: headers}).then(oneSignalResult =>{
+          console.log("Success");
+        });
+        
+
       });
       io.emit('reload');
       
