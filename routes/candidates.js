@@ -335,7 +335,8 @@ router.put('/update', auth, (req, res) => {
 		"phone": req.body.phone,
 		"photo": req.body.photo,
 		"cv": req.body.cv,
-		"degree": req.body.degree
+		"degree": req.body.degree,
+		"playerId": req.body.playerId
 	};
 	dao.updateCandidate(id, candidateData, (err, candidate) => {
 		try {

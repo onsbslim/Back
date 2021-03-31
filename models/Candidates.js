@@ -69,6 +69,10 @@ module.exports = function (sequelize, DataTypes) {
         playerId: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        oneSignalId: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
         
     });
