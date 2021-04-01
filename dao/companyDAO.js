@@ -66,6 +66,7 @@ companyDao.prototype.update = function (id, companyToUpdate, cb) {
 			"latitude": companyToUpdate.latitude,
 			"verified": companyToUpdate.verified,
 			"playerId": companyToUpdate.playerId,
+			"oneSignalId": companyToUpdate.oneSignalId,
 			where: {
 				id: company.id
 			}
