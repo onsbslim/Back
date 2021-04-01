@@ -155,6 +155,7 @@ router.put('/update', auth, (req, res) => {
 	var dao = new companyDAO(models);
 	const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
 	var id = decoded.id;
+	console.log ("Linkup-"+ id)
 	if (!req.body)
 		return res.status(404).json({ 'Error': 'There is no updating data' })
 	var companyData = {
@@ -177,7 +178,8 @@ router.put('/update', auth, (req, res) => {
 		"longitude": req.body.longitude,
 		"latitude": req.body.latitude,
 		"verified": req.body.verified,
-		"playerId": req.body.playerId
+		"playerId": req.body.playerId,
+		"oneSignalId": "Linkup-"+ id
 	}
 	dao.update(id, companyData, (err, company) => {
 		try {
