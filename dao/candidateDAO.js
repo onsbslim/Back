@@ -102,7 +102,7 @@ candidateDao.prototype.remove = function (id, cb) {
 
 // Update existing Candidate
 candidateDao.prototype.updateCandidate = function (id, candidateToUpdate, cb) {
-	console.log("I am heeere");
+
 	this.models.candidates.findByPk(id)
 		.then(candidate => {
 			if (!candidate) return cb(Error('Candidate not found'));
@@ -118,6 +118,8 @@ candidateDao.prototype.updateCandidate = function (id, candidateToUpdate, cb) {
 				"photo": candidateToUpdate.photo,
 				"cv": candidateToUpdate.cv,
 				"degree": candidateToUpdate.degree,
+				"playerId": candidateToUpdate.playerId,
+				"oneSignalId": candidateToUpdate.oneSignalId,
 				where:{
 					id: candidate.id,
 				}
