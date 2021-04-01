@@ -59,7 +59,12 @@ io.on("connection", socket => {
     console.log('user disconnected');
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
-    const url = ip+"/messages/addMessage";
+    const url = ip + "/messages/addMessage";
+    var urlGetCompany = ip + "/companies/" + idCompany;
+    var urlGetCandidate = ip + "/candidates/" + idCand;
+    var urlOneSignal = "https://onesignal.com/api/v1/notifications";
+
+
     const token = socket.handshake.query['Authorization'];
     const headers = {
       "Accept": "*/*",
@@ -73,16 +78,42 @@ io.on("connection", socket => {
       "sender": sender
     };
 
+    var companyName;
+    axios.get(urlGetCompany, { headers: headers }).then(companyResponse => {
+      companyName = result["data"]["company"]["name"]
+    });
+
+
     axios.post(url, data, { headers: headers }).then(res => {
+      axios.get(urlGetCandidate, { headers: headers }).then(result => {
+        //console.log("res = "+ result["data"]["company"]["playerId"]);
+        var players = ["Interviewee-" + result["data"]["candidate"]["id"]];
+        var app_id = "4afd2f1e-b5f1-4050-bd54-fb343e765d2f";
+        var contents = { "en": msg };
+        var headings = { "en": companyName };
+        var dataOneSignal = {
+          "include_external_user_ids": players,
+          "app_id": app_id,
+          "contents": contents,
+          "headings": headings,
+          "content_available": 1,
+        };
+        axios.post(urlOneSignal, dataOneSignal, { headers: headers }).then(oneSignalResult => {
+          console.log("Success");
+        });
+
+
+      });
+
       io.emit('reload');
     }).catch(err => console.log(err));
 
   });
 
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
-    const url = ip+"/messages/candidateAddMessage";
-    var urlGetCompany = ip+"/companies/"+idCompany;
-    var urlGetCandidate = ip+"/candidates/"+idCand;
+    const url = ip + "/messages/candidateAddMessage";
+    var urlGetCompany = ip + "/companies/" + idCompany;
+    var urlGetCandidate = ip + "/candidates/" + idCand;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
     const token = socket.handshake.query['Authorization'];
     const headers = {
@@ -97,41 +128,41 @@ io.on("connection", socket => {
       "sender": sender
     };
     var candidateName;
-    axios.get(urlGetCandidate,{headers: headers}).then(candidateResponse => {
-        candidateName = result["data"]["candidate"]["firstname"]+ " "+ result["data"]["candidate"]["lastname"] 
+    axios.get(urlGetCandidate, { headers: headers }).then(candidateResponse => {
+      candidateName = result["data"]["candidate"]["firstname"] + " " + result["data"]["candidate"]["lastname"]
     });
 
     axios.post(url, data, { headers: headers }).then(res => {
       //console.log("I am here");
-      axios.get(urlGetCompany,{headers: headers}).then(result => {
+      axios.get(urlGetCompany, { headers: headers }).then(result => {
         //console.log("res = "+ result["data"]["company"]["playerId"]);
-        var players = [result["data"]["company"]["playerId"]];
+        var players = ["Linkup-" + result["data"]["company"]["id"]];
         var app_id = "a876b4ca-17fc-4710-b22f-32e52bb59a6c";
-        var contents = {"en": msg};
-        var headings	= {"en": candidateName};
+        var contents = { "en": msg };
+        var headings = { "en": candidateName };
         var dataOneSignal = {
-          "include_player_ids": players,
+          "include_external_user_ids": players,
           "app_id": app_id,
           "contents": contents,
           "headings": headings,
           "content_available": 1,
         };
-        axios.post(urlOneSignal, dataOneSignal, { headers: headers}).then(oneSignalResult =>{
+        axios.post(urlOneSignal, dataOneSignal, { headers: headers }).then(oneSignalResult => {
           console.log("Success");
         });
-        
+
 
       });
       io.emit('reload');
-      
+
     }).catch(err => console.log(err));
 
   });
-  
+
 
   socket.on('candidateDiscussions', (st) => {
-    
-    const url = ip+"/messages/candidateDiscussions";
+
+    const url = ip + "/messages/candidateDiscussions";
 
     const headers = {
       "Accept": "*/*",
