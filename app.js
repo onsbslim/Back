@@ -59,6 +59,7 @@ io.on("connection", socket => {
     console.log('user disconnected');
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
+    console.log("Here 1");
     const urlLinkup = ip + "/messages/addMessage";
     var urlGetCompanyLinkup = ip + "/companies/" + idCompany;
     var urlGetCandidateLinkup= ip + "/candidates/" + idCand;
@@ -86,6 +87,7 @@ io.on("connection", socket => {
 
 
     axios.post(urlLinkup, data, { headers: headersLinkup }).then(res => {
+      console.log("here 2 .. " + res);
       axios.get(urlGetCandidateLinkup, { headers: headersLinkup }).then(result => {
         //console.log("res = "+ result["data"]["company"]["playerId"]);
         var players = ["Interviewee-" + result["data"]["candidate"]["id"]];
@@ -112,7 +114,7 @@ io.on("connection", socket => {
       });
 
       io.emit('reload');
-    }).catch(err => console.log(err));
+    }).catch(err => console.log("erroor :" + err));
 
   });
 
