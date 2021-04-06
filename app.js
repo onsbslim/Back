@@ -71,6 +71,14 @@ io.on("connection", socket => {
       "x-auth-token": token,
       "Content-Type": "application/json"
     };
+
+    const headersIntervieweeOneSignal = {
+      "Accept": "*/*",
+      "x-auth-token": token,
+      "Content-Type": "application/json",
+      "Authorization": "Basic YWQ0YzVmYWEtNzdhYy00ODM5LWE1YzgtMzA4NzIzYTkxMGRj"
+    };
+
     io.emit('reload');
     const data = {
       "idCandidate": idCandidate,
@@ -98,7 +106,7 @@ io.on("connection", socket => {
           "headings": headings,
           "content_available": 1,
         };
-        axios.post(urlOneSignal, dataOneSignal, { headers: headers }).then(oneSignalResult => {
+        axios.post(urlOneSignal, dataOneSignal, { headers: headersIntervieweeOneSignal }).then(oneSignalResult => {
           console.log("Success");
         });
 
@@ -121,6 +129,14 @@ io.on("connection", socket => {
       "x-auth-token": token,
       "Content-Type": "application/json"
     };
+
+    const headersLinkupOneSignal = {
+      "Accept": "*/*",
+      "x-auth-token": token,
+      "Content-Type": "application/json",
+      "Authorization": "Basic MGIzYjIyN2YtYTY0OS00ZjNlLWE3MzktMGRiMTM5NjRmNjc1"
+    };
+
     io.emit('reload');
     const data = {
       "idCompany": idCompany,
@@ -147,7 +163,7 @@ io.on("connection", socket => {
           "headings": headings,
           "content_available": 1,
         };
-        axios.post(urlOneSignal, dataOneSignal, { headers: headers }).then(oneSignalResult => {
+        axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResult => {
           console.log("Success");
         });
 
