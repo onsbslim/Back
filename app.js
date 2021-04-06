@@ -59,24 +59,17 @@ io.on("connection", socket => {
     console.log('user disconnected');
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
-    const url = ip + "/messages/addMessage";
-    var urlGetCompany = ip + "/companies/" + idCompany;
-    var urlGetCandidate = ip + "/candidates/" + idCand;
+    const urlLinkup = ip + "/messages/addMessage";
+    var urlGetCompanyLinkup = ip + "/companies/" + idCompany;
+    var urlGetCandidateLinkup= ip + "/candidates/" + idCand;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
 
 
     const token = socket.handshake.query['Authorization'];
-    const headers = {
+    const headersLinkup = {
       "Accept": "*/*",
       "x-auth-token": token,
       "Content-Type": "application/json"
-    };
-
-    const headersIntervieweeOneSignal = {
-      "Accept": "*/*",
-      "x-auth-token": token,
-      "Content-Type": "application/json",
-      "Authorization": "Basic YWQ0YzVmYWEtNzdhYy00ODM5LWE1YzgtMzA4NzIzYTkxMGRj"
     };
 
     io.emit('reload');
@@ -87,13 +80,13 @@ io.on("connection", socket => {
     };
 
     var companyName;
-    axios.get(urlGetCompany, { headers: headers }).then(companyResponse => {
+    axios.get(urlGetCompanyLinkup, { headers: headersLinkup }).then(companyResponse => {
       companyName = result["data"]["company"]["name"]
     });
 
 
-    axios.post(url, data, { headers: headers }).then(res => {
-      axios.get(urlGetCandidate, { headers: headers }).then(result => {
+    axios.post(urlLinkup, data, { headers: headersLinkup }).then(res => {
+      axios.get(urlGetCandidateLinkup, { headers: headersLinkup }).then(result => {
         //console.log("res = "+ result["data"]["company"]["playerId"]);
         var players = ["Interviewee-" + result["data"]["candidate"]["id"]];
         var app_id = "4afd2f1e-b5f1-4050-bd54-fb343e765d2f";
@@ -105,6 +98,11 @@ io.on("connection", socket => {
           "contents": contents,
           "headings": headings,
           "content_available": 1,
+        };
+        const headersIntervieweeOneSignal = {
+          "Accept": "*/*",
+          "Content-Type": "application/json",
+          "Authorization": "Basic YWQ0YzVmYWEtNzdhYy00ODM5LWE1YzgtMzA4NzIzYTkxMGRj"
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersIntervieweeOneSignal }).then(oneSignalResult => {
           console.log("Success");
@@ -119,22 +117,17 @@ io.on("connection", socket => {
   });
 
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
-    const url = ip + "/messages/candidateAddMessage";
-    var urlGetCompany = ip + "/companies/" + idCompany;
-    var urlGetCandidate = ip + "/candidates/" + idCand;
+    const urlInterviewee = ip + "/messages/candidateAddMessage";
+    var urlGetCompanyInterviewee = ip + "/companies/" + idCompany;
+    var urlGetCandidateInterviewee = ip + "/candidates/" + idCand;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
+
     const token = socket.handshake.query['Authorization'];
-    const headers = {
+
+    const headersInterviewee = {
       "Accept": "*/*",
       "x-auth-token": token,
       "Content-Type": "application/json"
-    };
-
-    const headersLinkupOneSignal = {
-      "Accept": "*/*",
-      "x-auth-token": token,
-      "Content-Type": "application/json",
-      "Authorization": "Basic MGIzYjIyN2YtYTY0OS00ZjNlLWE3MzktMGRiMTM5NjRmNjc1"
     };
 
     io.emit('reload');
@@ -144,13 +137,13 @@ io.on("connection", socket => {
       "sender": sender
     };
     var candidateName;
-    axios.get(urlGetCandidate, { headers: headers }).then(candidateResponse => {
+    axios.get(urlGetCandidateInterviewee, { headers: headersIntervieweeOneSignal }).then(candidateResponse => {
       candidateName = result["data"]["candidate"]["firstname"] + " " + result["data"]["candidate"]["lastname"]
     });
 
-    axios.post(url, data, { headers: headers }).then(res => {
+    axios.post(urlInterviewee, data, { headers: headersInterviewee }).then(res => {
       //console.log("I am here");
-      axios.get(urlGetCompany, { headers: headers }).then(result => {
+      axios.get(urlGetCompanyInterviewee, { headers: headersInterviewee }).then(result => {
         //console.log("res = "+ result["data"]["company"]["playerId"]);
         var players = ["Linkup-" + result["data"]["company"]["id"]];
         var app_id = "a876b4ca-17fc-4710-b22f-32e52bb59a6c";
@@ -162,6 +155,11 @@ io.on("connection", socket => {
           "contents": contents,
           "headings": headings,
           "content_available": 1,
+        };
+        const headersLinkupOneSignal = {
+          "Accept": "*/*",
+          "Content-Type": "application/json",
+          "Authorization": "Basic MGIzYjIyN2YtYTY0OS00ZjNlLWE3MzktMGRiMTM5NjRmNjc1"
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResult => {
           console.log("Success");
