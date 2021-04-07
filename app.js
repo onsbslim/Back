@@ -61,9 +61,9 @@ io.on("connection", socket => {
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
     const token = socket.handshake.query['Authorization'];
-    const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+    const decoded = jwt.verify(token, process.env.KEY);
     var idComp = decoded.id;
-    
+
     const urlLinkup = ip + "/messages/addMessage";
     var urlGetCompanyLinkup = ip + "/companies/" + idComp;
     var urlGetCandidateLinkup= ip + "/candidates/" + idCandidate;
@@ -125,7 +125,7 @@ io.on("connection", socket => {
 
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
     const token = socket.handshake.query['Authorization'];
-    const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+    const decoded = jwt.verify(token, process.env.KEY);
     var idCand = decoded.id;
 
     const urlInterviewee = ip + "/messages/candidateAddMessage";
