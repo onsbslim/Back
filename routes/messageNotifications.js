@@ -37,7 +37,7 @@ router.post("/create", auth, (req, res)=>{
         }
         else {
             res.status(200).json(
-                {"notification": notification}
+                {"message_notification": notification}
             );
         }
     });
