@@ -96,7 +96,7 @@ io.on("connection", socket => {
       
       axios.get(urlGetCandidateLinkup, { headers: headersLinkup }).then(result => {
         var candidateName;
-        candidateName = result["data"]["candidate"]["firstname"] + " " + candidateResponse["data"]["candidate"]["lastname"];
+        candidateName = result["data"]["candidate"]["firstname"] + " " + result["data"]["candidate"]["lastname"];
       
         var players = ["Interviewee-" + result["data"]["candidate"]["id"]];
         console.log("players : "+players);
