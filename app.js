@@ -6,6 +6,7 @@ var morgan = require('morgan');
 var axios = require('axios');
 var ip = require('./middleware/IP');
 var socket_io = require("socket.io");
+const jwt = require('jsonwebtoken');
 
 var bodyParser = require('body-parser');
 
@@ -59,14 +60,17 @@ io.on("connection", socket => {
     console.log('user disconnected');
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
-    console.log("id company : "+ idComp + " id candidate : "+ idCandidate);
+    const token = socket.handshake.query['Authorization'];
+    const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+    var idComp = decoded.id;
+    
     const urlLinkup = ip + "/messages/addMessage";
     var urlGetCompanyLinkup = ip + "/companies/" + idComp;
     var urlGetCandidateLinkup= ip + "/candidates/" + idCandidate;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
 
 
-    const token = socket.handshake.query['Authorization'];
+    
     const headersLinkup = {
       "Accept": "*/*",
       "x-auth-token": token,
@@ -120,13 +124,16 @@ io.on("connection", socket => {
   });
 
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
+    const token = socket.handshake.query['Authorization'];
+    const decoded = jwt.verify(req.get('x-auth-token'), process.env.KEY);
+    var idCand = decoded.id;
+
     const urlInterviewee = ip + "/messages/candidateAddMessage";
     var urlGetCompanyInterviewee = ip + "/companies/" + idCompany;
     var urlGetCandidateInterviewee = ip + "/candidates/" + idCand;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
 
-    const token = socket.handshake.query['Authorization'];
-
+    
     const headersInterviewee = {
       "Accept": "*/*",
       "x-auth-token": token,
@@ -145,9 +152,9 @@ io.on("connection", socket => {
     });
 
     axios.post(urlInterviewee, data, { headers: headersInterviewee }).then(res => {
-      //console.log("I am here");
+      
       axios.get(urlGetCompanyInterviewee, { headers: headersInterviewee }).then(result => {
-        //console.log("res = "+ result["data"]["company"]["playerId"]);
+     
         var players = ["Linkup-" + result["data"]["company"]["id"]];
         var app_id = "a876b4ca-17fc-4710-b22f-32e52bb59a6c";
         var contents = { "en": msg };
