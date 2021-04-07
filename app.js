@@ -59,10 +59,10 @@ io.on("connection", socket => {
     console.log('user disconnected');
   });
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
-    
+    console.log("id company : "+ idComp + " id candidate : "+ idCandidate);
     const urlLinkup = ip + "/messages/addMessage";
     var urlGetCompanyLinkup = ip + "/companies/" + idComp;
-    var urlGetCandidateLinkup= ip + "/candidates/" + idCand;
+    var urlGetCandidateLinkup= ip + "/candidates/" + idCandidate;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
 
 
