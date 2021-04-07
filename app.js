@@ -22,6 +22,7 @@ var skillsRouter = require('./routes/skills');
 var candidateSkillRouter = require('./routes/candidateSkill');
 var interviewSkillRouter = require('./routes/InterviewSkill');
 var notificationsRouter = require('./routes/notifications');
+var messagenNotificationsRouter = require('./routes/messageNotifications');
 
 const db = require('./models');
 
@@ -47,14 +48,12 @@ var io = socket_io();
 app.io = io;
 
 // socket.io events
-
+var companyId, candidateId;
 io.on("connection", socket => {
 
   //console.log("socket id: " + socket.id);
   console.log('A new user has joined');
 
-
-  var idComp, idCand;
 
   socket.on('setRoom', (idCompany, idCandidate) => {
     idComp = idCompany;
@@ -158,7 +157,7 @@ io.on("connection", socket => {
       axios.get(urlGetCompanyInterviewee, { headers: headersInterviewee }).then(result => {
       var companyName;
        companyName = result["data"]["company"]["name"];
-  
+        
         var players = ["Linkup-" + result["data"]["company"]["id"]];
         var app_id = "a876b4ca-17fc-4710-b22f-32e52bb59a6c";
         var contents = { "en": msg };
@@ -176,7 +175,18 @@ io.on("connection", socket => {
           "Authorization": "Basic MGIzYjIyN2YtYTY0OS00ZjNlLWE3MzktMGRiMTM5NjRmNjc1"
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResult => {
-          console.log("Success");
+          var urlNotification = ip + "/messageNotifications";
+          var dataNotification = {
+            "id": oneSignalResult["data"]["id"],
+            "candidateId": idCand,
+            "companyId": idCompany,
+            "receiver": "company"
+          };
+
+          axios.post(urlNotification,dataNotification,{headers: headersInterviewee}).then(resAdd => {
+            console.log("notification created!");
+          });
+          
         });
 
 
@@ -243,6 +253,7 @@ app.use('/skills', skillsRouter);
 app.use('/candidatesSkills', candidateSkillRouter);
 app.use('/interviewsSkills', interviewSkillRouter);
 app.use('/notifications', notificationsRouter);
+app.use('/messageNotifications', messagenNotificationsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
