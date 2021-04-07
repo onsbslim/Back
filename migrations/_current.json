@@ -590,6 +590,54 @@
             },
             "indexes": []
         },
+        "message_notifications": {
+            "tableName": "message_notifications",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "field": "id",
+                    "seqType": "Sequelize.STRING(300)"
+                },
+                "receiver": {
+                    "allowNull": true,
+                    "field": "receiver",
+                    "seqType": "Sequelize.STRING(100)"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "candidateId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "candidates",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "candidateId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "companyId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "companyId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
         "messages": {
             "tableName": "messages",
             "schema": {
@@ -654,9 +702,8 @@
             "schema": {
                 "id": {
                     "primaryKey": true,
-                    "autoIncrement": true,
                     "field": "id",
-                    "seqType": "Sequelize.INTEGER"
+                    "seqType": "Sequelize.STRING(300)"
                 },
                 "title": {
                     "allowNull": true,
@@ -826,5 +873,5 @@
             "indexes": []
         }
     },
-    "revision": 11
+    "revision": 12
 }

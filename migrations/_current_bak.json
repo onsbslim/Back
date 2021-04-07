@@ -238,6 +238,11 @@
                     "field": "playerId",
                     "seqType": "Sequelize.STRING"
                 },
+                "oneSignalId": {
+                    "allowNull": true,
+                    "field": "oneSignalId",
+                    "seqType": "Sequelize.STRING"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -343,6 +348,11 @@
                 "playerId": {
                     "allowNull": true,
                     "field": "playerId",
+                    "seqType": "Sequelize.STRING"
+                },
+                "oneSignalId": {
+                    "allowNull": true,
+                    "field": "oneSignalId",
                     "seqType": "Sequelize.STRING"
                 },
                 "createdAt": {
@@ -816,5 +826,5 @@
             "indexes": []
         }
     },
-    "revision": 10
+    "revision": 11
 }
