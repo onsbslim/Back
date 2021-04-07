@@ -27,7 +27,14 @@ const db = require('./models');
 
 const auth = require('./middleware/auth');
 
-
+function capitalizeTheFirstLetterOfEachWord(words) {
+  var separateWord = words.toLowerCase().split(' ');
+  for (var i = 0; i < separateWord.length; i++) {
+     separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
+     separateWord[i].substring(1);
+  }
+  return separateWord.join(' ');
+}
 //require("dotenv").config({ silent: process.env.NODE_ENV === 'production' });
 //require("dotenv").config();
 if (process.env.NODE_ENV !== 'production') require('dotenv').config();
@@ -83,23 +90,19 @@ io.on("connection", socket => {
       "message": msg,
       "sender": sender
     };
-
-    var companyName;
-    axios.get(urlGetCompanyLinkup, { headers: headersLinkup }).then(companyResponse => {
-      companyName = companyResponse["data"]["company"]["name"]
-      console.log("company name :" + companyName);
-    });
-
+    
 
     axios.post(urlLinkup, data, { headers: headersLinkup }).then(res => {
       
       axios.get(urlGetCandidateLinkup, { headers: headersLinkup }).then(result => {
-       
+        var candidateName;
+        candidateName = candidateResponse["data"]["candidate"]["firstname"] + " " + candidateResponse["data"]["candidate"]["lastname"];
+      
         var players = ["Interviewee-" + result["data"]["candidate"]["id"]];
         console.log("players : "+players);
         var app_id = "4afd2f1e-b5f1-4050-bd54-fb343e765d2f";
         var contents = { "en": msg };
-        var headings = { "en": companyName };
+        var headings = { "en": capitalizeTheFirstLetterOfEachWord(candidateName) };
         var dataOneSignal = {
           "include_external_user_ids": players,
           "app_id": app_id,
@@ -147,19 +150,19 @@ io.on("connection", socket => {
       "message": msg,
       "sender": sender
     };
-    var candidateName;
-    axios.get(urlGetCandidateInterviewee, { headers: headersInterviewee }).then(candidateResponse => {
-      candidateName = candidateResponse["data"]["candidate"]["firstname"] + " " + candidateResponse["data"]["candidate"]["lastname"]
-    });
 
-    axios.post(urlInterviewee, data, { headers: headersInterviewee }).then(res => {
+
+   
+     axios.post(urlInterviewee, data, { headers: headersInterviewee }).then(res => {
       
       axios.get(urlGetCompanyInterviewee, { headers: headersInterviewee }).then(result => {
-     
+      var companyName;
+       companyName = companyResponse["data"]["company"]["name"];
+  
         var players = ["Linkup-" + result["data"]["company"]["id"]];
         var app_id = "a876b4ca-17fc-4710-b22f-32e52bb59a6c";
         var contents = { "en": msg };
-        var headings = { "en": candidateName };
+        var headings = { "en": capitalizeTheFirstLetterOfEachWord(companyName) };
         var dataOneSignal = {
           "include_external_user_ids": players,
           "app_id": app_id,
