@@ -147,7 +147,7 @@ io.on("connection", socket => {
       "sender": sender
     };
     var candidateName;
-    axios.get(urlGetCandidateInterviewee, { headers: headersIntervieweeOneSignal }).then(candidateResponse => {
+    axios.get(urlGetCandidateInterviewee, { headers: headersInterviewee }).then(candidateResponse => {
       candidateName = result["data"]["candidate"]["firstname"] + " " + result["data"]["candidate"]["lastname"]
     });
 
