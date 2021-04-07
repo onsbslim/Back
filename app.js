@@ -61,7 +61,7 @@ io.on("connection", socket => {
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
     console.log("Here 1");
     const urlLinkup = ip + "/messages/addMessage";
-    var urlGetCompanyLinkup = ip + "/companies/" + idCompany;
+    var urlGetCompanyLinkup = ip + "/companies/" + idComp;
     var urlGetCandidateLinkup= ip + "/candidates/" + idCand;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
 
