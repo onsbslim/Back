@@ -86,7 +86,8 @@ io.on("connection", socket => {
 
     var companyName;
     axios.get(urlGetCompanyLinkup, { headers: headersLinkup }).then(companyResponse => {
-      companyName = result["data"]["company"]["name"]
+      companyName = companyResponse["data"]["company"]["name"]
+      console.log("company name :" + companyName);
     });
 
 
@@ -148,7 +149,7 @@ io.on("connection", socket => {
     };
     var candidateName;
     axios.get(urlGetCandidateInterviewee, { headers: headersInterviewee }).then(candidateResponse => {
-      candidateName = result["data"]["candidate"]["firstname"] + " " + result["data"]["candidate"]["lastname"]
+      candidateName = candidateResponse["data"]["candidate"]["firstname"] + " " + candidateResponse["data"]["candidate"]["lastname"]
     });
 
     axios.post(urlInterviewee, data, { headers: headersInterviewee }).then(res => {
