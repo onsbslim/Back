@@ -48,7 +48,7 @@ router.post("/add", auth, (req, res)=>{
 router.get("/:id", auth, (req, res) => {
     var dao = new messageNotificationDAO(models);
     var id = req.params.id;
-    dao.getById(id, (err, notification)=> {
+    dao.getNotification(id, (err, notification)=> {
         if (err) {
             res.status(404).json({
                 "Error": err.message
