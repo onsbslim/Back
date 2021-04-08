@@ -4,7 +4,7 @@ var models = require('../models');
 const auth = require('../middleware/auth');
 var messageNotificationDAO = require('../dao/messageNotificationDAO');
 
-router.post("/create", (req, res)=>{
+router.post("/add", (req, res)=>{
     var dao = new messageNotificationDAO(models);
 
     var propertiesNames = Object.getOwnPropertyNames(req.body);
@@ -28,9 +28,10 @@ router.post("/create", (req, res)=>{
         "companyId": req.body.companyId,
         "receiver": req.body.receiver
     };
-
+    console.log("Test");
     dao.create(newNotification, (err, notification)=>{
         if (err) {
+            console.log("Test");
             res.status(404).json({
                 "Error": err.message
             });
