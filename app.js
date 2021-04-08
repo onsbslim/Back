@@ -175,7 +175,7 @@ io.on("connection", socket => {
           "Authorization": "Basic MGIzYjIyN2YtYTY0OS00ZjNlLWE3MzktMGRiMTM5NjRmNjc1"
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResult => {
-          var urlNotification = ip + "/messageNotifications";
+          var urlNotification = ip + "/messageNotifications/create";
           var dataNotification = {
             "id": oneSignalResult["data"]["id"],
             "candidateId": idCand,
