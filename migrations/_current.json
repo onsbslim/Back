@@ -700,9 +700,9 @@
         "notifications": {
             "tableName": "notifications",
             "schema": {
-                "id": {
+                "idNot": {
                     "primaryKey": true,
-                    "field": "id",
+                    "field": "idNot",
                     "seqType": "Sequelize.STRING(200)"
                 },
                 "title": {
@@ -873,5 +873,5 @@
             "indexes": []
         }
     },
-    "revision": 5
+    "revision": 6
 }
