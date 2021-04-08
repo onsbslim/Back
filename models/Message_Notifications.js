@@ -5,6 +5,10 @@ module.exports = function (sequelize, DataTypes) {
         id: {
             type: DataTypes.STRING(300),
             primaryKey: true,
+        },
+        receiver: {
+            type: DataTypes.STRING(100),
+            allowNull: true,
         }
         
     });
