@@ -20,7 +20,11 @@ messageNotificationDAO.prototype.createNotification = function(notification, cb)
 };
 
 messageNotificationDAO.prototype.getNotification = function(id, cb) {
-    this.models.message_notifications.findByPk(id)
+    this.models.message_notifications.findOne({
+        where: {
+            id: id
+        }
+    })
             .then(messageNotification => {
                 if (!messageNotification) cb(Error("Notification not found"));
                 else cb(null, messageNotification);
