@@ -1,1 +1,1 @@
-select * from `message_notifications`;
+select * from `notifications`;

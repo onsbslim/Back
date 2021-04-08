@@ -697,6 +697,74 @@
             },
             "indexes": []
         },
+        "notifications": {
+            "tableName": "notifications",
+            "schema": {
+                "id": {
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "title": {
+                    "allowNull": true,
+                    "field": "title",
+                    "seqType": "Sequelize.STRING(300)"
+                },
+                "description": {
+                    "allowNull": true,
+                    "field": "description",
+                    "seqType": "Sequelize.STRING(2000)"
+                },
+                "photo": {
+                    "field": "photo",
+                    "seqType": "Sequelize.STRING(500)"
+                },
+                "new": {
+                    "allowNull": true,
+                    "field": "new",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "receiver": {
+                    "allowNull": true,
+                    "field": "receiver",
+                    "seqType": "Sequelize.STRING(100)"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "candidateId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "candidates",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "candidateId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "companyId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "companies",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "companyId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "indexes": []
+        },
         "photos": {
             "tableName": "photos",
             "schema": {
@@ -806,5 +874,5 @@
             "indexes": []
         }
     },
-    "revision": 1
+    "revision": 2
 }
