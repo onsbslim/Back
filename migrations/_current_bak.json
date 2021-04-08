@@ -590,8 +590,8 @@
             },
             "indexes": []
         },
-        "messageNotifications": {
-            "tableName": "messageNotifications",
+        "message_notifications": {
+            "tableName": "message_notifications",
             "schema": {
                 "id": {
                     "primaryKey": true,
@@ -874,5 +874,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 3
 }
