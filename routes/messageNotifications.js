@@ -4,11 +4,11 @@ var models = require('../models');
 const auth = require('../middleware/auth');
 var messageNotificationDAO = require('../dao/messageNotificationDAO');
 
-router.post("/create", auth, (req, res)=>{
+router.post("/create", (req, res)=>{
     var dao = new messageNotificationDAO(models);
 
     var propertiesNames = Object.getOwnPropertyNames(req.body);
-    var neededProperties = ["id", "candidateId", "company_id", "receiver"];
+    var neededProperties = ["id", "candidateId", "companyId", "receiver"];
 
     propertiesNames.forEach(name => {
         if (neededProperties.indexOf(name) < 0 || propertiesNames.length > neededProperties.length) {
