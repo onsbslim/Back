@@ -2,7 +2,7 @@ var messageNotificationDAO = module.exports = function (models) {
     this.models = models;
 };
 
-messageNotificationDAO.prototype.create = (notification, cb)=>{
+messageNotificationDAO.prototype.createNotification = (notification, cb)=>{
     var newNotification = {
         "id": notification.id,
         "companyId": notification.companyId,
