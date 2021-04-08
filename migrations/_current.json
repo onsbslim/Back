@@ -598,6 +598,11 @@
                     "field": "id",
                     "seqType": "Sequelize.STRING(300)"
                 },
+                "receiver": {
+                    "allowNull": true,
+                    "field": "receiver",
+                    "seqType": "Sequelize.STRING(100)"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -697,9 +702,8 @@
             "schema": {
                 "id": {
                     "primaryKey": true,
-                    "autoIncrement": true,
                     "field": "id",
-                    "seqType": "Sequelize.INTEGER"
+                    "seqType": "Sequelize.STRING(200)"
                 },
                 "title": {
                     "allowNull": true,
@@ -869,5 +873,5 @@
             "indexes": []
         }
     },
-    "revision": 4
+    "revision": 5
 }

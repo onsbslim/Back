@@ -598,11 +598,6 @@
                     "field": "id",
                     "seqType": "Sequelize.STRING(300)"
                 },
-                "receiver": {
-                    "allowNull": true,
-                    "field": "receiver",
-                    "seqType": "Sequelize.STRING(100)"
-                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -874,5 +869,5 @@
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 4
 }
