@@ -25,7 +25,7 @@ var notificationsRouter = require('./routes/notifications');
 var messagenNotificationsRouter = require('./routes/messageNotifications');
 
 const db = require('./models');
-
+var idComp, idCand;
 const auth = require('./middleware/auth');
 
 function capitalizeTheFirstLetterOfEachWord(words) {
@@ -68,10 +68,10 @@ io.on("connection", socket => {
   socket.broadcast.to(idComp + '-' + idCand).on('send', (msg, idCandidate, sender) => {
     const token = socket.handshake.query['Authorization'];
     const decoded = jwt.verify(token, process.env.KEY);
-    var idComp = decoded.id;
+  //  var idComp = decoded.id;
 
     const urlLinkup = ip + "/messages/addMessage";
-    var urlGetCompanyLinkup = ip + "/companies/" + idComp;
+    //var urlGetCompanyLinkup = ip + "/companies/" + idComp;
     var urlGetCandidateLinkup= ip + "/candidates/" + idCandidate;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
 
@@ -129,11 +129,11 @@ io.on("connection", socket => {
   socket.broadcast.to(idComp + '-' + idCand).on('sendFromCandidate', (msg, idCompany, sender) => {
     const token = socket.handshake.query['Authorization'];
     const decoded = jwt.verify(token, process.env.KEY);
-    var idCand = decoded.id;
+    //var idCand = decoded.id;
 
     const urlInterviewee = ip + "/messages/candidateAddMessage";
     var urlGetCompanyInterviewee = ip + "/companies/" + idCompany;
-    var urlGetCandidateInterviewee = ip + "/candidates/" + idCand;
+   // var urlGetCandidateInterviewee = ip + "/candidates/" + idCand;
     var urlOneSignal = "https://onesignal.com/api/v1/notifications";
 
     
@@ -186,7 +186,7 @@ io.on("connection", socket => {
           axios.post(urlNotification,dataNotification,{headers: headersInterviewee}).then(resAdd => {
             console.log("notification created!");
           });
-          
+
         });
 
 
