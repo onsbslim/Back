@@ -30,8 +30,9 @@ router.post("/add", auth, (req, res)=>{
     };
     console.log("Test");
     dao.createNotification(newNotification, (err, notification)=>{
+        console.log("test2");
         if (err) {
-            console.log("Test2");
+            console.log("Test3");
             res.status(404).json({
                 "Error": err.message
             });
