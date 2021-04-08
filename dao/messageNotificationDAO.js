@@ -9,7 +9,7 @@ messageNotificationDAO.prototype.createNotification = function(notification, cb)
         "candidateId": notification.candidateId ,
         "receiver": notification.receiver
     };
-    console.log("In here");
+    
     this.models.message_notifications.create(newNotification).then(createdNotification => {
 
         if (!createdNotification)
@@ -20,14 +20,14 @@ messageNotificationDAO.prototype.createNotification = function(notification, cb)
 };
 
 messageNotificationDAO.prototype.getNotification = function(id, cb) {
+    console.log("In here");
     this.models.message_notifications.findOne({
         where: {
             id: id
-        }
-    })
-            .then(messageNotification => {
-                if (!messageNotification) cb(Error("Notification not found"));
-                else cb(null, messageNotification);
-            }).catch(err => cb(err));
+        },
+    }).then(messageNotification => {
+        if (!messageNotification) cb(Error("Notification not found"));
+        else cb(null, messageNotification);
+    }).catch(err => cb(err));
 
 };

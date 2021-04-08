@@ -28,11 +28,11 @@ router.post("/add", auth, (req, res)=>{
         "companyId": req.body.companyId,
         "receiver": req.body.receiver
     };
-    console.log("Test");
+    
     dao.createNotification(newNotification, (err, notification)=>{
-        console.log("test2");
+        
         if (err) {
-            console.log("Test3");
+            
             res.status(404).json({
                 "Error": err.message
             });
@@ -46,10 +46,13 @@ router.post("/add", auth, (req, res)=>{
 });
 
 router.get("/:id", auth, (req, res) => {
+    console.log("Test");
     var dao = new messageNotificationDAO(models);
     var id = req.params.id;
     dao.getNotification(id, (err, notification)=> {
+        console.log("test2");
         if (err) {
+            console.log("Test3");
             res.status(404).json({
                 "Error": err.message
             });
