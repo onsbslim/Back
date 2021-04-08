@@ -590,29 +590,18 @@
             },
             "indexes": []
         },
-        "messages": {
-            "tableName": "messages",
+        "messageNotifications": {
+            "tableName": "messageNotifications",
             "schema": {
                 "id": {
                     "primaryKey": true,
-                    "autoIncrement": true,
                     "field": "id",
-                    "seqType": "Sequelize.INTEGER"
+                    "seqType": "Sequelize.STRING(300)"
                 },
-                "message": {
+                "receiver": {
                     "allowNull": true,
-                    "field": "message",
-                    "seqType": "Sequelize.STRING(950)"
-                },
-                "sender": {
-                    "allowNull": true,
-                    "field": "sender",
+                    "field": "receiver",
                     "seqType": "Sequelize.STRING(100)"
-                },
-                "new": {
-                    "allowNull": true,
-                    "field": "new",
-                    "seqType": "Sequelize.BOOLEAN"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -649,8 +638,8 @@
             },
             "indexes": []
         },
-        "notifications": {
-            "tableName": "notifications",
+        "messages": {
+            "tableName": "messages",
             "schema": {
                 "id": {
                     "primaryKey": true,
@@ -658,29 +647,20 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "title": {
+                "message": {
                     "allowNull": true,
-                    "field": "title",
-                    "seqType": "Sequelize.STRING(300)"
+                    "field": "message",
+                    "seqType": "Sequelize.STRING(950)"
                 },
-                "description": {
+                "sender": {
                     "allowNull": true,
-                    "field": "description",
-                    "seqType": "Sequelize.STRING(2000)"
-                },
-                "photo": {
-                    "field": "photo",
-                    "seqType": "Sequelize.STRING(500)"
+                    "field": "sender",
+                    "seqType": "Sequelize.STRING(100)"
                 },
                 "new": {
                     "allowNull": true,
                     "field": "new",
                     "seqType": "Sequelize.BOOLEAN"
-                },
-                "receiver": {
-                    "allowNull": true,
-                    "field": "receiver",
-                    "seqType": "Sequelize.STRING(100)"
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -826,5 +806,5 @@
             "indexes": []
         }
     },
-    "revision": 11
+    "revision": 1
 }

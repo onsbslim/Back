@@ -10,7 +10,7 @@ messageNotificationDAO.prototype.create = (notification, cb)=>{
         "receiver": notification.receiver
     };
 
-    this.models.message_notification.create(newNotification).then(createdNotification => {
+    this.models.message_notifications.create(newNotification).then(createdNotification => {
         if (!createdNotification)
             return cb(Error("notification not created !"));
         else
@@ -19,7 +19,7 @@ messageNotificationDAO.prototype.create = (notification, cb)=>{
 };
 
 messageNotificationDAO.prototype.getById = (id, cb) => {
-    this.models.message_notification.findByPk(id)
+    this.models.message_notifications.findByPk(id)
             .then(messageNotification => {
                 if (!messageNotification) cb(Error("Notification not found"));
                 else cb(null, messageNotification);

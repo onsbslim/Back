@@ -3,8 +3,9 @@
 module.exports = function (sequelize, DataTypes) {
     var Notifications = sequelize.define('notifications', {
         id: {
-            type: DataTypes.STRING(300),
+            type: DataTypes.INTEGER,
             primaryKey: true,
+            autoIncrement: true,
         },
         title: {
             type: DataTypes.STRING(300),

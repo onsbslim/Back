@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = function (sequelize, DataTypes) {
-    var Message_Notification = sequelize.define('message_notification', {
+    var messageNotifications = sequelize.define('messageNotifications', {
         id: {
             type: DataTypes.STRING(300),
             primaryKey: true,
@@ -13,12 +13,10 @@ module.exports = function (sequelize, DataTypes) {
         
     });
 
-    Message_Notification.associate = (models) => {
-        models.message_notification.belongsTo(models.candidates);
-        models.message_notification.belongsTo(models.companies);
-        // models.messagenotifications.belongsTo(models.candidates);
-        // models.nessagenotifications.belongsTo(models.companies);
+    messageNotifications.associate = (models) => {
+        models.messageNotifications.belongsTo(models.candidates);
+        models.messageNotifications.belongsTo(models.companies);
     }
 
-    return Message_Notification;
+    return messageNotifications;
 };

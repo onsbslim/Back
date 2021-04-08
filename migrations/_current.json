@@ -590,8 +590,8 @@
             },
             "indexes": []
         },
-        "message_notifications": {
-            "tableName": "message_notifications",
+        "messageNotifications": {
+            "tableName": "messageNotifications",
             "schema": {
                 "id": {
                     "primaryKey": true,
@@ -702,8 +702,9 @@
             "schema": {
                 "id": {
                     "primaryKey": true,
+                    "autoIncrement": true,
                     "field": "id",
-                    "seqType": "Sequelize.STRING(300)"
+                    "seqType": "Sequelize.INTEGER"
                 },
                 "title": {
                     "allowNull": true,
@@ -873,5 +874,5 @@
             "indexes": []
         }
     },
-    "revision": 12
+    "revision": 2
 }
