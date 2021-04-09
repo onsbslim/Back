@@ -49,7 +49,7 @@ var io = socket_io();
 app.io = io;
 
 // socket.io events
-var companyId, candidateId;
+var idComp, idCand;
 io.on("connection", socket => {
 
   //console.log("socket id: " + socket.id);
