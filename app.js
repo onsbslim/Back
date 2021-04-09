@@ -120,7 +120,10 @@ io.on("connection", socket => {
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersIntervieweeOneSignal }).then(oneSignalResult => {
           var urlNotification = ip + "/messageNotifications/add";
+          console.log("candidateId "+ candidateId+ " companyId "+companyId);
+          
           var dataNotification = {
+
             "id": oneSignalResult["data"]["id"],
             "candidateId": candidateId,
             "companyId": companyId,
@@ -192,6 +195,7 @@ io.on("connection", socket => {
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResult => {
           var urlNotification = ip + "/messageNotifications/add";
+          console.log("candidateId "+ candidateId+ " companyId "+companyId);
           var dataNotification = {
             "id": oneSignalResult["data"]["id"],
             "candidateId": candidateId,
