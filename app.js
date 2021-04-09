@@ -115,7 +115,17 @@ io.on("connection", socket => {
           "Authorization": "Basic YWQ0YzVmYWEtNzdhYy00ODM5LWE1YzgtMzA4NzIzYTkxMGRj"
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersIntervieweeOneSignal }).then(oneSignalResult => {
-          console.log("Success");
+          var urlNotification = ip + "/messageNotifications/add";
+          var dataNotification = {
+            "id": oneSignalResult["data"]["id"],
+            "candidateId": idCand,
+            "companyId": idComp,
+            "receiver": "candidate"
+          };
+
+          axios.post(urlNotification,dataNotification,{headers: headersLinkup}).then(resAdd => {
+            console.log("notification created!");
+          });
         });
 
 
@@ -178,8 +188,8 @@ io.on("connection", socket => {
           var urlNotification = ip + "/messageNotifications/add";
           var dataNotification = {
             "id": oneSignalResult["data"]["id"],
-            "candidateId": 1,
-            "companyId": 1,
+            "candidateId": idCand,
+            "companyId": idComp,
             "receiver": "company"
           };
 
