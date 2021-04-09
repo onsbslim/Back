@@ -25,7 +25,7 @@ var notificationsRouter = require('./routes/notifications');
 var messagenNotificationsRouter = require('./routes/messageNotifications');
 
 const db = require('./models');
-var idComp, idCand;
+
 const auth = require('./middleware/auth');
 
 function capitalizeTheFirstLetterOfEachWord(words) {
@@ -42,6 +42,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config();
 var app = express();
 
 var passport = require('passport');
+const { decode } = require('querystring');
 
 // Socket.io
 var io = socket_io();
@@ -69,7 +70,10 @@ io.on("connection", socket => {
     const token = socket.handshake.query['Authorization'];
     const decoded = jwt.verify(token, process.env.KEY);
   //  var idComp = decoded.id;
-
+    var companyId, candidateId;
+    companyId = decoded.id;
+    candidateId = idCandidate;
+    
     const urlLinkup = ip + "/messages/addMessage";
     //var urlGetCompanyLinkup = ip + "/companies/" + idComp;
     var urlGetCandidateLinkup= ip + "/candidates/" + idCandidate;
@@ -118,8 +122,8 @@ io.on("connection", socket => {
           var urlNotification = ip + "/messageNotifications/add";
           var dataNotification = {
             "id": oneSignalResult["data"]["id"],
-            "candidateId": idCand,
-            "companyId": idComp,
+            "candidateId": candidateId,
+            "companyId": companyId,
             "receiver": "candidate"
           };
 
@@ -140,7 +144,9 @@ io.on("connection", socket => {
     const token = socket.handshake.query['Authorization'];
     const decoded = jwt.verify(token, process.env.KEY);
     //var idCand = decoded.id;
-
+    var companyId, candidateId;
+    companyId = idCompany;
+    candidateId = decode.id;
     const urlInterviewee = ip + "/messages/candidateAddMessage";
     var urlGetCompanyInterviewee = ip + "/companies/" + idCompany;
    // var urlGetCandidateInterviewee = ip + "/candidates/" + idCand;
@@ -188,8 +194,8 @@ io.on("connection", socket => {
           var urlNotification = ip + "/messageNotifications/add";
           var dataNotification = {
             "id": oneSignalResult["data"]["id"],
-            "candidateId": idCand,
-            "companyId": idComp,
+            "candidateId": candidateId,
+            "companyId": companyId,
             "receiver": "company"
           };
 
