@@ -149,7 +149,7 @@ io.on("connection", socket => {
     //var idCand = decoded.id;
     var companyId, candidateId;
     companyId = idCompany;
-    candidateId = decode.id;
+    candidateId = decoded.id;
     const urlInterviewee = ip + "/messages/candidateAddMessage";
     var urlGetCompanyInterviewee = ip + "/companies/" + idCompany;
    // var urlGetCandidateInterviewee = ip + "/candidates/" + idCand;
