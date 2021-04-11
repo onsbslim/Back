@@ -103,7 +103,7 @@ io.on("connection", socket => {
       
         var players = ["Interviewee-" + result["data"]["candidate"]["id"]];
         console.log("players : "+players);
-        var app_id = "4afd2f1e-b5f1-4050-bd54-fb343e765d2f";
+        var app_id = process.env.LINKUP_APP_ID;
         var contents = { "en": msg };
         var headings = { "en": capitalizeTheFirstLetterOfEachWord(candidateName) };
         var dataOneSignal = {
@@ -178,7 +178,7 @@ io.on("connection", socket => {
        companyName = result["data"]["company"]["name"];
         
         var players = ["Linkup-" + result["data"]["company"]["id"]];
-        var app_id = "a876b4ca-17fc-4710-b22f-32e52bb59a6c";
+        var app_id = process.env.INTERVIEWEE_APP_ID;
         var contents = { "en": msg };
         var headings = { "en": capitalizeTheFirstLetterOfEachWord(companyName) };
         var dataOneSignal = {
