@@ -116,7 +116,7 @@ io.on("connection", socket => {
         const headersIntervieweeOneSignal = {
           "Accept": "*/*",
           "Content-Type": "application/json",
-          "Authorization": "Basic YWQ0YzVmYWEtNzdhYy00ODM5LWE1YzgtMzA4NzIzYTkxMGRj"
+          "Authorization": "Basic "+ process.env.INTERVIEWEE_REST_API_KEY
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersIntervieweeOneSignal }).then(oneSignalResult => {
           var urlNotification = ip + "/messageNotifications/add";
@@ -191,7 +191,7 @@ io.on("connection", socket => {
         const headersLinkupOneSignal = {
           "Accept": "*/*",
           "Content-Type": "application/json",
-          "Authorization": "Basic MGIzYjIyN2YtYTY0OS00ZjNlLWE3MzktMGRiMTM5NjRmNjc1"
+          "Authorization": "Basic "+ process.env.LINKUP_REST_API_KEY
         };
         axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResult => {
           var urlNotification = ip + "/messageNotifications/add";
