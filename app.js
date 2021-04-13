@@ -118,7 +118,6 @@ io.on("connection", socket => {
           "Content-Type": "application/json",
           "Authorization": "Basic "+ process.env.INTERVIEWEE_REST_API_KEY
         };
-        console.log("Test api key : "+ process.env.INTERVIEWEE_REST_API_KEY);
         axios.post(urlOneSignal, dataOneSignal, { headers: headersIntervieweeOneSignal }).then(oneSignalResult => {
           var urlNotification = ip + "/messageNotifications/add";
           console.log("candidateId "+ candidateId+ " companyId "+companyId);
@@ -179,7 +178,8 @@ io.on("connection", socket => {
       axios.get(urlGetCompanyInterviewee, { headers: headersInterviewee }).then(result => {
       var companyName;
        companyName = result["data"]["company"]["name"];
-        
+       console.log("Test api key : "+ process.env.LINKUP_APP_ID);
+
         var players = ["Linkup-" + result["data"]["company"]["id"]];
         var app_id = process.env.INTERVIEWEE_APP_ID;
         var contents = { "en": msg };
@@ -210,6 +210,8 @@ io.on("connection", socket => {
             console.log("notification created!");
           });
 
+        }).catch(err => {
+          console.log(err);
         });
 
 
