@@ -103,7 +103,7 @@ io.on("connection", socket => {
       
         var players = ["Interviewee-" + result["data"]["candidate"]["id"]];
         console.log("players : "+players);
-        var app_id = process.env.LINKUP_APP_ID;
+        var app_id = process.env.INTERVIEWEE_APP_ID;
         var contents = { "en": msg };
         var headings = { "en": capitalizeTheFirstLetterOfEachWord(candidateName) };
         var dataOneSignal = {
@@ -178,10 +178,10 @@ io.on("connection", socket => {
       axios.get(urlGetCompanyInterviewee, { headers: headersInterviewee }).then(result => {
       var companyName;
        companyName = result["data"]["company"]["name"];
-       console.log("Test api key : "+ process.env.LINKUP_APP_ID);
+       //console.log("Test api key : "+ process.env.LINKUP_APP_ID);
 
         var players = ["Linkup-" + result["data"]["company"]["id"]];
-        var app_id = process.env.INTERVIEWEE_APP_ID;
+        var app_id = process.env.LINKUP_APP_ID;
         var contents = { "en": msg };
         var headings = { "en": capitalizeTheFirstLetterOfEachWord(companyName) };
         var dataOneSignal = {
