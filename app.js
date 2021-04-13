@@ -137,6 +137,8 @@ io.on("connection", socket => {
         });
 
 
+      }).catch(err =>{
+        console.log(err);
       });
 
       io.emit('reload');
