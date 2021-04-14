@@ -4,18 +4,11 @@ var models = require('../models');
 var notificationDAO = require('../dao/notificationDAO');
 const auth = require('../middleware/auth');
 const jwt = require('jsonwebtoken');
+var axios = require('axios');
 
-// router.get('/getAll', (req, res)=>{
-//     var dao = new notificationDAO(models);
-//     dao.getNotifications((err, notifications)=>{
-//         if (err) {
-//             res.status(404).json({
-//                 "Error": err.message
-//             });
-//         }
-//         else {
-//             res.status(200).json(notifications);
-//         }
-//     });
-// });
+router.post("/add", auth, (req, res)=> {
+    var dao = new notificationDAO(models);
+    var propertiesNames = Object.getOwnPropertyNames(req.body);
+    var neededProperties = ["idNot", "candidateId", "companyId", "receiver", "title", "description",];
+});
 module.exports = router;

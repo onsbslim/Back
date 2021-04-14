@@ -24,9 +24,6 @@ var interviewSkillRouter = require('./routes/InterviewSkill');
 var notificationsRouter = require('./routes/notifications');
 var messagenNotificationsRouter = require('./routes/messageNotifications');
 
-const db = require('./models');
-
-const auth = require('./middleware/auth');
 
 function capitalizeTheFirstLetterOfEachWord(words) {
   var separateWord = words.toLowerCase().split(' ');

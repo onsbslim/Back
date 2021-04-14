@@ -15,7 +15,8 @@ module.exports = function (sequelize, DataTypes) {
             allowNull: true,
         },
         photo : {
-            type: DataTypes.STRING(500)
+            type: DataTypes.STRING(500),
+            allowNull: true,
         },
         new: {
             type: DataTypes.BOOLEAN,
