@@ -2,9 +2,14 @@
 
 module.exports = function (sequelize, DataTypes) {
     var Notifications = sequelize.define('notifications', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
         idNot: {
             type: DataTypes.STRING(200),
-            primaryKey: true,
+            allowNull: true
         },
         title: {
             type: DataTypes.STRING(300),

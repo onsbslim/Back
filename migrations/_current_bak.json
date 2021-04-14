@@ -716,6 +716,7 @@
                     "seqType": "Sequelize.STRING(2000)"
                 },
                 "photo": {
+                    "allowNull": true,
                     "field": "photo",
                     "seqType": "Sequelize.STRING(500)"
                 },
@@ -873,5 +874,5 @@
             "indexes": []
         }
     },
-    "revision": 6
+    "revision": 7
 }

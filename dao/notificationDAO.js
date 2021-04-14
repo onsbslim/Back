@@ -10,7 +10,6 @@ notificationDAO.prototype.sendNotification = function(notification, cb){
         "idNot": notification.idNot,
         "title": notification.title,
         "description": notification.description,
-        "photo": notification.photo,
         "new": true,
         "receiver": notification.receiver,
         "companyId": notification.companyId,
