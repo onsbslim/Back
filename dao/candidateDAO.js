@@ -40,7 +40,7 @@ candidateDao.prototype.create = function (candidate, cb) {
 };
 
 // Create new Candidate via Google
-candidateDao.prototype.createViaGoogle = function(candidate, cb){
+candidateDao.prototype.createViaGoogle = function (candidate, cb) {
 	var newCandidate = {
 		"email": candidate.email,
 		"firstname": candidate.firstname,
@@ -69,8 +69,8 @@ candidateDao.prototype.createViaGoogle = function(candidate, cb){
 
 // Get candidate
 candidateDao.prototype.get = function (id, cb) {
-	this.models.candidates.findByPk(id,{
-		include:[this.models.skills]
+	this.models.candidates.findByPk(id, {
+		include: [this.models.skills]
 	})
 		.then(candidate => {
 			if (!candidate) cb(Error("candidate not found"));
@@ -120,16 +120,16 @@ candidateDao.prototype.updateCandidate = function (id, candidateToUpdate, cb) {
 				"degree": candidateToUpdate.degree,
 				"playerId": candidateToUpdate.playerId,
 				"oneSignalId": candidateToUpdate.oneSignalId,
-				where:{
+				where: {
 					id: candidate.id,
 				}
-			}).then(updatedCandidate =>{
+			}).then(updatedCandidate => {
 				if (!updatedCandidate) return cb(Error('candidate is not updated !'))
 				else return cb(null, updatedCandidate);
-			}).catch(err =>{
+			}).catch(err => {
 				cb(err);
 			})
-		}).catch(err =>{
+		}).catch(err => {
 			cb(err);
 		});
 
@@ -151,12 +151,12 @@ candidateDao.prototype.auth = function (candidateData, cb) {
 };
 
 //Candidate Login Google
-candidateDao.prototype.auth = function(candidateData, cb) {
+candidateDao.prototype.auth = function (candidateData, cb) {
 	this.models.candidates.findOne({
 		where: {
 			email: candidateData.email,
 		}
-	}) .then(candidate => {
+	}).then(candidate => {
 		if (!candidate) cb(Error('No candidate found'));
 		else cb(null, candidate);
 	}).catch(err => cb(err));
@@ -222,22 +222,22 @@ candidateDao.prototype.uploadCV = function (id, candidateToUpdate, cb) {
 		});
 };
 
-candidateDao.prototype.getDetailed = function(id, cb){
+candidateDao.prototype.getDetailed = function (id, cb) {
 	this.models.candidates.findOne({
-		where:{
+		where: {
 			id: id
-		}, 
-		include: [{model: this.models.experiences, include: [this.models.companies]}, this.models.skills]
-	}).then( result => {
-		 cb(null, result);
-	}).catch (err =>{
-		 cb(err);
+		},
+		include: [{ model: this.models.experiences, include: [this.models.companies] }, this.models.skills]
+	}).then(result => {
+		cb(null, result);
+	}).catch(err => {
+		cb(err);
 	});
 };
 
-candidateDao.prototype.checkImage = function(id, cb){
+candidateDao.prototype.checkImage = function (id, cb) {
 	this.models.candidates.findOne({
-		where:{
+		where: {
 			id: id
 		},
 		attributes: ['photo']
