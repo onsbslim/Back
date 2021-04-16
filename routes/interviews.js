@@ -167,9 +167,9 @@ router.get('/:id', auth , function(req, res){
 		if (err) res.status(404).json({
 			"Error": err.message
 		});
-		else res.status(200).json(
-			interview
-		)
+		else res.status(200).json({
+			"interview" : interview
+        });
 	});
 });
 
