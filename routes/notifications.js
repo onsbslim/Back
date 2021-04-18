@@ -59,12 +59,7 @@ router.post("/add", auth, (req, res) => {
                 };
                 axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResponse => {
                     var notificationData = {
-                        "idNot": oneSignalResponse["data"]["id"],
-                        "title": req.body.title,
-                        "description": req.body.description,
-                        "receiver": req.body.receiver,
-                        "companyId": req.body.companyId,
-                        "candidateId": req.body.candidateId,
+                        "idNot": oneSignalResponse["data"]["id"]
                     };
                     dao.updateNotification(notification.id,notificationData,(err, notification) => {
                         if (err) {

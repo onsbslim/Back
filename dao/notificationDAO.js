@@ -29,11 +29,6 @@ notificationDAO.prototype.updateNotification = function (id, notificationToUpdat
         .then(notification => {
             if (!notification) return cb(Error('Notification not found'));
             else notification.update({
-                "title": notificationToUpdate.title,
-                "description": notificationToUpdate.description,
-                "receiver": notificationToUpdate.receiver,
-                "companyId": notificationToUpdate.companyId,
-                "candidateId": notificationToUpdate.candidateId,
                 "idNot" : notificationToUpdate.idNot,
                 where: {
 					id: notification.id,
