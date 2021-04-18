@@ -59,6 +59,7 @@ router.post("/add", auth, (req, res) => {
                 };
                 axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResponse => {
                     // dao.updateNotification(notification.id,)
+                    console.log(oneSignalResponse);
                     console.log("test id notification : "+ notification.id);
                 }).catch(err => {
                     res.status(404).json({
