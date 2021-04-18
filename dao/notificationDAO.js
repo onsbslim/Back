@@ -41,5 +41,6 @@ notificationDAO.prototype.updateNotification = function (id, notificationToUpdat
             });
         }).catch(err => {
             cb(err);
+            console.log(err);
         });
 };
