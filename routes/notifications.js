@@ -58,9 +58,26 @@ router.post("/add", auth, (req, res) => {
                     "Authorization": "Basic " + process.env.LINKUP_REST_API_KEY
                 };
                 axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResponse => {
-                    // dao.updateNotification(notification.id,)
-                    console.log(oneSignalResponse);
-                    console.log("test id notification : "+ notification.id);
+                    var notificationData = {
+                        "idNot": oneSignalResponse["data"]["id"]
+                    };
+                    dao.updateNotification(notification.id,notificationData,(err, notification) => {
+                        if (err) {
+                            res.status(404).json({
+                                "Error": err.message
+                            });
+                        }
+                        else {
+                            res.status(200).json(
+                                {"notification": notification}
+                            );
+                        }
+                    }).catch(err =>{
+                        res.status(404).json({
+                            "Error": err.message
+                        });
+                    });
+                   
                 }).catch(err => {
                     res.status(404).json({
                         "Error": err.message
