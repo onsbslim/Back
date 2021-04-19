@@ -15,8 +15,9 @@ var Sequelize = require('sequelize');
  * createTable "experiences", deps: [candidates, companies]
  * createTable "applications", deps: [interviews, candidates]
  * createTable "InterviewSkills", deps: [skills, interviews]
- * createTable "messageNotifications", deps: [candidates, companies]
+ * createTable "message_notifications", deps: [candidates, companies]
  * createTable "messages", deps: [candidates, companies]
+ * createTable "notifications", deps: [candidates, companies]
  * createTable "photos", deps: [companies]
  * createTable "answers", deps: [applications, questions]
  *
@@ -25,7 +26,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2021-04-08T14:40:51.561Z",
+    "created": "2021-04-19T17:34:40.377Z",
     "comment": ""
 };
 
@@ -687,7 +688,7 @@ var migrationCommands = function(transaction) {
         {
             fn: "createTable",
             params: [
-                "messageNotifications",
+                "message_notifications",
                 {
                     "id": {
                         "type": Sequelize.STRING(300),
@@ -761,6 +762,85 @@ var migrationCommands = function(transaction) {
                     "new": {
                         "type": Sequelize.BOOLEAN,
                         "field": "new",
+                        "allowNull": true
+                    },
+                    "createdAt": {
+                        "type": Sequelize.DATE,
+                        "field": "createdAt",
+                        "allowNull": false
+                    },
+                    "updatedAt": {
+                        "type": Sequelize.DATE,
+                        "field": "updatedAt",
+                        "allowNull": false
+                    },
+                    "candidateId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "candidateId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "candidates",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    },
+                    "companyId": {
+                        "type": Sequelize.INTEGER,
+                        "field": "companyId",
+                        "onUpdate": "CASCADE",
+                        "onDelete": "SET NULL",
+                        "references": {
+                            "model": "companies",
+                            "key": "id"
+                        },
+                        "allowNull": true
+                    }
+                },
+                {
+                    "transaction": transaction
+                }
+            ]
+        },
+        {
+            fn: "createTable",
+            params: [
+                "notifications",
+                {
+                    "id": {
+                        "type": Sequelize.INTEGER,
+                        "field": "id",
+                        "autoIncrement": true,
+                        "primaryKey": true
+                    },
+                    "idNot": {
+                        "type": Sequelize.STRING(200),
+                        "field": "idNot",
+                        "allowNull": true
+                    },
+                    "title": {
+                        "type": Sequelize.STRING(300),
+                        "field": "title",
+                        "allowNull": true
+                    },
+                    "description": {
+                        "type": Sequelize.STRING(2000),
+                        "field": "description",
+                        "allowNull": true
+                    },
+                    "photo": {
+                        "type": Sequelize.STRING(500),
+                        "field": "photo",
+                        "allowNull": true
+                    },
+                    "new": {
+                        "type": Sequelize.BOOLEAN,
+                        "field": "new",
+                        "allowNull": true
+                    },
+                    "receiver": {
+                        "type": Sequelize.STRING(100),
+                        "field": "receiver",
                         "allowNull": true
                     },
                     "createdAt": {
@@ -957,13 +1037,19 @@ var rollbackCommands = function(transaction) {
         },
         {
             fn: "dropTable",
-            params: ["messageNotifications", {
+            params: ["message_notifications", {
                 transaction: transaction
             }]
         },
         {
             fn: "dropTable",
             params: ["messages", {
+                transaction: transaction
+            }]
+        },
+        {
+            fn: "dropTable",
+            params: ["notifications", {
                 transaction: transaction
             }]
         },
