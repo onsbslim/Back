@@ -25,8 +25,11 @@ notificationDAO.prototype.sendNotification = function (notification, cb) {
 };
 
 notificationDAO.prototype.updateNotification = function (id, notificationToUpdate, cb) {
-    this.models.notifications.findByPk(id)
-        .then(notification => {
+    this.models.notifications.findOne({
+       where: { 
+           id
+        }
+    }).then(notification => {
             if (!notification) return cb(Error('Notification not found'));
             else notification.update({
                 "idNot" : notificationToUpdate.idNot,
