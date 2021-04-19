@@ -58,26 +58,17 @@ router.post("/add", auth, (req, res) => {
                     "Authorization": "Basic " + process.env.LINKUP_REST_API_KEY
                 };
                 axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResponse => {
-                    var notificationData = {
-                        "idNot": oneSignalResponse["data"]["id"]
-                    };
-                    dao.updateNotification(notification.id,notificationData,(err, notification) => {
-                        if (err) {
-                            res.status(404).json({
-                                "Error": err.message
-                            });
-                        }
-                        else {
-                            res.status(200).json(
-                                {"notification": notification}
-                            );
-                        }
-                    }).catch(err =>{
+                    
+                    if (err) {
                         res.status(404).json({
                             "Error": err.message
                         });
-                    });
-                   
+                    }
+                    else {
+                        res.status(200).json(
+                            { "notification": notification,"notificationId": oneSignalResponse["data"]["id"]}
+                        );
+                    }
                 }).catch(err => {
                     res.status(404).json({
                         "Error": err.message
@@ -87,4 +78,44 @@ router.post("/add", auth, (req, res) => {
         }
     });
 });
+
+router.put("/update", auth,(req, res) => {
+    var dao = new notificationDAO(models);
+
+    var propertiesNames = Object.getOwnPropertyNames(req.body);
+    var neededProperties = ["idNot", "id"];
+    propertiesNames.forEach(name => {
+        if (neededProperties.indexOf(name) < 0 || propertiesNames.length > neededProperties.length) {
+            return res.status(400).json({
+                "Error": "Uneeded Input Data"
+            });
+        }
+    });
+    if (propertiesNames.length < neededProperties.length)
+        res.status(400).json({
+            "Error": "Missing Input Data"
+        });
+
+    var notificationData = {
+        "idNot": req.body.idNot
+    };
+    
+    dao.updateNotification(req.body.id,notificationData,(err, notification) => {
+        if (err) {
+            res.status(404).json({
+                "Error": err.message
+            });
+        }
+        else {
+            res.status(200).json(
+                {"notification": notification}
+            );
+        }
+    }).catch(err =>{
+        res.status(404).json({
+            "Error": err.message
+        });
+    });
+});
+
 module.exports = router;
