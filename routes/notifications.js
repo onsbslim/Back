@@ -49,12 +49,7 @@ router.post("/add", auth, (req, res) => {
                 "companyId": req.body.companyId,
                 "idNot": oneSignalResponse["data"]["id"]
             };
-            if (err) {
-                res.status(404).json({
-                    "Error": err.message
-                });
-            }
-            else {
+            
                 dao.sendNotification(newNotification, (err, notification) => {
                     if (err) {
                         res.status(404).json({
@@ -68,7 +63,7 @@ router.post("/add", auth, (req, res) => {
                         
                     }
                 });
-            }
+            
         }).catch(err => {
             res.status(404).json({
                 "Error": err.message
