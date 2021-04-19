@@ -23,42 +23,39 @@ router.post("/add", auth, (req, res) => {
             "Error": "Missing Input Data"
         });
 
-    var newNotification = {
-        "title": req.body.title,
-        "description": req.body.description,
-        "receiver": req.body.receiver,
-        "candidateId": req.body.candidateId,
-        "companyId": req.body.companyId
-    };
-    dao.sendNotification(newNotification, (err, notification) => {
-        if (err) {
-            res.status(404).json({
-                "Error": err.message
-            });
-        }
-        else {
-            // res.status(200).json(
-            //     {"notification": notification}
-            // );
-            if (req.body.receiver == "company") {
-                var players = ["Linkup-" + req.body.companyId];
-                var app_id = process.env.LINKUP_APP_ID;
-                var contents = { "en": "Test" };
-                var headings = { "en": "Test Notification" };
-                var dataOneSignal = {
-                    "include_external_user_ids": players,
-                    "app_id": app_id,
-                    "contents": contents,
-                    "headings": headings,
-                    "content_available": 1,
-                };
-                const headersLinkupOneSignal = {
-                    "Accept": "*/*",
-                    "Content-Type": "application/json",
-                    "Authorization": "Basic " + process.env.LINKUP_REST_API_KEY
-                };
-                axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResponse => {
-                    
+    if (req.body.receiver == "company") {
+        var players = ["Linkup-" + req.body.companyId];
+        var app_id = process.env.LINKUP_APP_ID;
+        var contents = { "en": "Test" };
+        var headings = { "en": "Test Notification" };
+        var dataOneSignal = {
+            "include_external_user_ids": players,
+            "app_id": app_id,
+            "contents": contents,
+            "headings": headings,
+            "content_available": 1,
+        };
+        const headersLinkupOneSignal = {
+            "Accept": "*/*",
+            "Content-Type": "application/json",
+            "Authorization": "Basic " + process.env.LINKUP_REST_API_KEY
+        };
+        axios.post(urlOneSignal, dataOneSignal, { headers: headersLinkupOneSignal }).then(oneSignalResponse => {
+            var newNotification = {
+                "title": req.body.title,
+                "description": req.body.description,
+                "receiver": req.body.receiver,
+                "candidateId": req.body.candidateId,
+                "companyId": req.body.companyId,
+                "idNot": oneSignalResponse["data"]["id"]
+            };
+            if (err) {
+                res.status(404).json({
+                    "Error": err.message
+                });
+            }
+            else {
+                dao.sendNotification(newNotification, (err, notification) => {
                     if (err) {
                         res.status(404).json({
                             "Error": err.message
@@ -66,17 +63,19 @@ router.post("/add", auth, (req, res) => {
                     }
                     else {
                         res.status(200).json(
-                            { "notification": notification,"notificationId": oneSignalResponse["data"]["id"]}
+                            {"notification": notification}
                         );
+                        
                     }
-                }).catch(err => {
-                    res.status(404).json({
-                        "Error": err.message
-                    });
                 });
             }
-        }
-    });
+        }).catch(err => {
+            res.status(404).json({
+                "Error": err.message
+            });
+        });
+    }
+    
 });
 
 router.put("/update", auth,(req, res) => {

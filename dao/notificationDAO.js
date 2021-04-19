@@ -41,9 +41,10 @@ notificationDAO.prototype.updateNotification = function (id, notificationToUpdat
 				else return cb(null, updatedNotification);
             }).catch(err => {
                 cb(err);
+                console.log("errr :"+err);
             });
         }).catch(err => {
             cb(err);
-            console.log(err);
+            
         });
 };
